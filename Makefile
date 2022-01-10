@@ -16,7 +16,7 @@ TARGET = minishell
 all: ${LIBFT_LIB}  
 	@gcc $(SRC_NAME) $(LIBFT_DIR)${LIBFT_LIB} -lreadline -o $(TARGET)
 
-# ${LIBFT_LIB} ---> This will run the makefile inside the libft directory and create libft.a and copy it to the libs folder
+# ${LIBFT_LIB} ---> This will run the makefile inside the libft directory and create libft.a 
 ${LIBFT_LIB}:
 	@$(MAKE) -C $(LIBFT_DIR) all 
 
