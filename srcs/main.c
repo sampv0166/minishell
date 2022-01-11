@@ -33,7 +33,7 @@ int main()
         // split the whole input to seperate strings
         parsed = ft_split(input, ' ');
 
-        // if the input is empty , continue and print the propmpt again
+        // if the input is empty , continue and print the prompt again
         if(!parsed[0])
         {
             continue ;
@@ -48,6 +48,15 @@ int main()
             }
             continue ;
         }
+
+        // if(!ft_strcmp(parsed[0], "pwd"))
+        // {
+        //     if(!pwd(parsed[0]))
+        //     {
+        //         perror(parsed[0]);
+        //     }
+        //     continue ;
+        // }
 
         // create a child process with fork
         // after forking child_pid will be positive integer for parent process
@@ -66,7 +75,7 @@ int main()
             // execve executes system programs like ls , pwd etc ...
             // execve replaces the child process but the id remains unchanged
             //if execve is succesfull it never returns
-            if(execve(parsed[0], parsed, env) < 0)
+            if(execve("/bin/sh", parsed, NULL) < 0)
             {
                 perror(parsed[0]);
                 exit(1);
