@@ -4,7 +4,7 @@
 int main()
 {
     // to store the current directory
-    char cwd[FILENAME_MAX];
+    char	cwd[FILENAME_MAX];
 
     //to store the input from the command line
     char **parsed;
@@ -67,20 +67,27 @@ int main()
         if(child_pid < 0)
         {
             perror("Fork Failed");
-            exit(1);
-        }
-
-        if(child_pid == 0)
-        {
-            // execve executes system programs like ls , pwd etc ...
+			exit(1);
+		}
+		
+		if(child_pid == 0)
+		{
+			// execve executes system programs like ls , pwd etc ...
             // execve replaces the child process but the id remains unchanged
             //if execve is succesfull it never returns
-            if(execve("/bin/sh", parsed, NULL) < 0)
+			if (!strcmp(parsed[0], "ls") || !strcmp(parsed[0], "pwd"))
             {
-                perror(parsed[0]);
-                exit(1);
-            }
-        }
+				if(execve("/bin/sh", parsed, NULL) < 0)
+                {
+					perror(parsed[0]);
+					exit(1);
+				}
+			}
+
+			//echo command function
+			if (!strcmp(parsed[0], "echo"))
+				echo(parsed);
+		}
         else 
         {
             //wait pid Suspends the main process until the child process ends.
