@@ -1,0 +1,10 @@
+fdasdfhjkagfku geuyif agwkuye fgakuywgf uyagweuyf gauywefg 
+Makefile
+file.txt
+includes
+libft
+minishell
+notes
+srcs
+temp
+test.c
