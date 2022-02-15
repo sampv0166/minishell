@@ -2,7 +2,8 @@ SRC_DIR = ./srcs/
 
 LIBFT_DIR = ./libft/
 
-SRC_FILES = main.c built_ins.c ft_strcmp.c
+SRC_FILES = main.c ./built_ins/built_ins.c ./utils/ft_strcmp.c ./input_to_tokens/input_to_tokens.c \
+			./utils/signal_handling.c ./env/env_vars.c
 
 # add predfix to all the src files    prefix = ./srcs/
 SRC_NAME =  $(addprefix $(SRC_DIR), $(SRC_FILES))

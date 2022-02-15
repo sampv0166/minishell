@@ -2,21 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int increment_i(int *i)
+{
+    *i = *i + 1;
+    return (*i);
+}
 
 int main(void)
 {
-	pid_t child_pid = fork();
-        
-    // The child process
-    if (child_pid == 0) {
-        printf("### Child ###\nCurrent PID: %d and Child PID: %d\n",
-               getpid(), child_pid);
-    } else {
-        printf("### Parent ###\nCurrent PID: %d and Child PID: %d\n",
-               getpid(), child_pid);
-    }
+    int i;
+    i =  1;
 
-	printf("Name\n");
- 
+    printf("%d\n", i);
+    increment_i(&i);
+    printf("%d\n", i);
     return 0;
 }

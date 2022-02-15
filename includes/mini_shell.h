@@ -26,6 +26,11 @@
 #include "../libft/libft.h"
 #include<sys/wait.h>
 #include<readline/readline.h>
+#include <readline/history.h>
+# include <stdbool.h>
+#include "./input_to_tokens.h"
+#include "./env_var.h"
+#include <signal.h>
 
 /*
 ** =============================================================================
@@ -42,5 +47,12 @@ int		ft_strcmp(char *s1, char *s2);
 int cd(char *path) ;
 int pwd(char *path);
 void	echo(char **str);
+
+/*
+** =============================================================================
+** Signals
+** =============================================================================
+*/
+void	handle_signals(void);
 
 #endif
