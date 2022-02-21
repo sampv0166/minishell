@@ -88,7 +88,6 @@ char **split_to_tokens(char *str)
 	array_index = 0;
     len = 0;
     arr_len = get_arr_len(str);
-    printf ("\nlen == %d\n", arr_len);
     arr = malloc (sizeof (char *) * arr_len + 1);
     
     while (str[i])
@@ -284,6 +283,133 @@ int syntax_error()
     return(EXIT_SUCCESS);
 }
 
+int get_len(char **arr)
+{
+    int size;
+    int i;
+    int j;
+
+    size = 0;
+    i = 0;
+    j = 0;
+    while (arr[i])
+    {
+        j = 0;
+        while (arr[i][j])
+        {
+            if (arr[i][j] == '>' && arr[i][j + 1] == '>')
+            {
+                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
+                    size++;
+                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
+                    size++;    
+            }
+            else if (arr[i][j] == '>' && arr[i][j + 1] != '>')
+            {
+                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
+                    size++;
+                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
+                    size++;    
+            } 
+            if (arr[i][j] == '<' && arr[i][j + 1] == '<')
+            {
+                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
+                    size++;
+                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
+                    size++;          
+            }
+            else if (arr[i][j] == '<' && arr[i][j + 1] != '<')
+             {
+                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
+                    size++;
+                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
+                    size++;        
+             }
+            if(arr[i][j] == '|')
+            {
+                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
+                    size++;
+                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
+                    size++;       
+            }      
+            j++;
+        }
+        size++;
+        i++;
+    }
+    return (size);
+}
+
+char **split_by_pipe_redir(char **arr)
+{
+    char **tokens;
+    int i;
+    int j;
+    i = 0;
+    j = 0;
+    int k;
+    int len;
+
+    k = 0;
+    len = 0;
+    tokens = (char **) malloc (sizeof (char *) * get_len(arr) + 1);
+    while (arr[i])
+    {
+        j = 0;
+        len = 0;
+        if (!token_contains_quote(arr[i]))
+        {
+            while (arr[i][j])
+            {
+              
+                len = 0;
+                if (arr[i][j] == '>' && arr[i][j + 1] == '>')
+                {
+                    tokens[k++] = ft_strdup(">>");
+                    j = j + 2;   
+                }
+                if (arr[i][j] == '>' && arr[i][j + 1] != '>')
+                {
+                    tokens[k++] = ft_strdup(">");
+                    j++;   
+                }
+                if (arr[i][j] == '<' && arr[i][j + 1] == '<')
+                {
+                    tokens[k++] = ft_strdup("<<");
+                    j = j + 2;   
+                }
+                if (arr[i][j] == '<' && arr[i][j + 1] != '<')
+                {
+                    tokens[k++] = ft_strdup(">");
+                    j++;   
+                } 
+                if (arr[i][j] == '|')
+                {
+                    tokens[k++] = ft_strdup("|");
+                    j++;   
+                }
+                while(arr[i][j] && arr[i][j] != '>' && arr[i][j] != '<' && arr[i][j] != '|') 
+                {
+                    len++;
+                    j++;
+                }
+                if(len > 0)
+                {
+                    tokens[k++] = ft_substr(arr[i], j - len, len); 
+                }                                  
+            }
+        }
+        else
+        {
+            len = ft_strlen (arr[i]);
+            tokens[k++] = ft_strdup(arr[i]);
+        }
+        i++;
+    }
+    tokens[k] == NULL;;
+    return (tokens);
+}
+
 int input_to_tokens(char *input)
 {
     char **tokens;
@@ -294,10 +420,16 @@ int input_to_tokens(char *input)
     tokens =  split_to_tokens(input);
     int  i;
     i = 0;
+    // while(tokens[i])
+    // {
+    //       printf ("\ntoken = %s\n", tokens[i++]);
+    // }
+    tokens = split_by_pipe_redir(tokens);
     while(tokens[i])
     {
-          printf ("\ntoken = %s\n", tokens[i++]);
+          printf ("%s  ", tokens[i++]);
     }
+    printf ("\n");
     if(!is_token_syntax_valid(tokens))
         exit(0);
    // parse(token);
