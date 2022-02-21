@@ -1,4 +1,4 @@
-#include "../includes/mini_shell.h"
+#include "../../includes/mini_shell.h"
 
 static void	handle_signal(int sig)
 {

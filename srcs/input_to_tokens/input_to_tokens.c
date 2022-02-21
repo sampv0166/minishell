@@ -1,4 +1,4 @@
-#include "../includes/mini_shell.h"
+#include "../../includes/mini_shell.h"
 
 
 char	*ft_strchr_2(const char *str, int c)
@@ -197,7 +197,7 @@ bool token_contains_quote(char *str)
     i = 0;
     while(str[i])
     {
-        if(str[i] == '\'' || str[i] == "\"")
+        if(str[i] == '\'' || str[i] == '\"')
             return (true);
         i++;
     }

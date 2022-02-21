@@ -1,4 +1,4 @@
-#include "../includes/mini_shell.h"
+#include "../../includes/mini_shell.h"
 
 int get_env_arr_len(char **arr)
 {
