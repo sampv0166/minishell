@@ -35,6 +35,31 @@ char **save_env(char **env_var)
 
 // TODO : get_env_value(PWD)
 
+char *get_env_value (t_env_var *env, char *var)
+{
+  int  i;
+  char *val;
+
+
+  i  = 0;
+  val = NULL; 
+
+  while (env->env_var[i] != NULL)
+  {
+    	if (ft_strcmp(var, env->env_var[i]) == -61)
+		  {
+			  val = ft_strchr(env->env_var[i++], '=') + 1;
+			  if (ft_strlen(val) == 0)
+				    val = ft_calloc(1, sizeof (char));
+			  else
+				    val = ft_strdup(val);
+			  break ;
+		  }
+      i++;
+  }
+  return (val);
+}
+
 t_env_var *init_env_vars(char **envp)
 {
     t_env_var *env;
@@ -45,6 +70,7 @@ t_env_var *init_env_vars(char **envp)
         env->envp = envp;
         //copy envp to env.env_var for later use
         env->env_var = save_env(envp);
+        env->pwd = get_env_value(env, "PWD");
         if(env->env_var != NULL)
             return (env);
     }

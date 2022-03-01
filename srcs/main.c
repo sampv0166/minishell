@@ -3,7 +3,7 @@
 
 INPUT_TO_TOKENS_H
 
-static int get_input(void)
+static int get_input(t_env_var *env)
 {
     char *input;
     int ret;
@@ -15,7 +15,7 @@ static int get_input(void)
             add_history(input);
         if(input == NULL)
             exit(EXIT_SUCCESS); // TODO : free everything  
-        ret = input_to_tokens(input);
+        ret = input_to_tokens(input, env);
         if(ret == EXIT_FAILURE)
             return (EXIT_FAILURE); // TODO : free everything  
         free (input);
@@ -30,9 +30,17 @@ int main(int ac, char **argv, char **envp)
     handle_signals();
 
     env = init_env_vars(envp);
+    int i;
+    i = 0;
+    // while (env->env_var[i])
+    // {
+    //     printf ("%s\n", env->env_var[i]);
+    //     i++;
+    // }
+    // exit (0);
     if(env == NULL)
         return (EXIT_FAILURE); // TODO :  free everything
-    if(!get_input())
+    if(!get_input(env))
         return (EXIT_FAILURE); // TODO :  free everything
     return (EXIT_SUCCESS);    
 }

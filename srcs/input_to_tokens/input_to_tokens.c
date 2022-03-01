@@ -410,7 +410,7 @@ char **split_by_pipe_redir(char **arr)
     return (tokens);
 }
 
-int input_to_tokens(char *input)
+int input_to_tokens(char *input, t_env_var *env)
 {
     char **tokens;
     int ret;
@@ -425,12 +425,14 @@ int input_to_tokens(char *input)
     //       printf ("\ntoken = %s\n", tokens[i++]);
     // }
     tokens = split_by_pipe_redir(tokens);
-    while(tokens[i])
-    {
-          printf ("%s  ", tokens[i++]);
-    }
-    printf ("\n");
-    if(!is_token_syntax_valid(tokens))
-        exit(0);
-   // parse(token);
+    // i = 0;
+    // while(tokens[i])
+    // {
+    //       printf ("%s\n  ", tokens[i]);
+    //       i++;
+    // }
+    // printf ("\n");
+    // if(!is_token_syntax_valid(tokens))
+    //     exit(0);
+    executor (tokens, env);
 }

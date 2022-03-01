@@ -18,6 +18,7 @@ typedef struct s_env_var
 */
 
 t_env_var *init_env_vars(char **envp);
+char *get_env_value (t_env_var *env, char *var);
 
 
 #endif
