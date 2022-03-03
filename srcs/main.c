@@ -1,13 +1,12 @@
 #include "../includes/mini_shell.h"
 
-
 INPUT_TO_TOKENS_H
 
 static int get_input(t_env_var *env)
 {
     char *input;
     int ret;
-
+    
     while(1)
     {
         input = readline("MS SHELL====>");

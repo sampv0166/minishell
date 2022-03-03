@@ -32,6 +32,7 @@
 #include "./env_var.h"
 #include <signal.h>
 #include"executor.h"
+#include<fcntl.h>
 
 /*
 ** =============================================================================
