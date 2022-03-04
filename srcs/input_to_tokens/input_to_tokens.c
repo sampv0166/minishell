@@ -90,17 +90,19 @@ char **split_to_tokens(char *str)
     arr_len = get_arr_len(str);
     arr = malloc (sizeof (char *) * arr_len + 1);
     
-    while (str[i])
+    while (str[i] != '\0')
     {
+      
 	    if (str[i] == ' ')
 			i++;
-		else if (str[i] != ' ')
+
+		else if (str[i] && str[i] != ' ')
 		{
-            if(str[i] == '\"')
+            if(str[i] && str[i] == '\"')
             {
                 i++;
                 len++;
-                if(ft_strchr_2(str + i, '\"'))
+                if(str[i] && ft_strchr_2(str + i, '\"'))
                 {
                    while(str[i] && str[i] != '\"')
                    {
@@ -124,12 +126,15 @@ char **split_to_tokens(char *str)
                     break ;
                 }
             }
-            else if(str[i] == '\'')
-            {
+            else if(str[i] && str[i] == '\'')
+            {  
+                
                 i++;
                 len++;
-                if(ft_strchr_2(str + i, '\''))
+                          
+                if(str[i] && ft_strchr_2(str + i, '\''))
                 {
+
                    while(str[i] && str[i] != '\'')
                    {
                         i++;
@@ -150,7 +155,7 @@ char **split_to_tokens(char *str)
                     arr[array_index++] = ft_substr(str, i - len, len);
 			        len = 0;         
                     break ;
-                }    
+                }   
             }
             else
             {
@@ -160,12 +165,13 @@ char **split_to_tokens(char *str)
 			        len++;
                 }
 			    arr[array_index++] = ft_substr(str, i - len, len);
-			    len = 0;   	
+			    len = 0; 
+                if(str[i] == 0)
+                    break ;  
             }
 		}
     }
     arr[array_index] = NULL;
-
    return (arr);
 }
 
@@ -257,11 +263,14 @@ bool is_token_syntax_valid (char **tokens)
 
     i = 0;
 
-    while (tokens[i])
+    while (tokens[i] != NULL)
     {
+        // printf ("i = %d", i);
+        // if(i = 2)
+        //     exit (0);    
         if (!token_contains_quote(tokens[i]))
         {
-            if(tokens[i + 1] == NULL)
+            if(tokens[i] && tokens[i + 1] != NULL)
             {
                 if(is_token_redir(tokens[i]))
                     return (false);
@@ -353,6 +362,7 @@ char **split_by_pipe_redir(char **arr)
     k = 0;
     len = 0;
     tokens = (char **) malloc (sizeof (char *) * get_len(arr) + 1);
+    tokens[get_len(arr)] = NULL;
     while (arr[i])
     {
         j = 0;
@@ -410,31 +420,65 @@ char **split_by_pipe_redir(char **arr)
     return (tokens);
 }
 
+
+
 int input_to_tokens(char *input, t_env_var *env)
 {
     char **tokens;
     int ret;
-
     if(!is_input_valid(input))
-        return (syntax_error());
+        return (syntax_error());  
     tokens =  split_to_tokens(input);
     int  i;
     i = 0;
+    
     // while(tokens[i])
     // {
     //       printf ("\ntoken = %s\n", tokens[i++]);
     // }
+    
     tokens = split_by_pipe_redir(tokens);
-    i = 0;
+    
+    // i = 0;
     // while(tokens[i])
     // {
     //       printf ("%s\n  ", tokens[i]);
     //       i++;
     // }
     // printf ("\n");
+     
     if(!is_token_syntax_valid(tokens))
         exit(0);
-    
-   // exit (1);    
-    executor (tokens, env);
+    t_pars_tokens *pa_tkns;
+    pa_tkns = parser(tokens);
+   // exit (1);
+    int y;
+    // y = 0;
+    // while (pa_tkns[y].cmd)
+    // {
+    //     int j;
+    //     j = 0;
+    //     while (pa_tkns[y].cmd[j])
+    //     {
+    //         printf ("%s ",pa_tkns[y].cmd[j]);
+    //         j++;
+    //     }
+    //      printf("\n");
+    //     j = 0;
+    //     while (pa_tkns[y].cmd_splitted[j])
+    //     {
+    //         printf ("%s ",pa_tkns[y].cmd_splitted[j]);
+    //         j++;
+    //     }
+
+    //     printf ("%s ",pa_tkns[y].cmd_full);
+    //     printf("\n");
+    //     printf("\npipe = %d\n", pa_tkns[y].pipe);
+    //     printf("\nis_out = %d\n", pa_tkns[y].is_out);
+    //     printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
+    //     printf("\nis_in = %d\n", pa_tkns[y].is_in);
+    //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
+    //     y++;
+    // }
+    executor (tokens, env, pa_tkns);
 }

@@ -19,6 +19,7 @@ static int get_input(t_env_var *env)
             return (EXIT_FAILURE); // TODO : free everything  
         free (input);
     }
+   
     return (EXIT_FAILURE);
 }
 
@@ -37,6 +38,7 @@ int main(int ac, char **argv, char **envp)
     //     i++;
     // }
     // exit (0);
+    
     if(env == NULL)
         return (EXIT_FAILURE); // TODO :  free everything
     if(!get_input(env))
