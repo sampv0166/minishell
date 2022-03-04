@@ -11,7 +11,7 @@ typedef struct  s_pars_tokens
 {
    char **cmd;
    char *cmd_full;
-   char *cmd_splitted;
+   char **cmd_splitted;
    int  pipe;
    int  is_in;
    int  is_out;

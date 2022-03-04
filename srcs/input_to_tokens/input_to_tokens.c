@@ -420,21 +420,21 @@ int input_to_tokens(char *input, t_env_var *env)
     tokens =  split_to_tokens(input);
     int  i;
     i = 0;
-    while(tokens[i])
-    {
-          printf ("\ntoken = %s\n", tokens[i++]);
-    }
+    // while(tokens[i])
+    // {
+    //       printf ("\ntoken = %s\n", tokens[i++]);
+    // }
     tokens = split_by_pipe_redir(tokens);
     i = 0;
-    while(tokens[i])
-    {
-          printf ("%s\n  ", tokens[i]);
-          i++;
-    }
-    printf ("\n");
+    // while(tokens[i])
+    // {
+    //       printf ("%s\n  ", tokens[i]);
+    //       i++;
+    // }
+    // printf ("\n");
     if(!is_token_syntax_valid(tokens))
         exit(0);
     
-    exit (1);    
+   // exit (1);    
     executor (tokens, env);
 }
