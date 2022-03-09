@@ -43,6 +43,17 @@ t_pars_tokens *parser (char **tokens)
     pa_tkns = malloc (sizeof (t_pars_tokens) * pipes_count + 1);
     pa_tkns[pipes_count + 1].cmd = NULL;
     pa_tkns[pipes_count + 1].cmd_splitted = NULL;
+     pa_tkns[pipes_count + 1].cmd_full = NULL;
+    pa_tkns[pipes_count + 1].fd_in = STDIN_FILENO;
+    pa_tkns[pipes_count + 1].fd_out = STDOUT_FILENO;
+    pa_tkns[pipes_count + 1].pipe = 0;
+    pa_tkns[pipes_count + 1].is_in = 0;
+    pa_tkns[pipes_count + 1].is_out = 0;
+    pa_tkns[pipes_count + 1].is_out_appnd = 0;
+    pa_tkns[pipes_count + 1].here_doc = 0;
+        // pa_tkns[pipes_count + 1].pipe = 0;
+        //  pa_tkns[pipes_count - 1].pipe = 0;
+        //      pa_tkns[pipes_count].pipe = 0;
     int j;
     j = 0;
     while (pipes_count)
@@ -62,11 +73,10 @@ t_pars_tokens *parser (char **tokens)
 
         while(tokens[i])
         {
-            // if (i > 0 && tokens[i - 1] && tokens[i - 1][0] == '|')
-            // {
-            //     str = ft_strjoin (str, tokens[i - 1]);
-            // }
-                
+            if (i > 0 && tokens[i - 1] && tokens[i - 1][0] == '|')
+            {
+                str = ft_strjoin (str, tokens[i - 1]);
+            }
             if(tokens[i][0] == '|')
             {
                 arr[len] = ft_strdup(tokens[i]);
@@ -81,7 +91,7 @@ t_pars_tokens *parser (char **tokens)
             else if(tokens[i][0] == '>')
                 pa_tkns[j].is_out = 1;
             if(tokens[i][0] == '<' && tokens[i][1] == '<')
-                pa_tkns[j].here_doc = 1; 
+                pa_tkns[j].here_doc = 1;
             else if(tokens[i][0] == '<')
                 pa_tkns[j].is_in = 1;              
             arr[len] = ft_strdup(tokens[i]);
@@ -99,15 +109,33 @@ t_pars_tokens *parser (char **tokens)
         pa_tkns[j].cmd_full = str;
         pa_tkns[j].fd_in = STDIN_FILENO;
         pa_tkns[j].fd_out = STDOUT_FILENO;
-        if(ft_strchr(str, '|'))
-            pa_tkns[j].pipe = 1;
-        // if(ft_strnstr(str,  "<<", 2))
-        //     pa_tkns[j].here_doc = 1;     
-        // else if (ft_strnstr(str,  "<", 1))
-        //     pa_tkns[j].is_in = 1;  
-        // if(ft_strnstr(str,  ">>", 2))
-        //     pa_tkns[j].is_out_appnd = 1;              
+        // if(ft_strchr(str, '|'))
+        //     pa_tkns[j].pipe = 1;       
         pipes_count--;
+        j++;
+    }
+    j = 0;
+//ls -la | wc -l | wc -l
+    while (pa_tkns[j].cmd)
+    {
+        if ((pa_tkns[j].cmd_full[0] == '|') && (pa_tkns[j].cmd_full[ft_strlen(pa_tkns[j].cmd_full) - 1] == '|'))
+        {
+            pa_tkns[j].pipe_read_end = 1;
+            pa_tkns[j].pipe_write_end = 1;
+            pa_tkns[j].pipe = 3;
+        }
+        else if (pa_tkns[j].cmd_full[0] != '|' && pa_tkns[j].cmd_full[ft_strlen(pa_tkns[j].cmd_full) - 1] == '|')
+        {
+            pa_tkns[j].pipe_read_end = 0;
+            pa_tkns[j].pipe_write_end = 1;
+            pa_tkns[j].pipe = 2;
+        }
+        else if (pa_tkns[j].cmd_full[0] == '|' && pa_tkns[j].cmd_full[ft_strlen(pa_tkns[j].cmd_full) - 1] != '|')
+        {
+            pa_tkns[j].pipe_read_end = 1;
+            pa_tkns[j].pipe_write_end = 0;
+            pa_tkns[j].pipe = 1;             
+        }
         j++;
     }
     return (pa_tkns);    

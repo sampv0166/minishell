@@ -14,12 +14,16 @@ typedef struct  s_pars_tokens
    char *cmd_full;
    char **cmd_splitted;
    int  pipe;
+
    int  is_in;
    int  is_out;
    int is_out_appnd;
    int  fd_in;
    int  fd_out;
    int  here_doc;
+
+   int pipe_read_end;
+   int pipe_write_end;
 } t_pars_tokens ;
 
 

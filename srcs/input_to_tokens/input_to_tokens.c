@@ -226,10 +226,11 @@ bool is_token_redir(char *str)
 
 bool is_token_pipe(char *str)
 {
+    
     if(ft_strlen (str) == 1)
     {
-        if(ft_strnstr(str, "|", 1))
-            return (true);
+        if(ft_strchr(str, '|'))
+            return (true);     
     }
     return (false);
 }
@@ -259,23 +260,25 @@ bool is_token_syntax_valid (char **tokens)
         TODO : CHECK THERE ARE NOT MORE THAN 2 SPECAL CHARACTERS WITHOUT QUOTES
         TODO : CHECK IF THE NEXT TOKEN IS NULL AND CURRENT LOOP COUNT TOKEN IS A PIPE
     */
+   
     int i;
 
     i = 0;
 
     while (tokens[i] != NULL)
-    {
-        // printf ("i = %d", i);
-        // if(i = 2)
-        //     exit (0);    
+    { 
         if (!token_contains_quote(tokens[i]))
         {
             if(tokens[i] && tokens[i + 1] != NULL)
             {
                 if(is_token_redir(tokens[i]))
+                {
                     return (false);
+                }
                 if(is_token_pipe(tokens[i]))
+                {
                     return (false);    
+                }
             }
             if(!is_special_charater_correct(tokens[i]))
             {
@@ -431,54 +434,42 @@ int input_to_tokens(char *input, t_env_var *env)
     tokens =  split_to_tokens(input);
     int  i;
     i = 0;
-    
-    // while(tokens[i])
-    // {
-    //       printf ("\ntoken = %s\n", tokens[i++]);
-    // }
-    
     tokens = split_by_pipe_redir(tokens);
-    
-    // i = 0;
-    // while(tokens[i])
-    // {
-    //       printf ("%s\n  ", tokens[i]);
-    //       i++;
-    // }
-    // printf ("\n");
-     
-    if(!is_token_syntax_valid(tokens))
-        exit(0);
+    // if(!is_token_syntax_valid(tokens))
+    //     exit(0);
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
    // exit (1);
     int y;
-    // y = 0;
-    // while (pa_tkns[y].cmd)
-    // {
-    //     int j;
-    //     j = 0;
-    //     while (pa_tkns[y].cmd[j])
-    //     {
-    //         printf ("%s ",pa_tkns[y].cmd[j]);
-    //         j++;
-    //     }
-    //      printf("\n");
-    //     j = 0;
-    //     while (pa_tkns[y].cmd_splitted[j])
-    //     {
-    //         printf ("%s ",pa_tkns[y].cmd_splitted[j]);
-    //         j++;
-    //     }
-
-    //     printf ("%s ",pa_tkns[y].cmd_full);
-    //     printf("\n");
-    //     printf("\npipe = %d\n", pa_tkns[y].pipe);
-    //     printf("\nis_out = %d\n", pa_tkns[y].is_out);
-    //     printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
-    //     printf("\nis_in = %d\n", pa_tkns[y].is_in);
-    //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
-    //     y++;
-    // }
+    y = 0;
+    while (pa_tkns[y].cmd)
+    {
+        int j;
+        j = 0;
+        printf("\n struct = %d\n", y);
+        printf("\n-------------cmd---------------------------\n");
+        while (pa_tkns[y].cmd[j])
+        {
+            printf ("%s ",pa_tkns[y].cmd[j]);
+            j++;
+        }
+       printf("\n-------------cmd_splitted---------------------------\n");
+        j = 0;
+        while (pa_tkns[y].cmd_splitted[j])
+        {
+            printf ("%s ",pa_tkns[y].cmd_splitted[j]);
+            j++;
+        }
+        printf("\n-------------cmd_full---------------------------\n");
+        printf ("%s ",pa_tkns[y].cmd_full);
+        printf("\npipe = %d\n", pa_tkns[y].pipe);
+        printf("\npipe_read_end = %d\n", pa_tkns[y].pipe_read_end);
+        printf("\npipe_write_end = %d\n", pa_tkns[y].pipe_write_end);
+        printf("\nis_out = %d\n", pa_tkns[y].is_out);
+        printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
+        printf("\nis_in = %d\n", pa_tkns[y].is_in);
+        printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
+        y++;
+    }
     executor (tokens, env, pa_tkns);
 }
