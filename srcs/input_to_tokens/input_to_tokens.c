@@ -419,7 +419,7 @@ char **split_by_pipe_redir(char **arr)
         }
         i++;
     }
-    tokens[k] == NULL;;
+    tokens[k] = NULL;;
     return (tokens);
 }
 
@@ -472,4 +472,5 @@ int input_to_tokens(char *input, t_env_var *env)
         y++;
     }
     executor (tokens, env, pa_tkns);
+	return (0);
 }

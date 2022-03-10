@@ -1,10 +1,4 @@
  ls -la | wc -l >> hi | cat >> 7 > j
-
-
-
-
-
- 
  echo bonjour ; |
  echo bonjour | |
  |

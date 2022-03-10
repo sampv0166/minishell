@@ -16,6 +16,7 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i, char **cmd_splitted)
     pa_tokens[i].fd_in = fd[0];
 
     pa_tokens[i].fd_out = fd[1];
+	return (0);
 }
 
 static int init(char **path_splitted[], t_env_var *env)
@@ -94,6 +95,7 @@ static char *get_abs_cmd(char *cmd, t_env_var *env)
         }
         i++;
     }
+	return (NULL);
 }
 
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
@@ -156,6 +158,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
     {
         exit(1);
     }
+	return (0);
 }
 
 int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
@@ -197,6 +200,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     {
         close(pa_tokens[i].fd_out);
     }
+	return (0);
 }
 
 int ft_perror(int exit_status, char *msg)
@@ -214,7 +218,7 @@ void *get_file_name(char **cmd_split, int *i)
     {
         if (cmd_split[(*i)][j] == '<' && ft_strlen(cmd_split[(*i)]) == 1)
             break ;
-        *(i++);
+        (*i)++;
     }
     if (cmd_split[(*i) + 1][j])
     {
@@ -291,6 +295,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     }
     handle_pipes(pa_tokens,i, pa_tokens[i].cmd_splitted);
     execute_cmd(pa_tokens, i, env);
+	return (0);
 }
 
 void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
@@ -300,23 +305,24 @@ void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
     int i;
     int err_code;
     // ! DELETE THE ABOVE PART IF PARSING FINISHEDD
- 
+
     i = 0;
     while (pa_tkns[i].cmd != NULL)
     {
         if (is_redir(pa_tkns, i))
         {
+			printf("echo");
             printf("\niii === %d\n",i);
             err_code = handle_redirections(pa_tkns, i, env);
         }
         else if (pa_tkns[i].cmd_full != NULL)
         {
-            printf("here");
+            printf("echo");
+			execute_cmd(pa_tkns, i, env);
             ;
         }
         i++;
       
     }
-    printf("okk");
     // TODO : FREE PARSED TOKENS STRUCTURE
 }

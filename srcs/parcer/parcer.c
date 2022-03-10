@@ -43,7 +43,7 @@ t_pars_tokens *parser (char **tokens)
     pa_tkns = malloc (sizeof (t_pars_tokens) * pipes_count + 1);
     pa_tkns[pipes_count + 1].cmd = NULL;
     pa_tkns[pipes_count + 1].cmd_splitted = NULL;
-     pa_tkns[pipes_count + 1].cmd_full = NULL;
+    pa_tkns[pipes_count + 1].cmd_full = NULL;
     pa_tkns[pipes_count + 1].fd_in = STDIN_FILENO;
     pa_tkns[pipes_count + 1].fd_out = STDOUT_FILENO;
     pa_tkns[pipes_count + 1].pipe = 0;
