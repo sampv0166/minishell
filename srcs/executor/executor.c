@@ -283,6 +283,7 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
 
 int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 {
+
     if(pa_tokens[i].pipe)
     {
         handle_pipes(pa_tokens,i, pa_tokens[i].cmd_splitted);
