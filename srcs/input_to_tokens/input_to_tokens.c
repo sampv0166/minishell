@@ -366,6 +366,15 @@ char **split_by_pipe_redir(char **arr)
     len = 0;
     tokens = (char **) malloc (sizeof (char *) * get_len(arr) + 1);
     tokens[get_len(arr)] = NULL;
+
+    // getlen = 4
+
+    // arr [][][][][\0]
+    //     0  1 2 3  4
+    
+    // echo
+    // "print somenthing">file
+
     while (arr[i])
     {
         j = 0;
@@ -423,17 +432,25 @@ char **split_by_pipe_redir(char **arr)
     return (tokens);
 }
 
+// echo
+// "print something">
 
+// echo
+// "print somenthing"
+// >
+// file
 
 int input_to_tokens(char *input, t_env_var *env)
 {
     char **tokens;
     int ret;
-    if(!is_input_valid(input))
-        return (syntax_error());  
+    // if(!is_input_valid(input))
+    //     return (syntax_error());  
+
     tokens =  split_to_tokens(input);
     int  i;
     i = 0;
+
     tokens = split_by_pipe_redir(tokens);
     // if(!is_token_syntax_valid(tokens))
     //     exit(0);

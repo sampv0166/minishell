@@ -14,8 +14,8 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i, char **cmd_splitted)
     pipe(fd);
 
     pa_tokens[i].fd_in = fd[0];
-
     pa_tokens[i].fd_out = fd[1];
+
 	return (0);
 }
 
@@ -283,6 +283,10 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
 
 int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 {
+    if(pa_tokens[i].pipe)
+    {
+        handle_pipes(pa_tokens,i, pa_tokens[i].cmd_splitted);
+    }
     if(pa_tokens[i].is_in)
     {
         if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
@@ -293,7 +297,6 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
     }
-    handle_pipes(pa_tokens,i, pa_tokens[i].cmd_splitted);
     execute_cmd(pa_tokens, i, env);
 	return (0);
 }

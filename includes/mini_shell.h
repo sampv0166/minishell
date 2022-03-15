@@ -42,6 +42,7 @@
 int		ft_strcmp(char *s1, char *s2);
 t_pars_tokens *parser (char **tokens);
 
+
 /*
 ** =============================================================================
 ** BuiltIn Functions
