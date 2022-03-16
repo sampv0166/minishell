@@ -1,6 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-
 char	*ft_strchr_2(const char *str, int c)
 {
 	size_t	i;
@@ -17,6 +16,80 @@ char	*ft_strchr_2(const char *str, int c)
 	return (0);
 }
 
+
+/*
+    ! why this function ?  
+    skip characters untill we encounter the next double quote and increment len
+    !expected input : char *str , int i, int len   
+    
+    !return values
+    returns 0 if there is no closing qutoe
+    returns 1 if there is a closing quote
+*/
+int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
+{
+    *i++;
+    if(str[*i] && ft_strchr_2(str + *i, '\"'))
+    {
+        while(str[*i] && str[*i] != '\"')
+          *i++;
+    *len++;
+    if(str[*i] == '\"')
+        *i++;
+    }
+    else
+    {
+        *len++;
+        return (0);
+    }
+    return (1);
+}
+
+/*
+    ! why this function ?  
+    skip characters untill we encounter the next single quote and increment len
+    
+    !expected input : char *str , int i, int len   
+    
+    !return values
+    returns 0 if there is no closing qutoe
+    returns 1 if there is a closing quote
+*/
+
+int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
+{
+    *i++;
+    if(str[*i] && ft_strchr_2(str + *i, '\''))
+    {
+        while(str[*i] && str[*i] != '\'')
+          *i++;
+    *len++;
+    if(str[*i] == '\'')
+        *i++;
+    }
+    else
+    {
+        *len++;
+        return (0);
+    }
+    return (1);
+}
+
+/*
+    ! why this function ?  
+    To count the number of arrays needed to store the splitted input.
+    *expected input : char *str    
+    echo "hello world">file|wc -l
+    1       2           3       4   
+    * expected output : int len
+    4
+    ? how it works
+    * loop through the string
+    * skip if the character is a space
+    * if its not space , check if its double quotes or single quotes and call dbl_qts function
+    * if its neither single or double qts, skip the spaces and increment length
+*/
+
 int get_arr_len(char *str)
 {
     int len;
@@ -28,42 +101,17 @@ int get_arr_len(char *str)
     {
         if (str[i] == ' ')
 			i++;
-		else if (str[i] != ' ')
+		else if (str[i] != ' ' && str[i])
 		{
             if(str[i] == '\"')
-            {
-
-                i++;
-                if(ft_strchr_2(str + i, '\"'))
-                {
-                   while(str[i] && str[i] != '\"')
-                        i++;
-                    len++;
-                    if(str[i] == '\"')
-                        i++;
-                }
-                else
-                {
-                    len++;
+            {  
+                if (!skip_and_increment_len_dbl_qts (str, &i, &len))
                     break ;
-                }
             }
             else if(str[i] == '\'')
             {
-             i++;
-                if(ft_strchr_2(str + i, '\''))
-                {
-                   while(str[i] && str[i] != '\'')
-                        i++;
-                    len++;
-                    if(str[i] == '\'')
-                        i++;
-                }
-                else
-                {
-                    len++;
-                    break ;
-                }
+                if(!skip_and_increment_len_sngl_qts (str, &i, &len))
+                    break;
             }
             else
             {
@@ -76,10 +124,101 @@ int get_arr_len(char *str)
     return (len);
 }
 
+/*
+    ! why this function ?  
+    check if there is closing quote in the string and create new string of characters in between
+    quotes
+    !expected input : char *str - string from substring to be created
+    !                 int i - current index of the str
+    !                 char **arr - array where the new string will be stored
+    !                 int arr_index - index of arr   
+    echo "hello world">file|wc -l
+    ! expected output : char **str
+    str = [""hello world""] 
+
+    !return values
+    returns 0 if there is no closing qutoe
+    returns 1 if there is a closing quote
+*/
+int create_string_in_between_dbl_quotes(char *str, int *i, int *len, char *arr, int *array_index)
+{
+    *i++;
+    *len++;
+    if(str[*i] && ft_strchr_2(str + *i, '\"'))
+    {
+        while(str[*i] && str[*i] != '\"')
+        {
+            *i++;
+            *len++;
+        }
+        if(str[*i] == '\"')
+        {
+            *i++;
+            *len++;
+        }
+        arr[*array_index++] = ft_substr(str, *i - *len, *len);
+        *len = 0;
+    }
+    else
+    {
+        while(str[*i] && str[*i] != '\"')
+            *len++;
+        arr[*array_index++] = ft_substr(str, *i - *len, *len);
+        *len = 0;
+        return (0);      
+    }
+    return (1);
+}
+
+/*
+    ! why this function ?  
+    check if there is closing quote in the string and create new string of characters in between
+    quotes
+    !expected input : char *str - string from substring to be created
+    !                 int i - current index of the str
+    !                 char **arr - array where the new string will be stored
+    !                 int arr_index - index of arr   
+    echo "hello world">file|wc -l
+    ! expected output : char **str
+    str = [""hello world""] 
+
+    !return values
+    returns 0 if there is no closing qutoe
+    returns 1 if there is a closing quote
+*/
+int create_string_in_between_sngl_quotes(char *str, int *i, int *len, char *arr, int *array_index)
+{
+    *i++;
+    *len++;
+    if(str[*i] && ft_strchr_2(str + *i, '\''))
+    {
+        while(str[*i] && str[*i] != '\'')
+        {
+            *i++;
+            *len++;
+        }
+        if(str[*i] == '\'')
+        {
+            *i++;
+            *len++;
+        }
+        arr[*array_index++] = ft_substr(str, *i - *len, *len);
+        *len = 0;
+    }
+    else
+    {
+        while(str[*i] && str[*i] != '\'')
+            *len++;
+        arr[*array_index++] = ft_substr(str, *i - *len, *len);
+        *len = 0;
+        return (0);      
+    }
+    return (1);
+}
+
 char **split_to_tokens(char *str)
 {
     char **arr;
-    int arr_len;
 	size_t	i;
 	size_t	array_index;
     int len;
@@ -87,12 +226,12 @@ char **split_to_tokens(char *str)
 	i = 0 ;
 	array_index = 0;
     len = 0;
-    arr_len = get_arr_len(str);
-    arr = malloc (sizeof (char *) * arr_len + 1);
-    
+    arr = malloc (sizeof (char *) * get_arr_len(str) + 1);
+    if (!arr)
+        return (NULL);
+
     while (str[i] != '\0')
     {
-      
 	    if (str[i] == ' ')
 			i++;
 
@@ -100,62 +239,13 @@ char **split_to_tokens(char *str)
 		{
             if(str[i] && str[i] == '\"')
             {
-                i++;
-                len++;
-                if(str[i] && ft_strchr_2(str + i, '\"'))
-                {
-                   while(str[i] && str[i] != '\"')
-                   {
-                        i++;
-                        len++;
-                   }
-                    if(str[i] == '\"')
-                    {
-                     i++;
-                     len++;
-                    }
-                    arr[array_index++] = ft_substr(str, i - len, len);
-			        len = 0;   
-                }
-                else
-                {
-                    while(str[i] && str[i] != '\"')
-                        len++;
-                    arr[array_index++] = ft_substr(str, i - len, len);
-			        len = 0;         
+                if(!create_string_in_between_dbl_quotes(&len, str,&i,arr,&array_index))
                     break ;
-                }
             }
             else if(str[i] && str[i] == '\'')
             {  
-                
-                i++;
-                len++;
-                          
-                if(str[i] && ft_strchr_2(str + i, '\''))
-                {
-
-                   while(str[i] && str[i] != '\'')
-                   {
-                        i++;
-                        len++;
-                   }
-                    if(str[i] == '\'')
-                    {
-                     i++;
-                     len++;
-                    }
-                    arr[array_index++] = ft_substr(str, i - len, len);
-			        len = 0;   
-                }
-                else
-                {
-                    while(str[i] && str[i] != '\'')
-                        len++;
-                    arr[array_index++] = ft_substr(str, i - len, len);
-			        len = 0;         
-                    break ;
-                }   
+                if(!create_string_in_between_dbl_quotes(&len, str,&i,arr,&array_index))
+                    break ; 
             }
             else
             {
@@ -444,8 +534,6 @@ int input_to_tokens(char *input, t_env_var *env)
 {
     char **tokens;
     int ret;
-    // if(!is_input_valid(input))
-    //     return (syntax_error());  
 
     tokens =  split_to_tokens(input);
     int  i;

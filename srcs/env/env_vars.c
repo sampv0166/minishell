@@ -33,8 +33,6 @@ char **save_env(char **env_var)
   return (env_v);
 }
 
-// TODO : get_env_value(PWD)
-
 char *get_env_value (t_env_var *env, char *var)
 {
   int  i;
@@ -68,7 +66,6 @@ t_env_var *init_env_vars(char **envp)
     if(env != NULL)
     {
         env->envp = envp;
-        //copy envp to env.env_var for later use
         env->env_var = save_env(envp);
         env->pwd = get_env_value(env, "PWD");
         if(env->env_var != NULL)
