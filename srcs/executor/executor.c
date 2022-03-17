@@ -153,7 +153,6 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
              exit(1);      
         close(pa_tokens[i].fd_out);
     }
-
     if (execve(abs_path, pa_tokens[i].cmd, env->env_var) < 0)
     {
         exit(1);
@@ -188,7 +187,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
         close(pa_tokens[i - 1].fd_in);
         close(pa_tokens[i].fd_out);
         // int j;
-        // j = read(pa_tokens[i].fd_in,buffer, 1000);
+        // j = read(pa_tokens[i - 1].fd_in,buffer, 1000);
         // printf ("\nbuf = %s\n", buffer);
     }
     else if (pa_tokens[i].pipe == 3)
@@ -303,6 +302,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 
 void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
 {
+    
     // TODO : replace with env variabels
     // TODO : populate structure from splitted tokens
     int i;
@@ -314,13 +314,10 @@ void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
     {
         if (is_redir(pa_tkns, i))
         {
-			printf("echo");
-            printf("\niii === %d\n",i);
             err_code = handle_redirections(pa_tkns, i, env);
         }
         else if (pa_tkns[i].cmd_full != NULL)
         {
-            printf("echo");
 			execute_cmd(pa_tkns, i, env);
             ;
         }

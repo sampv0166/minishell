@@ -51,7 +51,7 @@ t_pars_tokens *parser (char **tokens);
 int cd(char *path) ;
 int pwd(char *path);
 void	echo(char **str);
-
+int	is_inbuilt(char *cmd);
 /*
 ** =============================================================================
 ** Signals
