@@ -546,9 +546,9 @@ char **split_by_pipe_redir(char **arr)
             if(tokens[k] && tokens[k][0] == '\"' && tokens[k][ft_strlen(tokens[k]) - 1] == '\"' )
             {
                 tokens[k][ft_strlen(tokens[k]) - 1] = '\0';
-                  printf("%s\n",tokens[k]);
+                 // printf("%s\n",tokens[k]);
                 tokens[k] = ft_strdup(tokens[k] + 1);
-                printf("%s",tokens[k]);
+               // printf("%s",tokens[k]);
             }
             k++;
         }
