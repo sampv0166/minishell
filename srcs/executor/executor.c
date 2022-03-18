@@ -296,6 +296,8 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
     }
+    if (is_inbuilt(pa_tokens->cmd[0]))
+		return (handle_inbuilt_redir(pa_tokens, i, env));
     execute_cmd(pa_tokens, i, env);
 	return (0);
 }
