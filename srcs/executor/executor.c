@@ -165,7 +165,6 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
 	return (0);
 }
 
-
 int ft_perror(int exit_status, char *msg)
 {
     perror(msg);
