@@ -134,7 +134,12 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
     {
         close(pa_tokens[i].fd_in);    
         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-             exit(1);                   
+             exit(1);
+        if (pa_tokens[i].fd_out != STDOUT_FILENO)
+        {
+            if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
+                exit(1);   
+        }
     }
     if (pa_tokens[i].pipe == 3)
     {
@@ -160,47 +165,6 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
 	return (0);
 }
 
-int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
-{
-    char *abs_cmd_path;
-    static int k;
-    pid_t pid;
-    int status;
-    char buffer[1000];
-    int s;
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0], env);
-    status = 0;
-    pid = fork();
-    if (pid < 0)
-    {
-        exit(0);
-    }
-    if (pid == 0)
-    {
-        exec_child(pa_tokens, abs_cmd_path, i, env);
-    }
-    waitpid(pid, 0, 0);
-    if (pa_tokens[i].pipe == 1)
-    {
-        
-        close(pa_tokens[i].fd_in);
-        close(pa_tokens[i - 1].fd_in);
-        close(pa_tokens[i].fd_out);
-        // int j;
-        // j = read(pa_tokens[i - 1].fd_in,buffer, 1000);
-        // printf ("\nbuf = %s\n", buffer);
-    }
-    else if (pa_tokens[i].pipe == 3)
-    {
-        close(pa_tokens[i].fd_out);
-        close(pa_tokens[i - 1].fd_in);
-    }
-    else if (pa_tokens[i].pipe == 2)
-    {
-        close(pa_tokens[i].fd_out);
-    }
-	return (0);
-}
 
 int ft_perror(int exit_status, char *msg)
 {
@@ -296,13 +260,64 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
     }
-    if (is_inbuilt(pa_tokens->cmd[0]))
-		return (handle_inbuilt_redir(pa_tokens, i, env));
-    execute_cmd(pa_tokens, i, env);
 	return (0);
 }
 
-void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
+
+int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
+{
+    char *abs_cmd_path;
+    static int k;
+    pid_t pid;
+    int status;
+    char buffer[1000];
+    int s;
+
+    if (is_redir(pa_tokens, i))
+    {
+        handle_redirections(pa_tokens, i, env);
+    }
+    if (is_inbuilt(pa_tokens->cmd[0]))
+    {
+	    return (handle_inbuilt_redir(pa_tokens, i, env));
+    }
+
+    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0], env);
+    status = 0;
+    pid = fork();
+    if (pid < 0)
+    {
+        exit(0);
+    }
+    if (pid == 0)
+    {
+        exec_child(pa_tokens, abs_cmd_path, i, env);
+    }
+    waitpid(pid, 0, 0);
+    if (pa_tokens[i].pipe == 1)
+    {
+        
+        close(pa_tokens[i].fd_in);
+        close(pa_tokens[i - 1].fd_in);
+        close(pa_tokens[i].fd_out);
+        // int j;
+        // j = read(pa_tokens[i - 1].fd_in,buffer, 1000);
+        // printf ("\nbuf = %s\n", buffer);
+    }
+    else if (pa_tokens[i].pipe == 3)
+    {
+        close(pa_tokens[i].fd_out);
+        close(pa_tokens[i - 1].fd_in);
+    }
+    else if (pa_tokens[i].pipe == 2)
+    {
+        close(pa_tokens[i].fd_out);
+    }
+	return (0);
+}
+
+
+int executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
 {
     
     // TODO : replace with env variabels
@@ -314,16 +329,13 @@ void executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
     i = 0;
     while (pa_tkns[i].cmd != NULL)
     {
-        if (is_redir(pa_tkns, i))
-        {
-            err_code = handle_redirections(pa_tkns, i, env);
-        }
-        else if (pa_tkns[i].cmd_full != NULL)
-        {
+        // else if (pa_tkns[i].cmd_full != NULL)
+        // {    
 			execute_cmd(pa_tkns, i, env);
-            ;
-        }
+        //     ;
+        // }
         i++;
     }
+    return (0);
     // TODO : FREE PARSED TOKENS STRUCTURE
 }

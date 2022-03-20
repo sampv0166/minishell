@@ -22,12 +22,12 @@ char **save_env(char **env_var)
   if(env_var == NULL)
     return (NULL);
   arr_len  = get_env_arr_len(env_var);  
-  env_v = malloc (sizeof (char *) * arr_len + 1);
+  env_v = malloc (sizeof (char *) * arr_len + 1); 
   if(env_v == NULL)
     return (NULL);
   while (env_var[i])
   {
-    env_v[i] = ft_strdup (env_var[i]);
+    env_v[i] = ft_strdup(env_var[i]);
     i++;
   }
   return (env_v);
@@ -37,7 +37,6 @@ char *get_env_value (t_env_var *env, char *var)
 {
   int  i;
   char *val;
-
 
   i  = 0;
   val = NULL; 
@@ -58,11 +57,14 @@ char *get_env_value (t_env_var *env, char *var)
   return (val);
 }
 
+
 t_env_var *init_env_vars(char **envp)
 {
     t_env_var *env;
 
     env = malloc (sizeof (t_env_var));
+    if(!env)
+      free_everything(&env, EXIT_FAILURE);
     if(env != NULL)
     {
         env->envp = envp;

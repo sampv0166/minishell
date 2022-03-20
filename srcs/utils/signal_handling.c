@@ -12,7 +12,6 @@ static void	handle_signal(int sig)
 		//display prompt again
 		rl_redisplay();
 	}
-	exit (1);
 }
 
 void	handle_signals(void)

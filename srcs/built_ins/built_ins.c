@@ -137,7 +137,6 @@ void	echo(char **str, char **env)
 {
 	int	i;
 	t_flags	flags;
-	ft_init(&flags);
 	i = 1;
 	if (str[i])
 	{

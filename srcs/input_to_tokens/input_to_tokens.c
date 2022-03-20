@@ -607,7 +607,6 @@ int input_to_tokens(char *input, t_env_var *env)
     //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
     //     y++;
     // }
-
     executor (tokens, env, pa_tkns);
 	return (0);
 }
