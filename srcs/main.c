@@ -6,9 +6,9 @@ void free_me (char **ptr)
     *ptr = NULL;
 }
 
-void free_everything(int exit_status)
+int free_everything(t_env_var *env, int exit_status)
 {
-
+    return (0);
 }
 
 static int get_input(t_env_var *env)
@@ -38,7 +38,7 @@ int main(int ac, char **argv, char **envp)
 {
     t_env_var *env;
     handle_signals();
-    env = init_env_vars(envp);
+    init_env_vars(envp, env);
     int i;
     i = 0;
     if(env == NULL)

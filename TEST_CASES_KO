@@ -1,0 +1,11 @@
+WAIT FOR THE USER TO INPUT COMMAND AFTER PIPE AND EXECUTE
+----------------------------------------------------------
+ls -al |
+
+THIS SHOULD BE A SYTAX ERROR
+------------------------------
+ls -la >>> d
+
+SEGFAULTS
+------------
+<hi

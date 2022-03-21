@@ -130,12 +130,22 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
     // }
 
 //   ls -la | wc -l | wc -l
+    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out)
+    {    
+        // if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
+        //      exit(1);
+        if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out)
+        {
+            if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
+                exit(1);   
+        }
+    }
     if (pa_tokens[i].pipe == 1)
     {
         close(pa_tokens[i].fd_in);    
         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
              exit(1);
-        if (pa_tokens[i].fd_out != STDOUT_FILENO)
+        if (pa_tokens[i].fd_out != STDOUT_FILENO && (pa_tokens[i].is_out || pa_tokens[i].is_out_appnd))
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
@@ -262,6 +272,25 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 	return (0);
 }
 
+void replace_quote (t_pars_tokens *pa_tkns, int i)
+{
+    int j;
+    j = 1;
+
+    while (pa_tkns[i].cmd[j])
+    {
+        if(token_contains_quote(pa_tkns[i].cmd[j]))
+        {
+            if(pa_tkns[i].cmd[j] && pa_tkns[i].cmd[j][0] == '\"' && pa_tkns[i].cmd[j][ft_strlen(pa_tkns[i].cmd[j]) - 1] == '\"' )
+            {
+                pa_tkns[i].cmd[j][ft_strlen(pa_tkns[i].cmd[j]) - 1] = '\0';
+                pa_tkns[i].cmd[j] = ft_strdup(pa_tkns[i].cmd[j] + 1);
+                printf("\ncmd ---- %s\n",   pa_tkns[i].cmd[j]);
+            }    
+        }
+        j++;
+    }
+}
 
 int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 {
@@ -280,8 +309,16 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     {
 	    return (handle_inbuilt_redir(pa_tokens, i, env));
     }
-
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0], env);
+    if (access(abs_cmd_path, F_OK) == 0)
+    {
+        replace_quote(pa_tokens, i);
+    }
+    else
+    {
+        printf (":command not found");
+        return(127);
+    }
     status = 0;
     pid = fork();
     if (pid < 0)

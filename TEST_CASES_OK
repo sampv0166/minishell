@@ -1,0 +1,22 @@
+BASIC SHELL TESTS
+""
+..
+
+PIPE AND REDIRECTION TESTS
+
+ls -la
+ls -la | wc -l
+ls -la | wc -l > hi
+ls -la > hi 
+ls -la | grep "117" > hi
+ls >> hi
+ls -la | wc -l | wc -l >> hi
+
+SYNTAX ERROR TEST
+>>
+>
+|
+ls -la ||||||
+
+
+

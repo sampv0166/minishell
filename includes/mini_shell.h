@@ -60,7 +60,7 @@ void	echo(char **str, char **env);
 int     is_inbuilt(char *cmd);
 int     ft_perror(int exit_status, char *msg);
 int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i, t_env_var *env);
-
+bool token_contains_quote(char *str);
 /*
 ** =============================================================================
 ** Signals
@@ -70,6 +70,6 @@ int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i, t_env_var *env);
 void	handle_signals(void);
 
 
-void free_everything();
+int free_everything(t_env_var *env, int exit_status);
 
 #endif

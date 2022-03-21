@@ -57,21 +57,18 @@ char *get_env_value (t_env_var *env, char *var)
   return (val);
 }
 
-
-t_env_var *init_env_vars(char **envp)
+int init_env_vars(char **envp, t_env_var  *env)
 {
-    t_env_var *env;
-
     env = malloc (sizeof (t_env_var));
     if(!env)
-      free_everything(&env, EXIT_FAILURE);
+      return (free_everything(env, EXIT_FAILURE));
     if(env != NULL)
     {
         env->envp = envp;
         env->env_var = save_env(envp);
         env->pwd = get_env_value(env, "PWD");
         if(env->env_var != NULL)
-            return (env);
+            return (0);
     }
-    return (NULL);
+    return (0);
 }
