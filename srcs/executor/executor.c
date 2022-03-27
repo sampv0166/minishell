@@ -1,5 +1,7 @@
 #include "../../includes/mini_shell.h"
 
+extern t_env_var env;
+
 static bool is_redir(t_pars_tokens *pa_tok, int i)
 {
     if (pa_tok[i].is_in == 1 || pa_tok[i].is_out == 1 || pa_tok[i].here_doc == 1 || pa_tok[i].pipe)
@@ -19,13 +21,15 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i, char **cmd_splitted)
 	return (0);
 }
 
-static int init(char **path_splitted[], t_env_var *env)
+static int init(char **path_splitted[])
 {
     char *path;
-
-    path = get_env_value(env, "PATH");
+    
+    path = get_env_value("PATH");
     if (path == NULL)
-        return (EXIT_FAILURE);
+    {
+        return (EXIT_FAILURE);   
+    }
     *path_splitted = ft_split(path, ':');
     free(path);
     if (*path_splitted == NULL)
@@ -79,13 +83,18 @@ static char *get_abs_cmd(char *cmd, t_env_var *env)
     char *abs_cmd_path;
     char **path_split;
     int i;
-
+    
     // if (access(cmd, F_OK) == 0)
     //     return (ft_strdup(cmd));
-    init(&path_split, env);
+    //  exit(0);
+      
+    init(&path_split);
+    // printf("%s", path_split[0]);
+    //  exit(0);
     i = 0;
     while (path_split[i])
     {
+        
         abs_cmd_path = get_abs_cmd_path(path_split[i], cmd);
         if (abs_cmd_path == NULL)
             return (NULL);
@@ -305,11 +314,14 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     {
         handle_redirections(pa_tokens, i, env);
     }
+        
     if (is_inbuilt(pa_tokens->cmd[0]))
     {
 	    return (handle_inbuilt_redir(pa_tokens, i, env));
     }
+   
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0], env);
+  
     if (access(abs_cmd_path, F_OK) == 0)
     {
         replace_quote(pa_tokens, i);
@@ -363,7 +375,8 @@ int executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
     // ! DELETE THE ABOVE PART IF PARSING FINISHEDD
 
     i = 0;
-    while (pa_tkns[i].cmd != NULL)
+
+    while (i < env->count)
     {
         // else if (pa_tkns[i].cmd_full != NULL)
         // {    

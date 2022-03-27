@@ -1,5 +1,6 @@
 #include "../../includes/mini_shell.h"
 
+extern t_env_var env;
 
 int get_pipe_len(char **tokens)
 {
@@ -37,9 +38,11 @@ t_pars_tokens *parser (char **tokens)
     int pipes_count;
     t_pars_tokens *pa_tkns;
     int i;
-    
+    int k;
+     
     i = 0;
     pipes_count = get_pipe_len(tokens) + 1;
+   
     pa_tkns = malloc (sizeof (t_pars_tokens) * pipes_count + 1);
     pa_tkns[pipes_count + 1].cmd = NULL;
     pa_tkns[pipes_count + 1].cmd_splitted = NULL;
@@ -51,11 +54,14 @@ t_pars_tokens *parser (char **tokens)
     pa_tkns[pipes_count + 1].is_out = 0;
     pa_tkns[pipes_count + 1].is_out_appnd = 0;
     pa_tkns[pipes_count + 1].here_doc = 0;
+    k = pipes_count;
+    env.count = pipes_count;
         // pa_tkns[pipes_count + 1].pipe = 0;
         //  pa_tkns[pipes_count - 1].pipe = 0;
         //      pa_tkns[pipes_count].pipe = 0;
     int j;
     j = 0;
+    
     while (pipes_count)
     {
         int len;
@@ -115,10 +121,12 @@ t_pars_tokens *parser (char **tokens)
         j++;
     }
     j = 0;
-//ls -la | wc -l | wc -l
-    while (pa_tkns[j].cmd)
+    //ls -la | wc -l | wc -l
+    // printf("%ld", ft_strlen(pa_tkns[j].cmd_full));
+   
+    while (k)
     {
-        if ((pa_tkns[j].cmd_full[0] == '|') && (pa_tkns[j].cmd_full[ft_strlen(pa_tkns[j].cmd_full) - 1] == '|'))
+        if ((pa_tkns[j].cmd_full && pa_tkns[j].cmd_full[0] == '|') && (pa_tkns[j].cmd_full[ft_strlen(pa_tkns[j].cmd_full) - 1] == '|'))
         {
             pa_tkns[j].pipe_read_end = 1;
             pa_tkns[j].pipe_write_end = 1;
@@ -136,6 +144,7 @@ t_pars_tokens *parser (char **tokens)
             pa_tkns[j].pipe_write_end = 0;
             pa_tkns[j].pipe = 1;             
         }
+        k--;
         j++;
     }
     return (pa_tkns);    

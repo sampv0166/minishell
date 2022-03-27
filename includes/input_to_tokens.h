@@ -3,6 +3,6 @@
 
 #include "env_var.h"
 
-int input_to_tokens(char *input, t_env_var *env);
+int input_to_tokens(char *input);
 
 #endif

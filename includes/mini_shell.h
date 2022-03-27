@@ -39,6 +39,17 @@ typedef struct	s_flags
 	int	newl_flag;
 }				t_flags;
 
+typedef struct s_split
+{
+	char **arr;
+	size_t i;
+	size_t array_index;
+	int len;
+	int brk_flg;
+	int k;
+	int j;
+}				t_split ;
+
 /*
 ** =============================================================================
 ** String Functions
@@ -61,6 +72,10 @@ int     is_inbuilt(char *cmd);
 int     ft_perror(int exit_status, char *msg);
 int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i, t_env_var *env);
 bool token_contains_quote(char *str);
+
+void print_2d_array(char **arr);
+void free_me (char **ptr);
+void free_2d_array(char **arr);
 /*
 ** =============================================================================
 ** Signals
@@ -70,6 +85,6 @@ bool token_contains_quote(char *str);
 void	handle_signals(void);
 
 
-int free_everything(t_env_var *env, int exit_status);
+int free_everything();
 
 #endif

@@ -1,17 +1,47 @@
 #include "../includes/mini_shell.h"
 
+t_env_var env;
+
 void free_me (char **ptr)
 {
     free(*ptr);
     *ptr = NULL;
 }
 
-int free_everything(t_env_var *env, int exit_status)
+void free_2d_array(char **arr)
 {
+    int i;
+    i = 0;
+
+    while(arr[i])
+    {
+        free_me(&arr[i]);
+        i++;
+    }
+    if (arr)
+        free_me(arr);
+}
+
+void free_env()
+{
+    int i;
+
+    i = 0;
+
+    free_2d_array(env.env_var);
+    if (env.pwd)
+        free_me (&env.pwd);        
+}
+
+int free_everything()
+{
+    free_env();
+    printf("exiting");
+    exit(0);
     return (0);
 }
 
-static int get_input(t_env_var *env)
+static int get_input()
 {
     char *input;
     int ret;
@@ -22,28 +52,26 @@ static int get_input(t_env_var *env)
     while(1)
     {
         input = readline("MS SHELL====>");
-        if(ft_strlen(input) > 0)
-            add_history(input);
         if(input == NULL)
-            exit(EXIT_SUCCESS); 
-        ret = input_to_tokens(input, env);
+            return (0);
+        if(ft_strlen(input) > 0)
+            add_history(input);         
+        ret = input_to_tokens(input);
         if(ret == EXIT_FAILURE)
-            return (EXIT_FAILURE);
+            free_everything();
         free (input);
     }
     return (EXIT_FAILURE);
 }
 
 int main(int ac, char **argv, char **envp)
-{
-    t_env_var *env;
+{ 
     handle_signals();
-    init_env_vars(envp, env);
-    int i;
-    i = 0;
-    if(env == NULL)
-        return (EXIT_FAILURE); 
-    if(!get_input(env))
-        return (EXIT_FAILURE); 
+    init_env_vars(envp);
+     
+    if(env.stat_code)
+        free_everything(); 
+    if(!get_input())
+        free_everything();
     return (EXIT_SUCCESS);    
 }

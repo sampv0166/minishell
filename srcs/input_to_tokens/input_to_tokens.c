@@ -1,5 +1,7 @@
 #include "../../includes/mini_shell.h"
 
+extern t_env_var env;
+
 char	*ft_strchr_2(const char *str, int c)
 {
 	size_t	i;
@@ -109,8 +111,7 @@ int get_arr_len(char *str)
 		else if (str[i] != ' ' && str[i])
 		{
             if(str[i] == '\"')
-            {  
-               
+            {   
                 if (!skip_and_increment_len_dbl_qts (str, &i, &len))
                     break ;   
             }
@@ -129,7 +130,11 @@ int get_arr_len(char *str)
     }
     return (len);
 }
-
+void inrement_i_len(t_split *split_info)
+{
+    split_info->i++;
+    split_info->len++;
+}
 /*
     ! why this function ?  
     check if there is closing quote in the string and create new string of characters in between
@@ -146,32 +151,25 @@ int get_arr_len(char *str)
     returns 0 if there is no closing qutoe
     returns 1 if there is a closing quote
 */
-int create_string_in_between_dbl_quotes(int *len, char *str, size_t *i,  char **arr, size_t *array_index)
+int create_string_in_between_dbl_quotes(char *str,t_split *split_info)
 {
-    (*i)++;
-    (*len)++;
-    if(str[*i] && ft_strchr_2(str + *i, '\"'))
+    inrement_i_len(split_info);
+    if(str[split_info->i] && ft_strchr_2(str + split_info->i, '\"'))
     {
-       
-        while(str[*i] && str[*i] != '\"')
-        {
-            (*i)++;
-            (*len)++;
-        }
-        if(str[*i] == '\"')
-        {
-            (*i)++;
-            (*len)++;
-        }
-        arr[(*array_index)++] = ft_substr(str, *i - *len, *len);
-        *len = 0;
+        while(str[split_info->i] && str[split_info->i] != '\"')
+            inrement_i_len(split_info);
+        if(str[split_info->i] == '\"')
+            inrement_i_len(split_info);
+        split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+        split_info->len = 0;
     }
     else
     {
-        while(str[*i] && str[*i] != '\"')
-            (*len)++;
-        arr[(*array_index)++]  = ft_substr(str, *i - *len, *len);
-        *len = 0;
+        while(str[split_info->i] && str[split_info->i] != '\"')
+            split_info->len++;
+        split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+        split_info->len= 0;
+        split_info->brk_flg = 0;
         return (0);      
     }
     return (1);
@@ -193,36 +191,40 @@ int create_string_in_between_dbl_quotes(int *len, char *str, size_t *i,  char **
     returns 0 if there is no closing qutoe
     returns 1 if there is a closing quote
 */
-int create_string_in_between_sngl_quotes(int *len, char *str, size_t *i,  char **arr, size_t *array_index)
+int create_string_in_between_sngl_quotes(char *str, t_split *split_info)
 {
-    (*i)++;
-    (*len)++;
-    if(str[*i] && ft_strchr_2(str + *i, '\''))
+    inrement_i_len(split_info);
+    if(str[split_info->i] && ft_strchr_2(str + split_info->i, '\''))
     {
-        while(str[*i] && str[*i] != '\'')
-        {
-            (*i)++;
-            (*len)++;
-        }
-        if(str[*i] == '\'')
-        {
-            (*i)++;
-            (*len)++;
-        }
-        arr[(*array_index)++]  = ft_substr(str, *i - *len, *len);
-        *len = 0;
+        while(str[split_info->i] && str[split_info->i] != '\'')
+            inrement_i_len(split_info);
+        if(str[split_info->i] == '\'')
+            inrement_i_len(split_info);
+        split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+        split_info->len = 0;
     }
     else
     {
-        while(str[*i] && str[*i] != '\'')
-            (*len)++;
-        arr[(*array_index)++]  = ft_substr(str, *i - *len, *len);
-        *len = 0;
+        while(str[split_info->i] && str[split_info->i] != '\'')
+            split_info->len++;
+        split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+        split_info->len= 0;
+        split_info->brk_flg = 0;
         return (0);      
     }
-    
     return (1);
 }
+
+void init_split_info(t_split *split_info)
+{
+    split_info->i = 0;
+    split_info->array_index = 0;
+    split_info->len = 0;
+    split_info->brk_flg = 1;
+    split_info->k = 0;
+    split_info->j = 0;
+}
+
 /*
     ! why this function ?  
     we cant use our normal split function to create tokens because , if we have a space
@@ -233,51 +235,37 @@ int create_string_in_between_sngl_quotes(int *len, char *str, size_t *i,  char *
     ! expected output : char **str
     str = ["echo", ""hello world"",">file|wc -l"]  
 */
-char **split_to_tokens(char *str)
+char **split_to_tokens(char *str, char **tokens)
 {
-    char **arr;
-	size_t	i;
-	size_t	array_index;
-    int len;
-	i = 0 ;
-	array_index = 0;
-    len = 0;
-    arr = malloc (sizeof (char *) * get_arr_len(str) + 1);
-    if (!arr)
-        return (NULL);
-    while (str[i] != '\0')
-    {
-	    if (str[i] == ' ')
-			i++;
+    t_split split_info;
+    init_split_info(&split_info);
 
-		else if (str[i] && str[i] != ' ')
+    split_info.arr = malloc (sizeof (char *) * get_arr_len(str) + 1);
+    if (!split_info.arr)
+        return (NULL);
+    while (str[split_info.i] != '\0' && split_info.brk_flg)
+    {
+	    if (str[split_info.i] == ' ')
+			split_info.i++;
+		else if (str[split_info.i] && str[split_info.i] != ' ')
 		{
-            if(str[i] && str[i] == '\"')
-            {
-                if(!create_string_in_between_dbl_quotes(&len, str,&i,arr,&array_index))
-                    break ;    
-            }
-            else if(str[i] && str[i] == '\'')
-            {  
-                if(!create_string_in_between_sngl_quotes(&len, str,&i,arr,&array_index))
-                    break ; 
-            }
+            if(str[split_info.i] && str[split_info.i] == '\"')
+                create_string_in_between_dbl_quotes(str ,&split_info);
+            else if(str[split_info.i] && str[split_info.i] == '\'')
+                create_string_in_between_sngl_quotes(str ,&split_info);
             else
             {
-                while (str[i] && str[i] != ' ')
-                {
-                    i++;
-			        len++;
-                }
-			    arr[array_index++] = ft_substr(str, i - len, len);
-			    len = 0; 
-                if(str[i] == 0)
+                while (str[split_info.i] && str[split_info.i] != ' ')
+                    inrement_i_len(&split_info);
+			    split_info.arr[split_info.array_index++] = ft_substr(str, split_info.i - split_info.len, split_info.len);
+			    split_info.len = 0; 
+                if(str[split_info.i] == 0)
                     break ;  
             }
 		}
     }
-    arr[array_index] = NULL;
-    return (arr);
+    split_info.arr[split_info.array_index] = '\0';
+    return (split_info.arr);
 }
 
 bool is_input_valid (char *input)
@@ -394,11 +382,94 @@ bool is_token_syntax_valid (char **tokens)
     }
     return (true);
 } 
+void get_len_out_redirection(char **arr, int *i, int *j, int *size)
+{
+    if (arr[*i][*j] == '>' && arr[*i][(*j) + 1] == '>')
+    {
+        if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
+            (*size)++;
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;  
+    }
+    else if (arr[*i][*j] == '>' && arr[*i][(*j) + 1] != '>')
+    {
+        if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
+            (*size)++;
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;    
+    } 
+}
 
+void get_len_in_redirection(char **arr, int *i, int *j, int *size)
+{
+    if (arr[*i][*j] == '<' && arr[*i][(*j) + 1] == '<')
+    {
+        if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
+            (*size)++;
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;  
+    }
+    else if (arr[*i][*j] == '<' && arr[*i][(*j) + 1] != '<')
+    {
+        if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
+            (*size)++;
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;    
+    } 
+}
+
+void get_len_pipe(char **arr, int *i, int *j, int *size)
+{
+    if(arr[*i][*j] == '|')
+    {
+        if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
+            (*size)++;
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;       
+    }   
+}
 int syntax_error()
 {
     return(EXIT_SUCCESS);
 }
+
+void create_out_redirection_character(char **arr, t_split *split_info, char **tokens)
+{
+    if (arr[split_info->i][split_info->j] == '>' && arr[split_info->i][split_info->j + 1] == '>')
+    {
+        tokens[split_info->k++] = ft_strdup(">>");
+        split_info->j = split_info->j + 2;   
+    }
+    if (arr[split_info->i][split_info->j] == '>' && arr[split_info->i][split_info->j + 1] != '>')
+    {
+        tokens[split_info->k++] = ft_strdup(">");
+        split_info->j++;   
+    }
+}
+
+void create_in_redirection_character(char **arr, t_split *split_info, char **tokens)
+{
+    if (arr[split_info->i][split_info->j] == '<' && arr[split_info->i][split_info->j + 1] == '<')
+    {
+        tokens[split_info->k++] = ft_strdup("<<");
+        split_info->j = split_info->j + 2;   
+    }
+    if (arr[split_info->i][split_info->j] == '<' && arr[split_info->i][split_info->j + 1] != '<')
+    {
+        tokens[split_info->k++] = ft_strdup("<");
+        split_info->j++;   
+    }
+}
+
+void create_pipe_redirection_character(char **arr, t_split *split_info, char **tokens)
+{
+    if (arr[split_info->i][split_info->j] == '|')
+    {
+        tokens[split_info->k++] = ft_strdup("|");
+        split_info->j++;   
+    }
+}
+
 /*
     ! why this function ?  
     count how many arrays needed to store tokens if redirections and pipe are not seperated by space
@@ -413,7 +484,6 @@ int get_len(char **arr)
     int size;
     int i;
     int j;
-
     size = 0;
     i = 0;
     j = 0;
@@ -422,41 +492,9 @@ int get_len(char **arr)
         j = 0;
         while (arr[i][j])
         {
-            if (arr[i][j] == '>' && arr[i][j + 1] == '>')
-            {
-                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
-                    size++;
-                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
-                    size++;    
-            }
-            else if (arr[i][j] == '>' && arr[i][j + 1] != '>')
-            {
-                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
-                    size++;
-                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
-                    size++;    
-            } 
-            if (arr[i][j] == '<' && arr[i][j + 1] == '<')
-            {
-                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
-                    size++;
-                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
-                    size++;          
-            }
-            else if (arr[i][j] == '<' && arr[i][j + 1] != '<')
-             {
-                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
-                    size++;
-                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
-                    size++;        
-             }
-            if(arr[i][j] == '|')
-            {
-                if (arr[i][j - 1] != ' ' && arr[i][j - 1] != '\0' ) 
-                    size++;
-                if (arr[i][j + 1] != ' ' && arr[i][j + 1] != '\0' ) 
-                    size++;       
-            }      
+            get_len_out_redirection(arr, &i, &j,&size);
+            get_len_in_redirection(arr, &i, &j, &size);   
+            get_len_pipe(arr, &i, &j,&size);   
             j++;
         }
         size++;
@@ -464,6 +502,34 @@ int get_len(char **arr)
     }
     return (size);
 }
+
+void split_by_redirection(char **arr, char **tokens, t_split *split_info)
+{
+    if (!token_contains_quote(arr[split_info->i]))
+    {
+        while (arr[split_info->i][split_info->j])
+        {
+            split_info->len = 0;
+            create_out_redirection_character(arr, split_info, tokens);
+            create_in_redirection_character(arr, split_info, tokens);
+            create_pipe_redirection_character(arr, split_info, tokens);
+            while(arr[split_info->i][split_info->j] && arr[split_info->i][split_info->j] != '>' && arr[split_info->i][split_info->j] != '<' && arr[split_info->i][split_info->j] != '|') 
+            {
+                split_info->len++;
+                split_info->j++;
+            }
+            if(split_info->len > 0)
+                tokens[split_info->k++] = ft_substr(arr[split_info->i], split_info->j - split_info->len, split_info->len);                                  
+        }
+    }
+    else
+    {
+        split_info->len = ft_strlen (arr[split_info->i]);
+        tokens[split_info->k] = ft_strdup(arr[split_info->i]);
+        split_info->k++;
+    }
+}
+
 /*
     ! why this function ?  
     This function is used to further split the input if it contains pipes or redirections.
@@ -474,121 +540,61 @@ int get_len(char **arr)
 */
 char **split_by_pipe_redir(char **arr)
 {
+    t_split split_info;
+    init_split_info(&split_info);
+         
     char **tokens;
-    int i;
-    int j;
-    i = 0;
-    j = 0;
-    int k;
-    int len;
-
-    k = 0;
-    len = 0;
-    tokens = (char **) malloc (sizeof (char *) * get_len(arr) + 1);
+    tokens = (char **) malloc (sizeof (char *) * (get_len(arr) + 1));
+    if (!tokens)
+        return (NULL);
+    
     tokens[get_len(arr)] = NULL;
-
-    while (arr[i])
+    while (arr[split_info.i])
     {
-        j = 0;
-        len = 0;
-        if (!token_contains_quote(arr[i]))
-        {
-            while (arr[i][j])
-            {
-              
-                len = 0;
-                if (arr[i][j] == '>' && arr[i][j + 1] == '>')
-                {
-                    tokens[k++] = ft_strdup(">>");
-                    j = j + 2;   
-                }
-                if (arr[i][j] == '>' && arr[i][j + 1] != '>')
-                {
-                    tokens[k++] = ft_strdup(">");
-                    j++;   
-                }
-                if (arr[i][j] == '<' && arr[i][j + 1] == '<')
-                {
-                    tokens[k++] = ft_strdup("<<");
-                    j = j + 2;   
-                }
-                if (arr[i][j] == '<' && arr[i][j + 1] != '<')
-                {
-                    tokens[k++] = ft_strdup(">");
-                    j++;   
-                } 
-                if (arr[i][j] == '|')
-                {
-                    tokens[k++] = ft_strdup("|");
-                    j++;   
-                }
-                while(arr[i][j] && arr[i][j] != '>' && arr[i][j] != '<' && arr[i][j] != '|') 
-                {
-                    len++;
-                    j++;
-                }
-                if(len > 0)
-                {
-                    tokens[k++] = ft_substr(arr[i], j - len, len); 
-                }                                  
-            }
-        }
-        else
-        {
-            len = ft_strlen (arr[i]);
-            tokens[k] = ft_strdup(arr[i]);
-           // printf("%c",tokens[k][ft_strlen(tokens[k]) - 1]);
-            // if(tokens[k - 1] && tokens[k - 1][0] == '\"')
-            // {
-            //     printf("e");
-            //     tokens[k] = ft_strdup(arr[i + 1]);
-            // }
-            // if(tokens[k] && tokens[k][0] == '\"' && tokens[k][ft_strlen(tokens[k]) - 1] == '\"' )
-            // {
-            //     tokens[k][ft_strlen(tokens[k]) - 1] = '\0';
-            //      // printf("%s\n",tokens[k]);
-            //     tokens[k] = ft_strdup(tokens[k] + 1);
-            //    // printf("%s",tokens[k]);
-            // }
-            k++;
-        }
-        i++;
+        split_info.j = 0;
+        split_info.len = 0;
+        split_by_redirection(arr, tokens, &split_info);
+        split_info.i++;
     }
-    tokens[k] = NULL;
+    
+    tokens[split_info.k] = NULL;
+    free_2d_array(arr);
     return (tokens);
 }
+void print_2d_array(char **arr)
+{
+    int i;
 
-int input_to_tokens(char *input, t_env_var *env)
+    i = 0;
+    while (arr[i])
+    {
+        printf("%s\n", arr[i]);
+        i++;
+    }
+}
+int input_to_tokens(char *input)
 {
     char **tokens;
     int ret;
-    tokens =  split_to_tokens(input);
-    int  i;
-    i = 0;
-    // while (tokens[i])
-    // {
-    //     printf("\n%s\n", tokens[i]);
-    //     i++;
-    // }
-    // i = 0;
+    tokens = NULL;
+    ret = 0;
+    tokens = split_to_tokens(input, tokens);
+    if(!tokens)
+        return(1);
     tokens = split_by_pipe_redir(tokens);
-
-    // while (tokens[i])
-    // {
-    //     printf("\n%s\n", tokens[i]);
-    //     i++;
-    // }
-    // i = 0;
     if (!is_token_syntax_valid(tokens))
     {
         printf("invalid syntax");
         return(2);
     }
     t_pars_tokens *pa_tkns;
+   
     pa_tkns = parser(tokens);
     int y;
     y = 0;
-    while (pa_tkns[y].cmd)
+  
+   printf ("%d", env.count);
+    while (y < env.count)
     {
         int j;
         j = 0;
@@ -618,6 +624,6 @@ int input_to_tokens(char *input, t_env_var *env)
         y++;
     }
     
-    executor (tokens, env, pa_tkns);
+    executor (tokens, &env, pa_tkns);
 	return (0);
 }

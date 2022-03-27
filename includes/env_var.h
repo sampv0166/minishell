@@ -8,6 +8,8 @@ typedef struct s_env_var
     char *pwd;
     char *prev_pwd;
     int   stat_code;
+
+    int count ;
     
 }            t_env_var;
 
@@ -17,7 +19,7 @@ typedef struct s_env_var
 ** =============================================================================
 */
 
-int init_env_vars(char **envp, t_env_var *env);
-char *get_env_value (t_env_var *env, char *var);
+void init_env_vars(char **envp);
+char *get_env_value (char *var);
 
 #endif
