@@ -1,5 +1,7 @@
 #include "../../includes/mini_shell.h"
 
+extern t_env_var env;
+
 int cd(char *path) 
 {
     return chdir(path);
@@ -161,11 +163,11 @@ void	echo(char **str, char **env)
 	execution(&flags, str);
 }
 
-int	execute_inbuilt(t_pars_tokens *pa_tokens, t_env_var *env)
+int	execute_inbuilt(t_pars_tokens *pa_tokens)
 {
 	if (ft_strcmp(pa_tokens->cmd[0], "echo") == 0)
 	{
-		echo(pa_tokens->cmd, env->envp);
+		echo(pa_tokens->cmd, env.envp);
 		return(EXIT_SUCCESS);
 	}
 	// if (ft_strcmp(pa_tokens->cmd[0], "export") == 0)
@@ -184,7 +186,7 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens, t_env_var *env)
 }
 
 
-int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, t_env_var *env)
+int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 {
 	int		exit_status;
 	// int		saved_fds[2];
@@ -209,7 +211,7 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, t_env_var *env)
 	// 	exit_status = execute_inbuilt_child(pa_toks);
 	// else
 
-	exit_status = execute_inbuilt(pa_toks, env);
+	exit_status = execute_inbuilt(pa_toks);
 	//execute_inbuilt_reset_fds(pa_toks, saved_fds);
 	return (exit_status);
 }

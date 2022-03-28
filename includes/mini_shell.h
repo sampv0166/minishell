@@ -70,7 +70,7 @@ int     pwd(char *path);
 void	echo(char **str, char **env);
 int     is_inbuilt(char *cmd);
 int     ft_perror(int exit_status, char *msg);
-int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i, t_env_var *env);
+int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
 bool token_contains_quote(char *str);
 
 void print_2d_array(char **arr);

@@ -78,7 +78,7 @@ static char *get_abs_cmd_path(char *path_splitted, char *cmd)
     return (abs_cmd_path);
 }
 
-static char *get_abs_cmd(char *cmd, t_env_var *env)
+static char *get_abs_cmd(char *cmd)
 {
     char *abs_cmd_path;
     char **path_split;
@@ -107,7 +107,7 @@ static char *get_abs_cmd(char *cmd, t_env_var *env)
 	return (NULL);
 }
 
-int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
+int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
     char buffer[1000];
 
@@ -177,7 +177,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i, t_env_var *env)
              exit(1);      
         close(pa_tokens[i].fd_out);
     }
-    if (execve(abs_path, pa_tokens[i].cmd, env->env_var) < 0)
+    if (execve(abs_path, pa_tokens[i].cmd, env.env_var) < 0)
     {
         exit(1);
     }
@@ -262,7 +262,7 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
     return (EXIT_SUCCESS);
 }
 
-int handle_redirections(t_pars_tokens *pa_tokens, int i, t_env_var *env)
+int handle_redirections(t_pars_tokens *pa_tokens, int i)
 {
     if(pa_tokens[i].pipe)
     {
@@ -294,14 +294,13 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
             {
                 pa_tkns[i].cmd[j][ft_strlen(pa_tkns[i].cmd[j]) - 1] = '\0';
                 pa_tkns[i].cmd[j] = ft_strdup(pa_tkns[i].cmd[j] + 1);
-                printf("\ncmd ---- %s\n",   pa_tkns[i].cmd[j]);
             }    
         }
         j++;
     }
 }
 
-int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
+int execute_cmd(t_pars_tokens *pa_tokens, int i)
 {
     char *abs_cmd_path;
     static int k;
@@ -309,19 +308,18 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     int status;
     char buffer[1000];
     int s;
-
+     
     if (is_redir(pa_tokens, i))
     {
-        handle_redirections(pa_tokens, i, env);
+        handle_redirections(pa_tokens, i);
     }
         
     if (is_inbuilt(pa_tokens->cmd[0]))
     {
-	    return (handle_inbuilt_redir(pa_tokens, i, env));
+	    return (handle_inbuilt_redir(pa_tokens, i));
     }
    
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0], env);
-  
+    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
     if (access(abs_cmd_path, F_OK) == 0)
     {
         replace_quote(pa_tokens, i);
@@ -339,7 +337,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
     }
     if (pid == 0)
     {
-        exec_child(pa_tokens, abs_cmd_path, i, env);
+        exec_child(pa_tokens, abs_cmd_path, i);
     }
     waitpid(pid, 0, 0);
     if (pa_tokens[i].pipe == 1)
@@ -365,7 +363,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, t_env_var *env)
 }
 
 
-int executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
+int executor(char **tokens,t_pars_tokens *pa_tkns)
 {
     
     // TODO : replace with env variabels
@@ -375,12 +373,13 @@ int executor(char **tokens, t_env_var *env, t_pars_tokens *pa_tkns)
     // ! DELETE THE ABOVE PART IF PARSING FINISHEDD
 
     i = 0;
-
-    while (i < env->count)
+     
+    while (i < env.count)
     {
+        
         // else if (pa_tkns[i].cmd_full != NULL)
         // {    
-			execute_cmd(pa_tkns, i, env);
+			execute_cmd(pa_tkns, i);
         //     ;
         // }
         i++;

@@ -3,11 +3,6 @@
 
 #include "env_var.h"
 
-
-
-
-
-
 typedef struct  s_pars_tokens
 {
    char **cmd;         //       "ls" "-la" NULL
@@ -29,7 +24,8 @@ typedef struct  s_pars_tokens
 } t_pars_tokens ;
 
 
-int executor(char **tokens, t_env_var *var, t_pars_tokens *pa_tkns);
+
+
 
 #endif
 

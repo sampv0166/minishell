@@ -57,9 +57,9 @@ static int get_input()
         if(ft_strlen(input) > 0)
             add_history(input);         
         ret = input_to_tokens(input);
-        if(ret == EXIT_FAILURE)
-            free_everything();
-        free (input);
+        // if(ret == EXIT_FAILURE)
+        //     free_everything();
+       // free (input);
     }
     return (EXIT_FAILURE);
 }
