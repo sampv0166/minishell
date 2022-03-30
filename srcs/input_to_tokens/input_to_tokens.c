@@ -264,7 +264,7 @@ char **split_to_tokens(char *str, char **tokens)
             }
 		}
     }
-    split_info.arr[split_info.array_index] = '\0';
+    split_info.arr[split_info.array_index] = NULL;
     return (split_info.arr);
 }
 
@@ -291,8 +291,8 @@ bool is_input_valid (char *input)
 bool token_contains_quote(char *str)
 {
     int i;
-
     i = 0;
+
     while(str[i])
     {
         if(str[i] == '\'' || str[i] == '\"')
@@ -507,6 +507,7 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
 {
     if (!token_contains_quote(arr[split_info->i]))
     {
+		
         while (arr[split_info->i][split_info->j])
         {
             split_info->len = 0;

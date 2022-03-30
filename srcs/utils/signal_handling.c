@@ -11,7 +11,7 @@ static void	handle_signal(int sig)
        	//move to a newline 
 		rl_on_new_line();
 		//clear readline buffer
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		//display prompt again
 		rl_redisplay();
 	}

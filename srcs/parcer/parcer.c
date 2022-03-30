@@ -84,7 +84,7 @@ void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)
     pa_info->arr = malloc (sizeof (char *) *  pa_info->len + 1);
     pa_info->arr1 = malloc (sizeof (char *) *  pa_info->len);   
     pa_info->str =  malloc (sizeof (char ) * 1);
-    pa_info->str = '\0';
+    pa_info->str = NULL;
     pa_info->len = 0;
 }
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)

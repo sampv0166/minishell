@@ -259,10 +259,10 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
 {
     int j;
     j = 1;
-
-    while (pa_tkns[i].cmd[j])
+	
+    while (pa_tkns[i].cmd && pa_tkns[i].cmd[j])
     {
-        if(token_contains_quote(pa_tkns[i].cmd[j]))
+        if(pa_tkns[i].cmd && token_contains_quote(pa_tkns[i].cmd[j]))
         {
             if(pa_tkns[i].cmd[j] && pa_tkns[i].cmd[j][0] == '\"' && pa_tkns[i].cmd[j][ft_strlen(pa_tkns[i].cmd[j]) - 1] == '\"' )
             {
@@ -303,6 +303,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if (is_inbuilt(pa_tokens->cmd[0]))
 	    return (handle_inbuilt_redir(pa_tokens, i));
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+	
     if (access(abs_cmd_path, F_OK) == 0)
         replace_quote(pa_tokens, i);
     else
@@ -317,7 +318,9 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         exec_child(pa_tokens, abs_cmd_path, i);
     waitpid(pid, 0, 0);
     close_fds(pa_tokens, i);
+	exit(0);
 	return (0);
+	
 }
 
 int executor(t_pars_tokens *pa_tkns)

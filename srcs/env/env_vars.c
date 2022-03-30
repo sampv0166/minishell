@@ -39,7 +39,7 @@ char **save_env(char **env_var)
     env_v[i] = ft_strdup(env_var[i]);
     i++;
   }
-  env_v[i] = '\0';
+  env_v[i] = NULL;
   return (env_v);
 }
 /*

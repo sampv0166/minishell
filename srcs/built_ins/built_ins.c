@@ -61,7 +61,7 @@ char	*duplicate(char *str, int *qte)
 
 	i = 0;
 	j = 0;
-	res = malloc(sizeof(char) * (strlen(str) - 2 + 1));
+	res = malloc(sizeof(char) * (ft_strlen(str) - 2 + 1));
 	while (str[i])
 	{
 		if (str[i] != *qte)
@@ -83,15 +83,15 @@ char	*fetch(char **env, char	*lk_up)
 
 	i = 0;
 	res = NULL;
-	lk_up = strchr(lk_up, '$');
+	lk_up = ft_strchr(lk_up, '$');
 	++lk_up;
 	if (lk_up[i])
 	{
 		while (env[i])
 		{
-			if (strstr(env[i], lk_up))
+			if (ft_strnstr(env[i], lk_up, ft_strlen(lk_up)))
 			{
-				res = strstr(env[i], lk_up);
+				res = ft_strnstr(env[i], lk_up, ft_strlen(lk_up));
 				res = ft_strchr(res, '=');
 				if (res)
 					++res;
@@ -116,7 +116,7 @@ void	ft_putstr_echo(char *str, t_flags *flags, char **env)
 	{
 		qte = str[0];
 		res = duplicate(str, &qte);
-		str = strdup(res);
+		str = ft_strdup(res);
 		free(res);
 	}
 	while (str[i])
@@ -153,7 +153,7 @@ void	echo(char **str, char **env)
 			{
 				ft_putstr_echo(str[i], &flags, env);
 				i++;
-				if ((str[i] != NULL) && (strchr(str[i], '>') || strchr(str[i], '<') || strchr(str[i], '|')))
+				if ((str[i] != NULL) && (ft_strchr(str[i], '>') || ft_strchr(str[i], '<') || ft_strchr(str[i], '|')))
 					break;
 				else if (str[i] != NULL)
 					ft_putchar_fd(' ', 1);
