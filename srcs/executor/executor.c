@@ -14,10 +14,8 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i, char **cmd_splitted)
     static int last_pipe_read_end;
     int fd[2];
     pipe(fd);
-
     pa_tokens[i].fd_in = fd[0];
     pa_tokens[i].fd_out = fd[1];
-
 	return (0);
 }
 
@@ -83,14 +81,7 @@ static char *get_abs_cmd(char *cmd)
     char *abs_cmd_path;
     char **path_split;
     int i;
-    
-    // if (access(cmd, F_OK) == 0)
-    //     return (ft_strdup(cmd));
-    //  exit(0);
-      
     init(&path_split);
-    // printf("%s", path_split[0]);
-    //  exit(0);
     i = 0;
     while (path_split[i])
     {
@@ -107,38 +98,8 @@ static char *get_abs_cmd(char *cmd)
 	return (NULL);
 }
 
-int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
+void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
 {
-    char buffer[1000];
-
-    // if (i > 0)
-    // {
-    //     if (pa_tokens[i - 1].pipe && pa_tokens[i].pipe & pa_tokens[i + 1].pipe)
-    //     {
-    //         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-    //             exit(1);
-    //         if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
-    //             exit(1);
-    //         close(pa_tokens[i].fd_out);
-    //         close(pa_tokens[i - 1].fd_in);
-    //         close(pa_tokens[i].fd_in);
-    //     }
-    //     else if(pa_tokens[i].pipe && !pa_tokens[i + 1].pipe)
-    //     {
-    //         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-    //             exit(1);      
-    //         close(pa_tokens[i - 1].fd_in);     
-    //     }
-    // }
-    // else if (pa_tokens[i].pipe)
-    // {
-
-    //     close(pa_tokens[i].fd_in);
-    //     if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
-    //         exit(1);
-    // }
-
-//   ls -la | wc -l | wc -l
     if (!pa_tokens[i].pipe && pa_tokens[i].fd_out)
     {    
         // if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
@@ -149,17 +110,23 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
                 exit(1);   
         }
     }
+    printf("%d", pa_tokens[i].pipe);
+
     if (pa_tokens[i].pipe == 1)
     {
         close(pa_tokens[i].fd_in);    
         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-             exit(1);
+             exit(1);          
         if (pa_tokens[i].fd_out != STDOUT_FILENO && (pa_tokens[i].is_out || pa_tokens[i].is_out_appnd))
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
         }
     }
+}
+
+void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
+{
     if (pa_tokens[i].pipe == 3)
     {
         if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
@@ -177,10 +144,19 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
              exit(1);      
         close(pa_tokens[i].fd_out);
     }
-    if (execve(abs_path, pa_tokens[i].cmd, env.env_var) < 0)
-    {
-        exit(1);
-    }
+}
+
+int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
+{
+     printf("pipe_type == %d", pa_tokens[i].pipe);
+    handle_pipe_type_one(pa_tokens, i);
+    handle_pipe_type_2_3(pa_tokens, i);
+    // ft_putnbr_fd(pa_tokens[i].fd_in, 2);
+    // ft_putnbr_fd(pa_tokens[i].fd_out, 2);
+    // exit(0);
+    env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
+    if (env.stat_code < 0)
+        exit(1);  
 	return (0);
 }
 
@@ -239,8 +215,6 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
 
     i = 0;
     fd = 0;
-    //"ls" "-la" | wc -l > h > k 
-    
     while (cmd_split[i])
     {
         if (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1])
@@ -300,55 +274,13 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
     }
 }
 
-int execute_cmd(t_pars_tokens *pa_tokens, int i)
+void close_fds(t_pars_tokens *pa_tokens, int i)
 {
-    char *abs_cmd_path;
-    static int k;
-    pid_t pid;
-    int status;
-    char buffer[1000];
-    int s;
-     
-    if (is_redir(pa_tokens, i))
-    {
-        handle_redirections(pa_tokens, i);
-    }
-        
-    if (is_inbuilt(pa_tokens->cmd[0]))
-    {
-	    return (handle_inbuilt_redir(pa_tokens, i));
-    }
-   
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
-    if (access(abs_cmd_path, F_OK) == 0)
-    {
-        replace_quote(pa_tokens, i);
-    }
-    else
-    {
-        printf (":command not found");
-        return(127);
-    }
-    status = 0;
-    pid = fork();
-    if (pid < 0)
-    {
-        exit(0);
-    }
-    if (pid == 0)
-    {
-        exec_child(pa_tokens, abs_cmd_path, i);
-    }
-    waitpid(pid, 0, 0);
     if (pa_tokens[i].pipe == 1)
     {
-        
         close(pa_tokens[i].fd_in);
         close(pa_tokens[i - 1].fd_in);
         close(pa_tokens[i].fd_out);
-        // int j;
-        // j = read(pa_tokens[i - 1].fd_in,buffer, 1000);
-        // printf ("\nbuf = %s\n", buffer);
     }
     else if (pa_tokens[i].pipe == 3)
     {
@@ -359,31 +291,44 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     {
         close(pa_tokens[i].fd_out);
     }
+}
+
+int execute_cmd(t_pars_tokens *pa_tokens, int i)
+{
+    char *abs_cmd_path;
+    pid_t pid;
+     
+    if (is_redir(pa_tokens, i))
+        handle_redirections(pa_tokens, i);
+    if (is_inbuilt(pa_tokens->cmd[0]))
+	    return (handle_inbuilt_redir(pa_tokens, i));
+    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+    if (access(abs_cmd_path, F_OK) == 0)
+        replace_quote(pa_tokens, i);
+    else
+    {
+        printf (":command not found");
+        return(127);
+    }
+    pid = fork();
+    if (pid < 0)
+        exit(0);
+    if (pid == 0)
+        exec_child(pa_tokens, abs_cmd_path, i);
+    waitpid(pid, 0, 0);
+    close_fds(pa_tokens, i);
 	return (0);
 }
 
-
-int executor(char **tokens,t_pars_tokens *pa_tkns)
+int executor(t_pars_tokens *pa_tkns)
 {
-    
-    // TODO : replace with env variabels
-    // TODO : populate structure from splitted tokens
     int i;
     int err_code;
-    // ! DELETE THE ABOVE PART IF PARSING FINISHEDD
-
     i = 0;
-     
-    while (i < env.count)
+    while (pa_tkns[i].cmd)
     {
-        
-        // else if (pa_tkns[i].cmd_full != NULL)
-        // {    
-			execute_cmd(pa_tkns, i);
-        //     ;
-        // }
+        execute_cmd(pa_tkns, i);
         i++;
     }
     return (0);
-    // TODO : FREE PARSED TOKENS STRUCTURE
 }

@@ -13,7 +13,7 @@ void free_2d_array(char **arr)
     int i;
     i = 0;
 
-    while(arr[i])
+    while(arr && arr[i])
     {
         free_me(&arr[i]);
         i++;
@@ -35,9 +35,9 @@ void free_env()
 
 int free_everything()
 {
-    free_env();
-    printf("exiting");
-    exit(0);
+    // free_env();
+    // printf("exiting");
+    // exit(0);
     return (0);
 }
 
@@ -52,13 +52,15 @@ static int get_input()
     while(1)
     {
         input = readline("MS SHELL====>");
-        if(input == NULL)
+        if(input == NULL )
             return (0);
         if(ft_strlen(input) > 0)
-            add_history(input);         
+            add_history(input);
+        else
+            continue;            
         ret = input_to_tokens(input);
-        // if(ret == EXIT_FAILURE)
-        //     free_everything();
+        if(ret == EXIT_FAILURE)
+            free_everything();
        // free (input);
     }
     return (EXIT_FAILURE);

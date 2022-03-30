@@ -16,20 +16,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*newstr;
 	char	*ptr;
-
-	if (!s1 || !s2)
-		return (NULL);
 	newstr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (newstr == NULL)
-		return (NULL);
+		return (NULL);		
 	ptr = newstr;
-	while (*s1)
+	while (s1 && *s1)
 	{
 		*newstr = *s1;
 		s1++;
 		newstr++;
 	}
-	while (*s2)
+	while (s2 && *s2)
 	{
 		*newstr = *s2;
 		s2++;
