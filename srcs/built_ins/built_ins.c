@@ -42,127 +42,6 @@ TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 // 		ft_putchar_fd('\n', 1);
 // }
 
-void	ft_init(t_flags *flags)
-{
-	flags->newl_flag = 0;
-}
-static void	execution(t_flags *flags, char **str)
-{
-	if (!flags->newl_flag)
-		ft_putstr_fd("\n", 1);
-	// free_all(str);
-}
-
-char	*duplicate(char *str, int *qte)
-{
-	int	i;
-	int	j;
-	char	*res;
-
-	i = 0;
-	j = 0;
-	res = malloc(sizeof(char) * (ft_strlen(str) - 2 + 1));
-	while (str[i])
-	{
-		if (str[i] != *qte)
-		{
-			res[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	res[j] = '\0';
-	free(str);
-	return (res);
-}
-
-char	*fetch(char **env, char	*lk_up)
-{
-	int		i;
-	char	*res;
-
-	i = 0;
-	res = NULL;
-	lk_up = ft_strchr(lk_up, '$');
-	++lk_up;
-	if (lk_up[i])
-	{
-		while (env[i])
-		{
-			if (ft_strnstr(env[i], lk_up, ft_strlen(lk_up)))
-			{
-				res = ft_strnstr(env[i], lk_up, ft_strlen(lk_up));
-				res = ft_strchr(res, '=');
-				if (res)
-					++res;
-				break;
-			}
-			i++;
-		}
-	}
-	return (res);
-}
-
-void	ft_putstr_echo(char *str, t_flags *flags, char **env)
-{
-	int	i;
-	int	qte;
-	char	*res;
-
-	i = 0;
-	qte = 0;
-	res = NULL;
-	if (str[0] == 34 || str[0] == 39)
-	{
-		qte = str[0];
-		res = duplicate(str, &qte);
-		str = ft_strdup(res);
-		free(res);
-	}
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			if (str[i + 1])
-				ft_putstr_fd(fetch(env, str), 1);
-			else
-				ft_putchar_fd('$', 1);
-			break;
-		}
-		else if (str[i] != qte)
-			ft_putchar_fd(str[i],1);
-		i++;
-	}
-}
-
-void	echo(char **str, char **env)
-{
-	int	i;
-	t_flags	flags;
-	i = 1;
-	if (str[i])
-	{
-		if (!ft_strcmp(str[i], "-n"))
-		{
-			flags.newl_flag = 1;
-			i++;
-		}
-		if (str)
-		{
-			while (str[i] != NULL)
-			{
-				ft_putstr_echo(str[i], &flags, env);
-				i++;
-				if ((str[i] != NULL) && (ft_strchr(str[i], '>') || ft_strchr(str[i], '<') || ft_strchr(str[i], '|')))
-					break;
-				else if (str[i] != NULL)
-					ft_putchar_fd(' ', 1);
-			}
-		}
-	}
-	execution(&flags, str);
-}
-
 int	execute_inbuilt(t_pars_tokens *pa_tokens)
 {
 	if (ft_strcmp(pa_tokens->cmd[0], "echo") == 0)
@@ -170,8 +49,8 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 		echo(pa_tokens->cmd, env.envp);
 		return(EXIT_SUCCESS);
 	}
-	// if (ft_strcmp(pa_tokens->cmd[0], "export") == 0)
-	// 	return (export(pa_tokens->cmd));
+	if (ft_strcmp(pa_tokens->cmd[0], "export") == 0)
+		return (export(pa_tokens->cmd, env.env_var));
 	// if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
 	// 	return (env(pa_tokens->cmd));
 	// if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
