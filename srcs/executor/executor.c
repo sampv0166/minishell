@@ -318,7 +318,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         exec_child(pa_tokens, abs_cmd_path, i);
     waitpid(pid, 0, 0);
     close_fds(pa_tokens, i);
-	exit(0);
+	// exit(0);
 	return (0);
 	
 }

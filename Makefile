@@ -1,34 +1,59 @@
-SRC_DIR = ./srcs/
+RED = \033[0;31m
+BLACK = \033[0;30m
+WHITE = \033[1;37m
 
-LIBFT_DIR = ./libft/
+EXEC = minishell
 
-SRC_FILES = main.c ./built_ins/built_ins.c ./utils/ft_strcmp.c ./input_to_tokens/input_to_tokens.c \
-			./utils/signal_handling.c ./env/env_vars.c ./executor/executor.c ./parcer/parcer.c
+SRCS = srcs/main.c srcs/built_ins/built_ins.c srcs/env/env_vars.c srcs/executor/executor.c srcs/input_to_tokens/input_to_tokens.c \
+		srcs/parcer/parcer.c srcs/utils/ft_strcmp.c srcs/utils/ft_strstr.c srcs/utils/signal_handling.c srcs/built_ins/echo.c \
+		srcs/built_ins/export.c
 
-# add predfix to all the src files    prefix = ./srcs/
-SRC_NAME =  $(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJS = ${SRCS:.c=.o}
 
-CFLAG = -Wall -Wextra -Werror
+RM = rm -rf
+CC = gcc
 
-LIBFT_LIB = libft.a
+# CFLAGS = -Wall -Wextra -Werror
 
-TARGET = minishell
-
-all: ${LIBFT_LIB}  
-	@gcc $(SRC_NAME) $(LIBFT_DIR)${LIBFT_LIB} -lreadline -o $(TARGET)
-
-# ${LIBFT_LIB} ---> This will run the makefile inside the libft directory and create libft.a 
-${LIBFT_LIB}:
-	@$(MAKE) -C $(LIBFT_DIR) all 
+all:	${OBJS}
+		${MAKE} all -C libft/
+		cp ./libft/libft.a ./
+		${CC} ${OBJS} libft.a -lreadline -o ${EXEC}
+	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+	@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
+	@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
+	@echo "WWWWWWWWWWNO:.${BLACK}TTTTTTTTTTT${RED}...,::c:,..'''''.....,;::;,...${BLACK}TTTTTTTTTTT${WHITE}.:ONWWWWWWWWWW"
+	@echo "WWWWWWWWWKc.${BLACK}TTTTTTTTTT${RED}..,,:cccc:;,,''''.'''''',,,;,,'';;..${BLACK}TTTTTTTTTT${WHITE}.cKWWWWWWWWW"
+	@echo "WWWWWWWNk'${BLACK}TTTTTTTTTT${RED}.',,,;cccc;.${BLACK}TTTTTTTTTTTTTTTTTT${RED}...';c:;'.${BLACK}TTTTTTTTTT${WHITE}'kNWWWWWWW"
+	@echo "WWWWWWXl.${BLACK}TTTTTTTTTT${RED}.,'.,cccccc:'.......${BLACK}TTTTTTTTTTTTTTT${RED}.',,,,.${BLACK}TTTTTTTTTT${WHITE}.lXWWWWWW"
+	@echo "WWWWW0;${BLACK}TTTTTTTTTT${RED}.,,..,cccccccccccc::::::::;;;,,,'...${BLACK}TTTT${RED}..';,.${BLACK}TTTTTTTTTT${WHITE};0WWWWW"
+	@echo "WWWWO,${BLACK}TTTTTTTTTTT${RED}.;'${BLACK}T${RED}.:ccccccccccccccccccccccccccccc:;'.${BLACK}TTT${RED}.;;.${BLACK}TTTTTTTTTTT${WHITE},OWWWW"
+	@echo "WWWO'${BLACK}TTTTTTTTTTTTT${RED}.,,;ccccccccccccccccccccccccccccccccc:'..,,.${BLACK}TTTTTTTTTTTTT${WHITE}'OWWW"
+	@echo "WW0,${BLACK}TTTTTTTTTTTTTTTT${RED}.,ccccccccccccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTT${WHITE},0WW"
+	@echo "${WHITE}WK:${BLACK}TTTTTTTTTTTTTTTTTTT${RED}.,cc;;::ccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTTTTT${WHITE}:KW"
+	@echo "No.${BLACK}TTTTTTTTTTTTT${WHITE}.',;;:;${RED}''','......'''''''''',,;:ccccc:,''${WHITE};:;;,'.${BLACK}TTTTTTTTTTTTT${WHITE}.oN"
+	@echo "0,${BLACK}TTT${WHITE}.';:ldxkl,cONNWWWWXkl${RED};,,..${BLACK}TTTTTTTTTTTTTTTT${RED}':cc:;${WHITE};lkXWWWWNNOc,lkxdl:;'.${BLACK}TTT${WHITE},0"
+	@echo "d..:xKNWWWWWWWNNWWWWWWWWWWXkoc${RED}:;,'............';::${WHITE}cokXWWWWWWWWWWNNWWWWWWWNKx:..d"
+	@echo "dl0WWWWWWWWWWWWWWWWWWWWWWWWWWXOdocc${RED};,'''''',:${WHITE}ccldOXWWWWWWWWWWWWWWWWWWWWWWWWWW0ld"
+	@echo "NNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWX0xl${RED};..${BLACK}TT${RED}..;${WHITE}ox0XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNN"
+	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKxc${RED};;${WHITE}ckKNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+	@echo "                                                                        "
+	@echo "     ███    ███ ██ ███    ██ ██       ███████ ██   ██ ███████ ██      ██     " 
+	@echo "     ████  ████ ██ ████   ██ ██       ██      ██   ██ ██      ██      ██     " 
+	@echo "     ${RED}██ ████ ██ ██ ██ ██  ██ ██ █████ ███████ ███████ █████   ██      ██     " 
+	@echo "     ██  ██  ██ ██ ██  ██ ██ ██       ${RED}     ██ ██   ██ ██      ██      ██     " 
+	@echo "     ██      ██ ██ ██   ████ ██       ${RED}███████ ██   ██ ███████ ███████ ███████"
+	@echo "     ${WHITE}                                                                        "
+	@cat authors
 
 clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
+		${RM} ${OBJS}
+		${RM} libft.a
+		${MAKE} clean -C ./libft/
 
-fclean: clean
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@rm -rf $(TARGET)
+fclean:	clean
+		${RM} 
+		${MAKE} fclean -C ./libft/
 
-re: fclean all
-
-
-.PHONY: all clean fclean re
+re:	fclean all
