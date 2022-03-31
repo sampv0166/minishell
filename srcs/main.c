@@ -25,7 +25,6 @@ void free_2d_array(char **arr)
 void free_env()
 {
     int i;
-
     i = 0;
 
     free_2d_array(env.env_var);

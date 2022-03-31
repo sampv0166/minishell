@@ -589,7 +589,8 @@ int input_to_tokens(char *input)
         return(2);
     }
     t_pars_tokens *pa_tkns;
-    
+    // char **token;
+    // token = tokens;
     pa_tkns = parser(tokens);
     int y;
     y = 0;
@@ -625,7 +626,8 @@ int input_to_tokens(char *input)
         printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
         y++;
     }
-    free_2d_array(tokens);
+
+   // free_2d_array(token);
     executor (pa_tkns);
 	return (0);
 }
