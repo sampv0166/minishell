@@ -54,7 +54,7 @@ void init_parser_info(t_parser_info *pa_info, t_pars_tokens *pa_tkns, char **tok
 void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     pa_info->j = 0;
-    while (pa_info->j < pa_info->pipes_count)
+    while (pa_info->j < env.count)
     {
         if ((pa_tkns[pa_info->j].cmd_full && pa_tkns[pa_info->j].cmd_full[0] == '|') && (pa_tkns[pa_info->j].cmd_full[ft_strlen(pa_tkns[pa_info->j].cmd_full) - 1] == '|'))
         {
@@ -108,6 +108,11 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens
     pa_tkns[pa_info->j].cmd_full =  pa_info->str;
     pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
     pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
+
+    pa_tkns[pa_info->j].is_in = 0;
+    pa_tkns[pa_info->j].is_out = 0;
+    pa_tkns[pa_info->j].is_out_appnd = 0;
+
 }
 
 void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
@@ -117,6 +122,13 @@ void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **toke
     pa_info->arr1[pa_info->len] = '\0';
     pa_info->len++;
     pa_info->i++;
+    // pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
+     pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
+
+    pa_tkns[pa_info->j].is_in = 0;
+    pa_tkns[pa_info->j].is_out = 0;
+    pa_tkns[pa_info->j].is_out_appnd = 0;
+
 }
 void create_cmds(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
@@ -133,8 +145,18 @@ t_pars_tokens *parser (char **tokens)
     t_pars_tokens *pa_tkns;
     t_parser_info pa_info;
     init_parser_info(&pa_info, pa_tkns, tokens);
-    pa_tkns = malloc (sizeof (t_pars_tokens) * pa_info.pipes_count + 1);
-    
+    pa_tkns = malloc (sizeof (t_pars_tokens) * pa_info.pipes_count);
+    // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].cmd_full = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].fd_in = STDIN_FILENO;
+    // pa_tkns[pa_info.pipes_count + 1].fd_out = STDOUT_FILENO;
+    // pa_tkns[pa_info.pipes_count + 1].pipe = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_in = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_out = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_out_appnd = 0;
+    // pa_tkns[pa_info.pipes_count + 1].here_doc = 0;
+
 
     while (pa_info.j < pa_info.pipes_count)
     {
@@ -150,6 +172,7 @@ t_pars_tokens *parser (char **tokens)
             if(tokens[pa_info.i][0] == '|')
             {
                 deal_with_pipes(pa_tkns, &pa_info, tokens);
+                //print_2d_array(pa_info.arr1);
                 break ;
             }
             set_redirection_type(pa_tkns, &pa_info, tokens); 
@@ -218,16 +241,16 @@ t_pars_tokens *parser (char **tokens)
 
 
     
-//     // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
-//     // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
-//     // pa_tkns[pa_info.pipes_count + 1].cmd_full = NULL;
-//     // pa_tkns[pa_info.pipes_count + 1].fd_in = STDIN_FILENO;
-//     // pa_tkns[pa_info.pipes_count + 1].fd_out = STDOUT_FILENO;
-//     // pa_tkns[pa_info.pipes_count + 1].pipe = 0;
-//     // pa_tkns[pa_info.pipes_count + 1].is_in = 0;
-//     // pa_tkns[pa_info.pipes_count + 1].is_out = 0;
-//     // pa_tkns[pa_info.pipes_count + 1].is_out_appnd = 0;
-//     // pa_tkns[pa_info.pipes_count + 1].here_doc = 0;
+    // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].cmd_full = NULL;
+    // pa_tkns[pa_info.pipes_count + 1].fd_in = STDIN_FILENO;
+    // pa_tkns[pa_info.pipes_count + 1].fd_out = STDOUT_FILENO;
+    // pa_tkns[pa_info.pipes_count + 1].pipe = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_in = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_out = 0;
+    // pa_tkns[pa_info.pipes_count + 1].is_out_appnd = 0;
+    // pa_tkns[pa_info.pipes_count + 1].here_doc = 0;
 //     env.count = pa_info.pipes_count;
 //     pa_info.k = pa_info.pipes_count;
     
