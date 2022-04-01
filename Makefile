@@ -11,14 +11,14 @@ SRCS = srcs/main.c srcs/built_ins/built_ins.c srcs/env/env_vars.c srcs/executor/
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
-CC = gcc
+CC = gcc -ggdb
 
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all:	${OBJS}
 		${MAKE} all -C libft/
 		cp ./libft/libft.a ./
-		${CC} ${OBJS} libft.a -lreadline -o ${EXEC}
+		${CC} ${CFLAGS} ${OBJS} libft.a -lreadline -o ${EXEC}
 	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 	@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
 	@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
