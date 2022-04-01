@@ -69,7 +69,8 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 {
 	int		exit_status;
 	// int		saved_fds[2];
-
+	if(i)
+		i =0;
 	// if (pa_toks->fd_in != STDIN_FILENO)
 	// {
 	// 	saved_fds[STDIN_FILENO] = dup(STDIN_FILENO);

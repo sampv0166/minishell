@@ -9,9 +9,8 @@ static bool is_redir(t_pars_tokens *pa_tok, int i)
     return (false);
 }
 
-int handle_pipes(t_pars_tokens *pa_tokens, int i, char **cmd_splitted)
+int handle_pipes(t_pars_tokens *pa_tokens, int i)
 {
-    static int last_pipe_read_end;
     int fd[2];
     pipe(fd);
     pa_tokens[i].fd_in = fd[0];
@@ -165,19 +164,10 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
 
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
-    printf("\npipe_type == %d\n", pa_tokens[i].pipe);
-
-
-    printf("-----------------------------------------------------");
     handle_pipe_type_one(pa_tokens, i);
     handle_pipe_type_2_3(pa_tokens, i);
-    // ft_putnbr_fd(pa_tokens[i].fd_in, 2);
-    // ft_putnbr_fd(pa_tokens[i].fd_out, 2);
-    // exit(0);
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-    if (env.stat_code < 0)
-        exit(1);  
-	return (0);
+	return (env.stat_code);
 }
 
 int ft_perror(int exit_status, char *msg)
@@ -260,7 +250,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
 {
     if(pa_tokens[i].pipe)
     {
-        handle_pipes(pa_tokens,i, pa_tokens[i].cmd_splitted);
+        handle_pipes(pa_tokens,i);
     }
     if(pa_tokens[i].is_in)
     {
@@ -362,7 +352,6 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
 int executor(t_pars_tokens *pa_tkns)
 {
     int i;
-    int err_code;
     i = 0;
     while (i < env.count)
     {

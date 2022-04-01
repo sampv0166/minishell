@@ -34,7 +34,7 @@ int get_count(char **tkns)
     return (i);
 }
 
-void init_parser_info(t_parser_info *pa_info, t_pars_tokens *pa_tkns, char **tokens)
+void init_parser_info(t_parser_info *pa_info, char **tokens)
 {
     pa_info->pipes_count = 0;
     pa_info->i = 0;
@@ -48,7 +48,7 @@ void init_parser_info(t_parser_info *pa_info, t_pars_tokens *pa_tkns, char **tok
     pa_info->pipes_count = get_pipe_len(tokens) + 1;
     env.count = pa_info->pipes_count;
     env.pa_info = pa_info;
-    env.pa_tkns = pa_tkns;
+   // env.pa_tkns = pa_tkns;
 }
 
 void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
@@ -99,7 +99,7 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
         pa_tkns[pa_info->j].is_in = 1; 
 }
 
-void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
+void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     pa_info->arr[pa_info->len] = NULL;
     pa_info->arr1[pa_info->len] = NULL;
@@ -130,7 +130,7 @@ void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **toke
     pa_tkns[pa_info->j].is_out_appnd = 0;
 
 }
-void create_cmds(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
+void create_cmds(t_parser_info *pa_info, char **tokens)
 {
     pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);
     if(!(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>') && tokens[pa_info->i][0] != '>' && !(tokens[pa_info->i][0] == '<' && tokens[pa_info->i][1] == '<') && tokens[pa_info->i][0] != '<')
@@ -144,7 +144,7 @@ t_pars_tokens *parser (char **tokens)
 {
     t_pars_tokens *pa_tkns;
     t_parser_info pa_info;
-    init_parser_info(&pa_info, pa_tkns, tokens);
+    init_parser_info(&pa_info, tokens);
     pa_tkns = malloc (sizeof (t_pars_tokens) * pa_info.pipes_count);
     // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
     // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
@@ -176,9 +176,9 @@ t_pars_tokens *parser (char **tokens)
                 break ;
             }
             set_redirection_type(pa_tkns, &pa_info, tokens); 
-            create_cmds(pa_tkns, &pa_info, tokens);
+            create_cmds(&pa_info, tokens);
         }
-        set_pa_tokens(pa_tkns, &pa_info, tokens);
+        set_pa_tokens(pa_tkns, &pa_info);
         pa_info.j++;
     }
     set_pipe_type(pa_tkns, &pa_info);

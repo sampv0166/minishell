@@ -235,7 +235,7 @@ void init_split_info(t_split *split_info)
     ! expected output : char **str
     str = ["echo", ""hello world"",">file|wc -l"]  
 */
-char **split_to_tokens(char *str, char **tokens)
+char **split_to_tokens(char *str)
 {
     t_split split_info;
     init_split_info(&split_info);
@@ -576,10 +576,8 @@ void print_2d_array(char **arr)
 int input_to_tokens(char *input)
 {
     char **tokens;
-    int ret;
     tokens = NULL;
-    ret = 0;
-    tokens = split_to_tokens(input, tokens);
+    tokens = split_to_tokens(input);
     if(!tokens) 
         return(1);
     tokens = split_by_pipe_redir(tokens);

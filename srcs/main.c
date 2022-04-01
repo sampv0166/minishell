@@ -24,8 +24,6 @@ void free_2d_array(char **arr)
 
 void free_env()
 {
-    int i;
-    i = 0;
 
     free_2d_array(env.env_var);
     if (env.pwd)
@@ -67,9 +65,13 @@ static int get_input()
 
 int main(int ac, char **argv, char **envp)
 { 
+    if (ac && argv[0])
+    {
+      ac = 0;
+      argv = NULL;  
+    }
     handle_signals();
     init_env_vars(envp);
-     
     if(env.stat_code)
         free_everything(); 
     if(!get_input())
