@@ -67,6 +67,7 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 
 int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 {
+	(void)i;
 	int		exit_status;
 	// int		saved_fds[2];
 
