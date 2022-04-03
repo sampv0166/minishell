@@ -83,12 +83,9 @@ static int get_input()
 }
 
 int main(int ac, char **argv, char **envp)
-{ 
-    if (ac && argv[0])
-    {
-      ac = 0;
-      argv = NULL;  
-    }
+{
+	(void)ac;
+	(void)argv;
     handle_signals();
     init_env_vars(envp);
     if(env.stat_code)

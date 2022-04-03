@@ -56,6 +56,7 @@ typedef struct s_split
 ** =============================================================================
 */
 
+void	ft_putstr_2d(char **str);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strstr(char *str, char *to_find);
 t_pars_tokens *parser (char **tokens);
@@ -67,18 +68,20 @@ t_pars_tokens *parser (char **tokens);
 */
 
 char	*fetch_echo(char *str, char **env);
-int     cd(char *path) ;
-int     pwd(char *path);
-void	echo(char **str, char **env);
-int		export(char **str, char **env);
-int     is_inbuilt(char *cmd);
-int     ft_perror(int exit_status, char *msg);
-int	    handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
-bool 	token_contains_quote(char *str);
+int     		cd(char *path) ;
+int				pwd(char **str, char **env);
+int				env_var(char **env);
+void			echo(char **str, char **env);
+int				export(char **str, char **env);
+unsigned char 	ft_exit(char **str);
+int     		is_inbuilt(char *cmd);
+int     		ft_perror(int exit_status, char *msg);
+int	    		handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
+bool 			token_contains_quote(char *str);
 
-void print_2d_array(char **arr);
-void free_me (char **ptr);
-void free_2d_array(char **arr);
+void 			print_2d_array(char **arr);
+void 			free_me (char **ptr);
+void 			free_2d_array(char **arr);
 /*
 ** =============================================================================
 ** Signals
