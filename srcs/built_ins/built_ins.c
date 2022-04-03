@@ -51,16 +51,16 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 	}
 	if (ft_strcmp(pa_tokens->cmd[0], "export") == 0)
 		return (export(pa_tokens->cmd, env.env_var));
-	// if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
-	// 	return (env(pa_tokens->cmd));
+	if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
+		return (env_var(env.env_var));
 	// if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
 	// 	return (cd(pa_tokens->cmd));
 	// if (ft_strcmp(pa_tokens->cmd[0], "unset") == 0)
 	// 	return (unset(pa_tokens->cmd));
-	// if (ft_strcmp(pa_tokens->cmd[0], "pwd") == 0)
-	// 	return (pwd());
-	// if (ft_strcmp(pa_tokens->cmd[0], "exit") == 0)
-	// 	return (exit_inbuilt(pa_tokens->cmd));
+	if (ft_strcmp(pa_tokens->cmd[0], "pwd") == 0)
+		return (pwd(pa_tokens->cmd, env.env_var));
+	if (ft_strcmp(pa_tokens->cmd[0], "exit") == 0)
+		return (ft_exit(pa_tokens->cmd));
 	return (EXIT_FAILURE);
 }
 

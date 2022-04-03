@@ -2,19 +2,6 @@
 
 extern t_env_var env;
 
-void	ft_putstr_2d(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
-	{
-		ft_putstr_fd(str[i], 1);
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
-}
-
 int	length_2d(char **str)
 {
 	int	i;

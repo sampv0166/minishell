@@ -5,8 +5,8 @@ WHITE = \033[1;37m
 EXEC = minishell
 
 SRCS = srcs/main.c srcs/built_ins/built_ins.c srcs/env/env_vars.c srcs/executor/executor.c srcs/input_to_tokens/input_to_tokens.c \
-		srcs/parcer/parcer.c srcs/utils/ft_strcmp.c srcs/utils/ft_strstr.c srcs/utils/signal_handling.c srcs/built_ins/echo.c \
-		srcs/built_ins/export.c
+		srcs/parcer/parcer.c srcs/utils/ft_strcmp.c srcs/utils/ft_strstr.c srcs/utils/signal_handling.c srcs/utils/ft_putstr_2d.c \
+		srcs/built_ins/echo.c srcs/built_ins/export.c srcs/built_ins/pwd.c srcs/built_ins/env.c srcs/built_ins/exit.c \
 
 OBJS = ${SRCS:.c=.o}
 
