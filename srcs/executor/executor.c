@@ -37,6 +37,15 @@ static int init(char **path_splitted[])
     return (EXIT_SUCCESS);
 }
 
+void	*ft_free(void **p)
+{
+	if (p == NULL)
+		return (NULL);
+	free(*p);
+	*p = NULL;
+	return (NULL);
+}
+
 char *ft_append(char **dst, char *src)
 {
     char *dst_buf;
@@ -50,7 +59,7 @@ char *ft_append(char **dst, char *src)
     appendet_len = ft_strlen(dst_buf) + ft_strlen(src);
     if (appendet_len == 0)
     {
-        // ft_free((void *)dst);
+        ft_free((void *)dst);
         return (NULL);
     }
     appendet = malloc((appendet_len + 1) * sizeof(*appendet));
@@ -61,7 +70,7 @@ char *ft_append(char **dst, char *src)
     while (src && *src)
         *appendet++ = *src++;
     *appendet = '\0';
-    // ft_free((void *)dst);
+    ft_free((void *)dst);
     return (appendet - appendet_len);
 }
 
@@ -155,7 +164,6 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
     if (pa_tokens[i].pipe == 2)
     {
         close(pa_tokens[i].fd_in);
-         printf("\nfd_out duped == %d\n", pa_tokens[i].fd_out);
         if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
              exit(1);      
         close(pa_tokens[i].fd_out);

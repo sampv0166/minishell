@@ -20,11 +20,11 @@ void free_2d_array(char **arr)
     }
     if (arr)
         free_me(arr);
+    arr  = NULL;    
 }
 
 void free_env()
 {
-
     free_2d_array(env.env_var);
     if (env.pwd)
         free_me (&env.pwd);        
@@ -32,9 +32,28 @@ void free_env()
 
 int free_everything()
 {
-    // free_env();
-    // printf("exiting");
-    // exit(0);
+    int i;
+
+    i = 0;
+    free_env();
+    printf("exiting");
+    while(i < env.count)
+    {
+        print_2d_array(env.pa_tkns[i].cmd);
+        free_2d_array(env.pa_tkns[i].cmd);
+        free_2d_array(env.pa_tkns[i].cmd_splitted);
+        free_me(&env.pa_tkns[i].cmd_full);
+        free((void *) &env.pa_tkns[i]);
+        i++;
+    }
+    printf("\n%p\n",env.pa_info->arr);
+    printf("\n%p\n",env.pa_info->arr1);
+    free_2d_array(env.pa_info->arr1);
+    free_2d_array(env.pa_info->arr);
+    free((void *) &env.pa_info[0]);
+    // free_me(&env.pa_info->str);
+    //free((void *) env.pa_info);
+
     return (0);
 }
 
@@ -49,7 +68,7 @@ static int get_input()
     while(1)
     {
         input = readline("MS SHELL====>");
-        if(input == NULL )
+        if(input == NULL)
             return (0);
         if(ft_strlen(input) > 0)
             add_history(input);
@@ -58,7 +77,7 @@ static int get_input()
         ret = input_to_tokens(input);
         if(ret == EXIT_FAILURE)
             free_everything();
-        //free (input);
+       // free (input);
     }
     return (EXIT_FAILURE);
 }
@@ -76,5 +95,6 @@ int main(int ac, char **argv, char **envp)
         free_everything(); 
     if(!get_input())
         free_everything();
+
     return (EXIT_SUCCESS);    
 }

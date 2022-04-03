@@ -31,7 +31,7 @@ char **save_env(char **env_var)
   if(env_var == NULL)
     return (NULL);
   arr_len  = get_env_arr_len(env_var);  
-  env_v = malloc (sizeof (char *) * arr_len + 1); 
+  env_v = malloc (sizeof (char *) * (arr_len + 1)); 
   if(env_v == NULL)
     return (NULL);
   while (env_var[i])

@@ -235,37 +235,38 @@ void init_split_info(t_split *split_info)
     ! expected output : char **str
     str = ["echo", ""hello world"",">file|wc -l"]  
 */
-char **split_to_tokens(char *str)
-{
-    t_split split_info;
-    init_split_info(&split_info);
 
-    split_info.arr = malloc (sizeof (char *) * get_arr_len(str) + 1);
-    if (!split_info.arr)
+char **split_to_tokens(char *str, t_split *split_info)
+{
+    init_split_info(split_info);
+
+    split_info->arr = malloc (sizeof (char *) * (get_arr_len(str) + 1)); // check_what
+    if (!split_info->arr)
         return (NULL);
-    while (str[split_info.i] != '\0' && split_info.brk_flg)
+    while (str[split_info->i] != '\0' && split_info->brk_flg)
     {
-	    if (str[split_info.i] == ' ')
-			split_info.i++;
-		else if (str[split_info.i] && str[split_info.i] != ' ')
+	    if (str[split_info->i] == ' ')
+			split_info->i++;
+		else if (str[split_info->i] && str[split_info->i] != ' ')
 		{
-            if(str[split_info.i] && str[split_info.i] == '\"')
-                create_string_in_between_dbl_quotes(str ,&split_info);
-            else if(str[split_info.i] && str[split_info.i] == '\'')
-                create_string_in_between_sngl_quotes(str ,&split_info);
+            if(str[split_info->i] && str[split_info->i] == '\"')
+                create_string_in_between_dbl_quotes(str ,split_info);
+            else if(str[split_info->i] && str[split_info->i] == '\'')
+                create_string_in_between_sngl_quotes(str ,split_info);
             else
             {
-                while (str[split_info.i] && str[split_info.i] != ' ')
-                    inrement_i_len(&split_info);
-			    split_info.arr[split_info.array_index++] = ft_substr(str, split_info.i - split_info.len, split_info.len);
-			    split_info.len = 0; 
-                if(str[split_info.i] == 0)
+                while (str[split_info->i] && str[split_info->i] != ' ')
+                    inrement_i_len(split_info);
+			    split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+			    split_info->len = 0; 
+                if(str[split_info->i] == 0)
                     break ;  
             }
 		}
     }
-    split_info.arr[split_info.array_index] = NULL;
-    return (split_info.arr);
+    split_info->arr[split_info->array_index] = NULL;
+    printf("\nadd 2 = %p\n", split_info->arr);
+    return (split_info->arr);
 }
 
 bool is_input_valid (char *input)
@@ -520,7 +521,9 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
                 split_info->j++;
             }
             if(split_info->len > 0)
+            {
                 tokens[split_info->k++] = ft_substr(arr[split_info->i], split_info->j - split_info->len, split_info->len);                                  
+            }
         }
     }
     else
@@ -539,27 +542,25 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
     ! expected output : char **str
     str = ["echo", ""hello world"",">","file","|","wc", "-l"]  
 */
-char **split_by_pipe_redir(char **arr)
+char **split_by_pipe_redir(char **arr, t_split *split_info)
 {
-    t_split split_info;
-    init_split_info(&split_info);
-         
+    init_split_info(split_info); 
     char **tokens;
-    tokens = (char **) malloc (sizeof (char *) * (get_len(arr) + 1));
+    tokens = (char **) malloc (sizeof (char *) * (get_len(arr) + 1)); // check_what
     if (!tokens)
         return (NULL);
     
-    tokens[get_len(arr)] = NULL;
-    while (arr[split_info.i])
+    //tokens[get_len(arr)] = NULL;
+    while (arr[split_info->i])
     {
-        split_info.j = 0;
-        split_info.len = 0;
-        split_by_redirection(arr, tokens, &split_info);
-        split_info.i++;
+        split_info->j = 0;
+        split_info->len = 0;
+        split_by_redirection(arr, tokens, split_info);
+        split_info->i++;
     }
-    
-    tokens[split_info.k] = NULL;
+    tokens[split_info->k] = NULL;
     free_2d_array(arr);
+    split_info->arr = tokens;
     return (tokens);
 }
 void print_2d_array(char **arr)
@@ -576,11 +577,23 @@ void print_2d_array(char **arr)
 int input_to_tokens(char *input)
 {
     char **tokens;
+    char **tk;
+    t_split *split_info;
+
+    split_info = malloc (sizeof (t_split));
+    
+    t_split *split_infoo;
+
+    split_infoo = malloc (sizeof (t_split));
+    
     tokens = NULL;
-    tokens = split_to_tokens(input);
+    tokens = split_to_tokens(input, split_info);
+
     if(!tokens) 
         return(1);
-    tokens = split_by_pipe_redir(tokens);
+    tk = tokens;    
+    tokens = split_by_pipe_redir(tokens, split_infoo);
+    free_2d_array(split_info->arr);
     if (!is_token_syntax_valid(tokens))
     {
         printf("invalid syntax");
@@ -624,8 +637,7 @@ int input_to_tokens(char *input)
     //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
     //     y++;
     // }
-
-   // free_2d_array(token);
+    free_2d_array(tokens);
     executor (pa_tkns);
 	return (0);
 }
