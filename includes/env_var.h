@@ -3,9 +3,16 @@
 
 #include "executor.h"
 
-
-
-
+typedef struct s_split
+{
+	char **arr;
+	size_t i;
+	size_t array_index;
+	int len;
+	int brk_flg;
+	int k;
+	int j;
+}				t_split ;
 typedef struct s_parser_info
 {
     int pipes_count;
@@ -28,6 +35,8 @@ typedef struct s_env_var
     int count;
     t_pars_tokens *pa_tkns;
     t_parser_info *pa_info;
+    t_split *split_info;
+    char    **split;
 }            t_env_var;
 
 /*

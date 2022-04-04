@@ -239,10 +239,11 @@ void init_split_info(t_split *split_info)
 char **split_to_tokens(char *str, t_split *split_info)
 {
     init_split_info(split_info);
-
-    split_info->arr = malloc (sizeof (char *) * (get_arr_len(str) + 1)); // check_what
+    char *temp ;
+    split_info->arr = (char **)ft_calloc(sizeof (char *), (get_arr_len(str) + 1));
+    printf("\nsize = %d\n", get_arr_len(str) + 1);
     if (!split_info->arr)
-        return (NULL);
+        return (NULL);    
     while (str[split_info->i] != '\0' && split_info->brk_flg)
     {
 	    if (str[split_info->i] == ' ')
@@ -257,15 +258,19 @@ char **split_to_tokens(char *str, t_split *split_info)
             {
                 while (str[split_info->i] && str[split_info->i] != ' ')
                     inrement_i_len(split_info);
+               // printf("\n a = %p\n", split_info->arr);    
+                temp =  split_info->arr[split_info->array_index];
+                 printf("\n f = %p\n", &split_info->arr[split_info->array_index]);
 			    split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
-			    split_info->len = 0; 
+                //printf("\n f = %p\n", &split_info->arr[split_info->array_index - 1]);
+                free(temp);
+                split_info->len = 0; 
                 if(str[split_info->i] == 0)
                     break ;  
             }
 		}
     }
     split_info->arr[split_info->array_index] = NULL;
-    printf("\nadd 2 = %p\n", split_info->arr);
     return (split_info->arr);
 }
 
@@ -491,7 +496,7 @@ int get_len(char **arr)
     while (arr[i])
     {
         j = 0;
-        while (arr[i][j])
+        while (arr[i] && arr[i][j])
         {
             get_len_out_redirection(arr, &i, &j,&size);
             get_len_in_redirection(arr, &i, &j, &size);   
@@ -546,7 +551,8 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
 {
     init_split_info(split_info); 
     char **tokens;
-    tokens = (char **) malloc (sizeof (char *) * (get_len(arr) + 1)); // check_what
+    tokens = (char **)ft_calloc(sizeof (char *), (get_len(arr) + 1));
+
     if (!tokens)
         return (NULL);
     
@@ -560,7 +566,6 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
     }
     tokens[split_info->k] = NULL;
     free_2d_array(arr);
-    split_info->arr = tokens;
     return (tokens);
 }
 void print_2d_array(char **arr)
@@ -579,7 +584,7 @@ int input_to_tokens(char *input)
     char **tokens;
     char **tk;
     t_split *split_info;
-
+    
     split_info = malloc (sizeof (t_split));
     
     t_split *split_infoo;
@@ -590,23 +595,26 @@ int input_to_tokens(char *input)
     tokens = split_to_tokens(input, split_info);
 
     if(!tokens) 
-        return(1);
-    tk = tokens;    
-    tokens = split_by_pipe_redir(tokens, split_infoo);
-    free_2d_array(split_info->arr);
-    if (!is_token_syntax_valid(tokens))
+        return(0);
+    tk = split_by_pipe_redir(tokens, split_infoo);
+    if (!is_token_syntax_valid(tk))
     {
         printf("invalid syntax");
-        return(2);
+        return(0);
     }
     t_pars_tokens *pa_tkns;
     // char **token;
     // token = tokens;
-    pa_tkns = parser(tokens);
+    pa_tkns = parser(tk);
     // int y;
     // y = 0;
-
-    // //printf ("%d", env.count);
+    // free_2d_array(split_info->arr);
+    // free_2d_array(split_infoo->arr);
+    ft_free_str_array(&split_info->arr);
+    ft_free_str_array(&tk);
+    free( (void *) split_info);
+    free( (void *) split_infoo);
+    // // //printf ("%d", env.count);
     // while (y < env.count)
     // {
     //     int j;
@@ -637,7 +645,6 @@ int input_to_tokens(char *input)
     //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
     //     y++;
     // }
-    free_2d_array(tokens);
     executor (pa_tkns);
 	return (0);
 }

@@ -166,7 +166,6 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         pa_tkns[i].pipe_write_end= 0;
         i++;
     }
-
     env.pa_info = pa_info;
     env.pa_tkns = pa_tkns;
 }

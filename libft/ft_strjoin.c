@@ -38,6 +38,7 @@ char	*ft_strjoin(char *saved_line, char *buffer)
 	while (buffer && buffer[j])
 		new_string[i++] = buffer[j++];
 	new_string[i] = '\0';
-	free_memmory(&saved_line);
+	if(saved_line)
+		free_memmory(&saved_line);
 	return (new_string);
 }

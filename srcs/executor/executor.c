@@ -21,7 +21,7 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
 	return (0);
 }
 
-static int init(char **path_splitted[])
+static int init(char ***path_splitted)
 {
     char *path;
     
@@ -46,66 +46,99 @@ void	*ft_free(void **p)
 	return (NULL);
 }
 
-char *ft_append(char **dst, char *src)
-{
-    char *dst_buf;
-    char *appendet;
-    int appendet_len;
 
-    if (dst == NULL)
-        dst_buf = NULL;
-    else
-        dst_buf = *dst;
-    appendet_len = ft_strlen(dst_buf) + ft_strlen(src);
-    if (appendet_len == 0)
-    {
-        ft_free((void *)dst);
-        return (NULL);
-    }
-    appendet = malloc((appendet_len + 1) * sizeof(*appendet));
-    if (appendet == NULL)
-        return (NULL);
-    while (dst_buf && *dst_buf)
-        *appendet++ = *dst_buf++;
-    while (src && *src)
-        *appendet++ = *src++;
-    *appendet = '\0';
-    ft_free((void *)dst);
-    return (appendet - appendet_len);
+char	*ft_strjoin2(char *saved_line, char *buffer)
+{
+	char	*new_string;
+	int		total_len;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	total_len = ft_strlen(saved_line) + ft_strlen(buffer) + 1;
+	new_string = (char *) malloc(sizeof(char) * (total_len));
+	if (new_string == NULL)
+		return (NULL);
+	while (saved_line && saved_line[i])
+		new_string[i++] = saved_line[j++];
+	j = 0;
+	while (buffer && buffer[j])
+		new_string[i++] = buffer[j++];
+	new_string[i] = '\0';
+	return (new_string);
 }
 
-static char *get_abs_cmd_path(char *path_splitted, char *cmd)
-{
-    char *abs_cmd_path;
 
-    abs_cmd_path = ft_strjoin(path_splitted, "/");
+static char *get_abs_cmd_path(char **abs_cmd_path,char *path_splitted, char *cmd)
+{
+    printf("\npathsplitted= %s\n", path_splitted);   
+    *abs_cmd_path = ft_strjoin2(path_splitted, "/");
     if (abs_cmd_path == NULL)
         return (NULL);
-    abs_cmd_path = ft_append(&abs_cmd_path, cmd);
-    if (abs_cmd_path == NULL)
-        return (NULL);
-    return (abs_cmd_path);
+    printf("\nstrjoin = %s\n", *abs_cmd_path);    
+    *abs_cmd_path = ft_strjoin(*abs_cmd_path, cmd);
+    if (*abs_cmd_path == NULL)
+        return (*abs_cmd_path);
+    printf("\nappend= %s\n", *abs_cmd_path);     
+    return (*abs_cmd_path);
+}
+void	*ft_free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split && split[i])
+	{
+		free_me(&split[i]);
+		i++;
+	}
+    free(split);
+	return (NULL);
 }
 
 static char *get_abs_cmd(char *cmd)
 {
     char *abs_cmd_path;
     char **path_split;
+    char *dup;
     int i;
     init(&path_split);
+   
     i = 0;
     while (path_split[i])
     {
-        
-        abs_cmd_path = get_abs_cmd_path(path_split[i], cmd);
+        abs_cmd_path = get_abs_cmd_path(&abs_cmd_path,path_split[i], cmd);
+        dup = ft_strdup(abs_cmd_path);
         if (abs_cmd_path == NULL)
+        {
+            // printf("\nsdfsdfsdf= %s\n", abs_cmd_path); 
+            // free_me(&abs_cmd_path);
+           // ft_free_str_array(&path_split);
+        
             return (NULL);
+        }
         if (access(abs_cmd_path, F_OK) == 0)
         {
-            return (abs_cmd_path);
+            printf("\nosisgjfdv\n");
+             print_2d_array(path_split);
+            ft_free_split(path_split);
+            //print_2d_array(path_split);
+            env.split = path_split;
+            free_me(&abs_cmd_path);
+            printf("\nmdpppppath= %s\n", dup); 
+            return (dup);
+        }
+        else
+        {
+            free_me(&dup);
+            free_me(&abs_cmd_path);
         }
         i++;
     }
+    ft_free_split(path_split);
+  //  ft_free_str_array(&path_split);
+   // free_me(&abs_cmd_path);
 	return (NULL);
 }
 
@@ -300,9 +333,9 @@ void close_fds(t_pars_tokens *pa_tokens, int i)
 {
     if (pa_tokens[i].pipe == 1)
     {
-                printf("\ncfd_in closed== %d\n", pa_tokens[i].fd_in);
+        printf("\ncfd_in closed== %d\n", pa_tokens[i].fd_in);
         printf("\nfd_out closed == %d\n", pa_tokens[i].fd_out);
-         printf("\npa_tokens[i - 1].fd_in closed == %d\n", pa_tokens[i - 1].fd_in);
+        printf("\npa_tokens[i - 1].fd_in closed == %d\n", pa_tokens[i - 1].fd_in);
         close(pa_tokens[i].fd_in);
         close(pa_tokens[i - 1].fd_in);
         close(pa_tokens[i].fd_out);
@@ -338,7 +371,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if (is_inbuilt(pa_tokens->cmd[0]))
 	    return (handle_inbuilt_redir(pa_tokens, i));
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
-	
+     printf("\nmdpath= %s\n", abs_cmd_path);   
     if (access(abs_cmd_path, F_OK) == 0)
         replace_quote(pa_tokens, i);
     else
@@ -346,12 +379,14 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         printf (":command not found");
         return(127);
     }
+
     pid = fork();
     if (pid < 0)
         exit(0);
     if (pid == 0)
         exec_child(pa_tokens, abs_cmd_path, i);    
     waitpid(pid, 0, 0);
+    free_me(&abs_cmd_path);
     close_fds(pa_tokens, i);
 	return (0);
 	
