@@ -1,10 +1,6 @@
 #include "../../includes/mini_shell.h"
 
 extern t_env_var env;
-// #include <unistd.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
 
 static char	*fetch_unset(char *str, char **env)
 {
@@ -20,16 +16,16 @@ static char	*fetch_unset(char *str, char **env)
 	str[j] = '\0';
 	while (env[i] != NULL)
 	{
-		if (strstr(env[i], str))
+		if (ft_strstr(env[i], str))
 		{
 			j = 0;
 			if (val)
 				free(val);
-			val = strdup(env[i]);
+			val = ft_strdup(env[i]);
 			while (val[j] != '=' && val[j] != '\0')
 				j++;
 			val[j] = '\0';
-			if (!strcmp(val, str))
+			if (!ft_strcmp(val, str))
 				break;
 		}
 		i++;
@@ -51,10 +47,10 @@ static void	elimination(char *str, char **env)
 	i = 0;
 	if (fetch_unset(str, env))
 	{
-		s = strdup(fetch_unset(str, env));
+		s = ft_strdup(fetch_unset(str, env));
 		while (env[index] != NULL)
 		{
-			if (!strcmp(s, env[index]))
+			if (!ft_strcmp(s, env[index]))
 				break;
 			index++;
 		}
@@ -64,7 +60,7 @@ static void	elimination(char *str, char **env)
 			while (env[i + 1] != NULL)
 			{
 				free(env[i]);
-				env[i] = strdup(env[i + 1]);
+				env[i] = ft_strdup(env[i + 1]);
 				i++;
 			}
 			env[i] = NULL;
@@ -82,9 +78,9 @@ static void	parser1(char *str)
 	qte = 0;
 	i = 0;
 	j = 0;
-	if (!strchr(str, '|') || !strchr(str, '>') || !strchr(str, '<'))
+	if (!ft_strchr(str, '|') || !ft_strchr(str, '>') || !ft_strchr(str, '<'))
 	{
-		tmp = strdup(str);
+		tmp = ft_strdup(str);
 		if (str[0] == 39 || str[0] == 34)
 			qte = str[0];
 		while (str[i] != '=' && str[i] != '\0')
@@ -114,11 +110,10 @@ int	unset(char **str, char **env)
 
 	i = 1;
 
-	// parser1(str[i]);
 	while (str[i] != NULL)
 	{
 		parser1(str[i]);
-		if (strchr(str[i], '|') || strchr(str[i], '>') || strchr(str[i], '<'))
+		if (ft_strchr(str[i], '|') || ft_strchr(str[i], '>') || ft_strchr(str[i], '<'))
 			break;
 		elimination(str[i], env);
 		i++;

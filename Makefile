@@ -55,7 +55,7 @@ clean:
 		${MAKE} clean -C ./libft/
 
 fclean:	clean
-		${RM} 
+		${RM} ${EXEC}
 		${MAKE} fclean -C ./libft/
 
 re:	fclean all
