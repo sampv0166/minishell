@@ -1,0 +1,57 @@
+cd built-ins:
+
+chdir will work for changing directories
+if it is an error, we should change the value of stat code in structure.
+
+PWD in env variable will be changed to new path.
+
+OLDPWD will have a value of the old pwd or in other words, the old path after the directory is changed.
+Return value 0 is for success. However, 1 is for error for the cd.
+
+
+
+unset built-ins:
+
+unset built in is used to remove any env variable if given.
+All return values is zero for unset.. Need to check memory leaks for this function.
+
+
+env built-ins:
+
+Displays the env variable. No option or arguments needed unless if there is a pipe or redirection, etc.
+Return value 0 is for success.
+
+
+
+pwd built-ins:
+
+Displays the value of PWD in env variable. It should behave the exact way with moer than one argument or so.
+Return value 0 is for success. However, for 1 is for error for the pwd.
+
+
+echo:
+
+prints any string from the user input. It deals with one option -n flags to trigger a flag for not printing any new line after the string was printed.
+
+It should also handle double/single quotes. By that, it means that if to display any env variable say $USER if the input was within double quotes, it should display the value of USER in env. However, if it was within single quotes, it should print $USER as it is. 
+
+It should also print the last exit code with the help of this command, $?.
+Return value 0 is for success. However, for 1 is for error for the echo.
+
+export built-ins:
+
+Only export prints all the env variables in sorted order.
+
+Since we're only dealing with arguments.
+There are somethings which export should behave like the built-ins
+
+If say we write export MORE=ls. There are two different scenarios 
+Lets say if there isn't any MORE variable. It will create one in our main env variable and give a value to it the one which the user provided.
+On the other hand if the MORE env variable already exists, it will replace the old value with the new value which the user provided.
+
+Second command: if the user submits export MORE += ls
+There are three different scenarios in this command:
+1. If the env variable(MORE) exist, also if the value is given. It will append with the new value for MORE. If say the value is not given for MORE, then it will just give a value to it as it is.
+2. If the env variable (MORE) doesn't exist, then we need to create a new env variable which the user provided and add a value to it.
+
+Return value 0 is for success. However, for 1 is for error for the export.
