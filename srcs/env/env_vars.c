@@ -28,10 +28,8 @@ char **save_env(char **env_var)
   i = 0;
   arr_len = 0;
   env_v = NULL;
-  if(env_var == NULL)
-    return (NULL);
   arr_len  = get_env_arr_len(env_var);  
-  env_v = malloc (sizeof (char *) * arr_len + 1); 
+  env_v = malloc (sizeof (char *) * (arr_len + 1)); 
   if(env_v == NULL)
     return (NULL);
   while (env_var[i])
@@ -86,9 +84,7 @@ char *get_env_value (char *var)
 			  val = ft_strchr(env.env_var[i++], '=') + 1;                 
 			  if (ft_strlen(val) == 0)
         {
-
 				    val = ft_calloc(1, sizeof (char));
-
         }
 			  else
         {
@@ -104,15 +100,15 @@ char *get_env_value (char *var)
   This function is used to intialize and save env variables
 */
 
-void init_env_vars(char **envp)
+int init_env_vars(char **envp)
 {
     env.envp = envp;
     env.env_var = save_env(envp);
-    //env.pwd = get_env_value("PWD");
     if(env.env_var != NULL)
     {
       env.stat_code = 0;   
-      return ;
+      return (EXIT_SUCCESS);
     }
     env.stat_code = 1;
+    return (EXIT_FAILURE);
 }
