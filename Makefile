@@ -7,18 +7,21 @@ EXEC = minishell
 SRCS = srcs/main.c srcs/built_ins/built_ins.c srcs/env/env_vars.c srcs/executor/executor.c srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c srcs/utils/ft_strcmp.c srcs/utils/ft_strstr.c srcs/utils/signal_handling.c srcs/utils/ft_putstr_2d.c \
 		srcs/built_ins/echo.c srcs/built_ins/export.c srcs/built_ins/pwd.c srcs/built_ins/env.c srcs/built_ins/exit.c \
+		srcs/built_ins/unset.c \
 
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
 CC = gcc
 
+R_FLAG = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+
 # CFLAGS = -Wall -Wextra -Werror
 
-all:	${OBJS}
+all:
 		${MAKE} all -C libft/
 		cp ./libft/libft.a ./
-		${CC} ${OBJS} libft.a -lreadline -o ${EXEC}
+		${CC} ${SRCS} libft.a ${R_FLAG} -o ${EXEC}
 	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 	@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
 	@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
@@ -48,7 +51,6 @@ all:	${OBJS}
 	@cat authors
 
 clean:
-		${RM} ${OBJS}
 		${RM} libft.a
 		${MAKE} clean -C ./libft/
 
