@@ -45,8 +45,8 @@ typedef struct s_env_var
 ** =============================================================================
 */
 
-void init_env_vars(char **envp);
+int init_env_vars(char **envp);
 char *get_env_value (char *var);
-
+int free_env();
 int executor(t_pars_tokens *pa_tkns);
 #endif

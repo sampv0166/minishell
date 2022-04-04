@@ -81,8 +81,13 @@ void	ft_free_str_array(char ***arr);
 */
 
 void	handle_signals(void);
+/*
+** =============================================================================
+** Free Functions
+** =============================================================================
+*/
 
-
+void free_split_info(t_split *split_info, t_split *split_infoo, char **tokens);
 int free_everything();
 
 #endif
