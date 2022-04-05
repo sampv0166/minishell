@@ -4,7 +4,6 @@ WHITE = \033[1;37m
 
 EXEC = minishell
 
-<<<<<<< HEAD
 SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/env/env_vars.c \
 		srcs/executor/executor.c \
@@ -27,25 +26,15 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
 		srcs/parcer/parcer_utils.c \
 		
-=======
-SRCS = srcs/main.c srcs/built_ins/built_ins.c srcs/env/env_vars.c srcs/executor/executor.c srcs/input_to_tokens/input_to_tokens.c \
-		srcs/parcer/parcer.c srcs/utils/ft_strcmp.c srcs/utils/ft_strstr.c srcs/utils/signal_handling.c srcs/utils/ft_putstr_2d.c \
-		srcs/built_ins/echo.c srcs/built_ins/export.c srcs/built_ins/pwd.c srcs/built_ins/env.c srcs/built_ins/exit.c \
-		srcs/built_ins/unset.c \
-
->>>>>>> e9e6a83c439c26cb1936e511ff8997034a5e6ef2
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
 CC = gcc -ggdb
 
-<<<<<<< HEAD
 #CFLAGS = -Wall -Wextra -Werror
-=======
 R_FLAG = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 # CFLAGS = -Wall -Wextra -Werror
->>>>>>> e9e6a83c439c26cb1936e511ff8997034a5e6ef2
 
 all:
 		${MAKE} all -C libft/
