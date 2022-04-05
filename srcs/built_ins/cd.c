@@ -1,16 +1,18 @@
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "../../includes/mini_shell.h"
 
-int main(void)
+extern t_env_var env;
+
+typedef struct	s_info
 {
+	int	tilde;
+	int	slash;
+}				t_info;
 
-	char	s[1000];
-	
-	printf("%s\n", getcwd(s, 100));
-	printf("%d\n", chdir("..s"));
-	// if (!chdir("..s"))
-	// 	printf("%s\n", getcwd(s, 100));
+int	cd(char **str)
+{
+	int	i;
+
+	i = 1;
+
 	return (0);
 }

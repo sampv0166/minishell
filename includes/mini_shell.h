@@ -68,7 +68,7 @@ t_pars_tokens *parser (char **tokens);
 */
 
 char	*fetch_echo(char *str, char **env);
-int     		cd(char *path) ;
+int				cd(char **str);
 int				pwd(char **str, char **env);
 int				env_var(char **env);
 void			echo(char **str, char **env);
