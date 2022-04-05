@@ -1,9 +1,13 @@
 BASIC SHELL TESTS
+-------------------------------------
 ""
-..
+$
+$LESS$VAR
+ls | exit
+sleep 5 | exit
 
 PIPE AND REDIRECTION TESTS
-
+----------------------------------
 ls -la
 ls -la | wc -l
 ls -la | wc -l > hi
@@ -11,12 +15,24 @@ ls -la > hi
 ls -la | grep "117" > hi
 ls >> hi
 ls -la | wc -l | wc -l >> hi
+cat Makefile | grep pr | head -n 5 
 
 SYNTAX ERROR TEST
+----------------------------
 >>
 >
 |
 ls -la ||||||
+ls -la >>> d
 
-
+ECHO TESTS CASES
+--------------------------
+echo "\s" ; echo "\\s"
+echo "12\""
+echo bonjour \; ls
+echo '"abc"'
+echo "'abc'"
+echo "" bonjour
+echo[TAB]a
+echo\ a
 

@@ -117,11 +117,12 @@ int input_to_tokens(char *input)
         return(EXIT_FAILURE);
     if (!is_token_syntax_valid(tokens))
     {
-        printf("Invalid Syntax");
+        printf("Invalid Syntax\n");
         return(258);
     }
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
+     
     free_split_info(si, si2, tokens);
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
@@ -161,14 +162,14 @@ int input_to_tokens(char *input)
     // }
 
 
-//     void print_2d_array(char **arr)
-// {
-//     int i;
+    void print_2d_array(char **arr)
+{
+    int i;
 
-//     i = 0;
-//     while (arr[i])
-//     {
-//         printf("%s\n", arr[i]);
-//         i++;
-//     }
-// }
+    i = 0;
+    while (arr[i])
+    {
+        printf("%s\n", arr[i]);
+        i++;
+    }
+}

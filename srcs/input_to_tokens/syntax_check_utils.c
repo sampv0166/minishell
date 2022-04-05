@@ -36,13 +36,18 @@ bool is_token_redir(char *str)
 
 bool is_token_pipe(char *str)
 {
-    
+
     if(ft_strlen (str) == 1)
     {
         if(ft_strchr(str, '|'))
             return (true);     
     }
-    return (false);
+    if(ft_strlen(str) > 1)
+    {
+        if(*str == '|')
+            return (false);
+    }
+    return (true);
 }
 
 bool is_special_charater_correct(char *str)
@@ -70,13 +75,13 @@ bool is_token_syntax_valid (char **tokens)
 
     while (tokens[i] != NULL)
     { 
-        if (!token_contains_quote(tokens[i]))
+        if (!token_contains_quote(tokens[i]) && !(is_inbuilt(tokens[0])))
         {
             if(tokens[i] && tokens[i + 1] == NULL)
             {
                 if(is_token_redir(tokens[i]))
                     return (false);
-                if(is_token_pipe(tokens[i]))
+                if(!is_token_pipe(tokens[i]))
                     return (false);    
             }
             if(!is_special_charater_correct(tokens[i]))

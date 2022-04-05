@@ -2,12 +2,17 @@
 
 extern t_env_var env;
 
+
+// tests cases not working
+// exit
+
+
 unsigned char ft_exit(char **str)
 {
 	unsigned char	c;
 	int				i;
 	int				stat_code;
-
+	print_2d_array(str);
 	c = 0;
 	i = 1;
 	stat_code = 0;

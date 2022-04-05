@@ -9,3 +9,8 @@ ls -la >>> d
 SEGFAULTS
 ------------
 <hi
+
+ECHO TESTS_KO
+-------------------
+echo "bip | bip ; coyotte > < \" "
+echo $USER$var\$USER$USER\$USERtest$USER

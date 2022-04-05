@@ -89,5 +89,5 @@ void	handle_signals(void);
 
 void free_split_info(t_split *split_info, t_split *split_infoo, char **tokens);
 int free_everything();
-
+int	is_inbuilt(char *cmd);
 #endif
