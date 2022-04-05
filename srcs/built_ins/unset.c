@@ -10,7 +10,7 @@ static char	*fetch_unset(char *str, char **env)
 
 	i = 0;
 	j = 0;
-	val = NULL;
+	val = ft_strdup(env[i]);
 	while (str[j] != '=' && str[j] != '\0')
 		j++;
 	str[j] = '\0';
@@ -19,8 +19,7 @@ static char	*fetch_unset(char *str, char **env)
 		if (ft_strstr(env[i], str))
 		{
 			j = 0;
-			if (val)
-				free(val);
+			free(val);
 			val = ft_strdup(env[i]);
 			while (val[j] != '=' && val[j] != '\0')
 				j++;
@@ -30,21 +29,18 @@ static char	*fetch_unset(char *str, char **env)
 		}
 		i++;
 	}
-	if (val)
-		free(val);
-	if (env[i] == NULL)
-		return (NULL);
+	free(val);
 	return (env[i]);
 }
 
 static void	elimination(char *str, char **env)
 {
 	char	*s;
-	char	*var;
 	int		i;
-	int		index = 0;
+	int		index;
 
 	i = 0;
+	index = 0;
 	if (fetch_unset(str, env))
 	{
 		s = ft_strdup(fetch_unset(str, env));
@@ -63,8 +59,10 @@ static void	elimination(char *str, char **env)
 				env[i] = ft_strdup(env[i + 1]);
 				i++;
 			}
+			free(env[i]);
 			env[i] = NULL;
 		}
+		free(s);
 	}
 }
 
