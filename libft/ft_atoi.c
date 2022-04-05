@@ -3,37 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apila-va <apila-va@42.abudhabi.ae>         +#+  +:+       +#+        */
+/*   By: makhtar <makhtar@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 14:48:02 by apila-va          #+#    #+#             */
-/*   Updated: 2021/10/20 12:08:24 by apila-va         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:08:21 by makhtar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-int	ft_atoi(const char *str)
+static long int	ft_atoi_atoi(char *str, int sign, int *index)
 {
-	size_t	i;
-	size_t	s;
-	size_t	res;
+	int			i;
+	long int	nbr;
 
 	i = 0;
-	s = 1;
-	res = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || \
-			str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
+	i = *index;
+	nbr = 0;
+	if ((str[i] >= '0') && (str[i] <= '9'))
+	{
+		while ((str[i] >= '0') && (str[i] <= '9'))
+		{
+			nbr = (nbr * 10) + (str[i] - '0');
+			i++;
+		}
+		nbr = nbr * sign;
+		if (str[i] == '\0' || str[i] == ' ')
+		{
+			if (i < 19)
+				return (nbr);
+		}
+		if (i == 19 && sign > 0)
+		{
+			if (ft_strncmp(str, "9223372036854775808", 19) < 0)
+				return (nbr);
+		}
+		else if (sign < 0 && (i == 20))
+		{
+			if (ft_strncmp(str, "-9223372036854775809", 20) < 0)
+				return (nbr);
+		}
+	}
+	ft_putstr_fd("exit: ", 1);
+	ft_putstr_fd(str, 1);
+	ft_putendl_fd(": numeric argument requred", 1);
+	if (i >= 19)
+		return (255);
+	return (1);
+}
+
+long int	ft_atoi(const char *str)
+{
+	int		i;
+	long	nbr;
+	char	*s;
+	int		sign;
+
+	i = 0;
+	s = (char *)str;
+	sign = 1;
+	while (s[i] == ' ')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			s = -1;
+			sign = -1;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = (res * 10) + (str[i] - '0');
-		i++;
-	}
-	return (res * s);
+	nbr = ft_atoi_atoi(s, sign, &i);
+	return (nbr);
 }
