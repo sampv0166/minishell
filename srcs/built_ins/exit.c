@@ -2,12 +2,10 @@
 
 extern t_env_var env;
 
-<<<<<<< HEAD
 
 // tests cases not working
 // exit
 
-=======
 static int	is_sign(char c)
 {
 	if (c == '-' || c == '+')
@@ -26,7 +24,6 @@ int	ft_isdigit(int c)
 		alpha = 0;
 	return (alpha);
 }
->>>>>>> e9e6a83c439c26cb1936e511ff8997034a5e6ef2
 
 unsigned char ft_exit(char **str)
 {
