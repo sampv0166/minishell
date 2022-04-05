@@ -76,7 +76,7 @@ static void	parser1(char *str)
 	qte = 0;
 	i = 0;
 	j = 0;
-	if (!ft_strchr(str, '|') || !ft_strchr(str, '>') || !ft_strchr(str, '<'))
+	if (!strchr(str, '|') || !strchr(str, '>') || !strchr(str, '<'))
 	{
 		tmp = ft_strdup(str);
 		if (str[0] == 39 || str[0] == 34)
