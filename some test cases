@@ -1,23 +1,4 @@
-""
-echo "\s" ; echo "\\s"
-echo "12\""
-echo "bip | bip ; coyotte > < \" "
-echo \>
-echo $USER$var\$USER$USER\$USERtest$USER
-echo bonjour \; ls
-$
-$LESS$VAR
-..
-echo '"abc"'
-echo "'abc'"
-echo "" bonjour
-echo[TAB]a
-echo\ a
-cat | cat | cat | ls
 cat Makefile | grep pr | head -n 5 | cd file_not_exit
-cat Makefile | grep pr | head -n 5 | hello
-ls | exit
-sleep 5 | exit
 <a cat <b <c
 <a cat <b <c      avec b n'existe pas (ou pas les droits)
 > test | echo blabla; rm test

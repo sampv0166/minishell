@@ -115,7 +115,7 @@ void echo(char **str, char **env_var)
 	int i;
 	t_flags flags;
 	int qte;
-
+	//print_2d_array(str);
 	i = 1;
 	qte = 0;
 	flags.newl_flag = 0;

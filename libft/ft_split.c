@@ -73,7 +73,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (0);
 	first_array_length = ft_count(s, c);
-	ptr = (char **)malloc (sizeof (char *) * first_array_length + 1);
+	ptr = (char **)ft_calloc(sizeof (char *), (first_array_length + 1));
 	if (!ptr)
 		return (0);
 	if (first_array_length <= 0)

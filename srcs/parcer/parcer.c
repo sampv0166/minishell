@@ -2,55 +2,6 @@
 
 extern t_env_var env;
 
-int get_pipe_len(char **tokens)
-{
-    int i;
-    int len;
-
-    i = 0;
-    len = 0;
-
-    while (tokens[i])
-    {
-        if(tokens[i][0] == '|')
-            len++;
-        i++;
-    }
-    return (len);
-}
-
-int get_count(char **tkns)
-{
-    int i;
-
-    i = 0;
-
-    while(tkns[i])
-    {
-        if(tkns[i][0] == '|')
-            return (++i);
-        i++;    
-    }
-    return (i);
-}
-
-void init_parser_info(t_parser_info *pa_info, t_pars_tokens *pa_tkns, char **tokens)
-{
-    pa_info->pipes_count = 0;
-    pa_info->i = 0;
-    pa_info->k = 0;
-    pa_info->len = 0;
-    pa_info->arr = NULL;
-    pa_info->arr1= NULL;
-    pa_info->str = NULL;
-    pa_info->j = 0;
-
-    pa_info->pipes_count = get_pipe_len(tokens) + 1;
-    env.count = pa_info->pipes_count;
-    env.pa_info = pa_info;
-    env.pa_tkns = pa_tkns;
-}
-
 void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     pa_info->j = 0;
@@ -78,15 +29,7 @@ void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     }
 }
 
-void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)
-{        
-    pa_info->len = get_count(tokens);
-    pa_info->arr = malloc (sizeof (char *) *  pa_info->len + 1);
-    pa_info->arr1 = malloc (sizeof (char *) *  pa_info->len + 1);   
-    pa_info->str =  malloc (sizeof (char ) * 1);
-    pa_info->str = NULL;
-    pa_info->len = 0;
-}
+
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
     if(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>')
@@ -99,21 +42,7 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
         pa_tkns[pa_info->j].is_in = 1; 
 }
 
-void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
-{
-    pa_info->arr[pa_info->len] = NULL;
-    pa_info->arr1[pa_info->len] = NULL;
-    pa_tkns[pa_info->j].cmd_splitted = pa_info->arr;
-    pa_tkns[pa_info->j].cmd =  pa_info->arr1;
-    pa_tkns[pa_info->j].cmd_full =  pa_info->str;
-    pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
-    pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
 
-    pa_tkns[pa_info->j].is_in = 0;
-    pa_tkns[pa_info->j].is_out = 0;
-    pa_tkns[pa_info->j].is_out_appnd = 0;
-
-}
 
 void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
@@ -122,15 +51,14 @@ void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **toke
     pa_info->arr1[pa_info->len] = '\0';
     pa_info->len++;
     pa_info->i++;
-    // pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
-     pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
-
+    pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
     pa_tkns[pa_info->j].is_in = 0;
     pa_tkns[pa_info->j].is_out = 0;
     pa_tkns[pa_info->j].is_out_appnd = 0;
+    pa_tkns[pa_info->j].pipe = 0;
 
 }
-void create_cmds(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
+void create_cmds(t_parser_info *pa_info, char **tokens)
 {
     pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);
     if(!(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>') && tokens[pa_info->i][0] != '>' && !(tokens[pa_info->i][0] == '<' && tokens[pa_info->i][1] == '<') && tokens[pa_info->i][0] != '<')
@@ -138,50 +66,64 @@ void create_cmds(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
     pa_info->str = ft_strjoin (pa_info->str, tokens[pa_info->i]);
     pa_info->len++;
     pa_info->i++;
+    
+}
+
+void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
+{
+    int i;
+    i = 0;
+    
+    while (i < pa_info->pipes_count)
+    {
+        pa_tkns[i].cmd = NULL;
+        pa_tkns[i].cmd_full = NULL;
+        pa_tkns[i].cmd_splitted = NULL;
+        pa_tkns[i].pipe = 0;
+
+        pa_tkns[i].is_in = 0;
+        pa_tkns[i].is_out = 0;
+        pa_tkns[i].is_out_appnd = 0;
+        pa_tkns[i].fd_in = 0;
+
+        pa_tkns[i].fd_out = 0;
+        pa_tkns[i].here_doc = 0;
+
+        pa_tkns[i].pipe_read_end = 0;
+        pa_tkns[i].pipe_write_end= 0;
+        i++;
+    }
+    env.pa_info = pa_info;
+    env.pa_tkns = pa_tkns;
 }
 
 t_pars_tokens *parser (char **tokens)
 {
     t_pars_tokens *pa_tkns;
-    t_parser_info pa_info;
-    init_parser_info(&pa_info, pa_tkns, tokens);
-    pa_tkns = malloc (sizeof (t_pars_tokens) * pa_info.pipes_count);
-    // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
-    // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
-    // pa_tkns[pa_info.pipes_count + 1].cmd_full = NULL;
-    // pa_tkns[pa_info.pipes_count + 1].fd_in = STDIN_FILENO;
-    // pa_tkns[pa_info.pipes_count + 1].fd_out = STDOUT_FILENO;
-    // pa_tkns[pa_info.pipes_count + 1].pipe = 0;
-    // pa_tkns[pa_info.pipes_count + 1].is_in = 0;
-    // pa_tkns[pa_info.pipes_count + 1].is_out = 0;
-    // pa_tkns[pa_info.pipes_count + 1].is_out_appnd = 0;
-    // pa_tkns[pa_info.pipes_count + 1].here_doc = 0;
-
-
-    while (pa_info.j < pa_info.pipes_count)
+    t_parser_info *pa_info;
+    pa_info = malloc (sizeof (t_parser_info));
+    init_parser_info(pa_info, tokens);
+    pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info->pipes_count));
+    init_pa_tkns(pa_tkns, pa_info);
+    while (pa_info->j < pa_info->pipes_count)
     {
-        allocate_cmd_memmory(&pa_info, tokens);
-        while(tokens[pa_info.i])
+        allocate_cmd_memmory(pa_info, tokens);
+        while(tokens[pa_info->i])
         {
-            if (pa_info.i > 0 && tokens[pa_info.i - 1] && tokens[pa_info.i - 1][0] == '|')
+            if (pa_info->i > 0 && tokens[pa_info->i - 1] && tokens[pa_info->i - 1][0] == '|')
+                pa_info->str = ft_strjoin(pa_info->str, tokens[pa_info->i - 1]);
+            if(tokens[pa_info->i][0] == '|')
             {
-                //printf("%s", pa_info.str);
-                //exit(0);
-                pa_info.str = ft_strjoin(pa_info.str, tokens[pa_info.i - 1]);
-            }
-            if(tokens[pa_info.i][0] == '|')
-            {
-                deal_with_pipes(pa_tkns, &pa_info, tokens);
-                //print_2d_array(pa_info.arr1);
+                deal_with_pipes(pa_tkns, pa_info, tokens);
                 break ;
             }
-            set_redirection_type(pa_tkns, &pa_info, tokens); 
-            create_cmds(pa_tkns, &pa_info, tokens);
+            set_redirection_type(pa_tkns, pa_info, tokens); 
+            create_cmds(pa_info, tokens);
         }
-        set_pa_tokens(pa_tkns, &pa_info, tokens);
-        pa_info.j++;
+        set_pa_tokens(pa_tkns, pa_info);
+        pa_info->j++;
     }
-    set_pipe_type(pa_tkns, &pa_info);
+    set_pipe_type(pa_tkns, pa_info);
     return (pa_tkns);    
 }
 
@@ -241,7 +183,7 @@ t_pars_tokens *parser (char **tokens)
 
 
     
-    // pa_tkns[pa_info.pipes_count + 1].cmd = NULL;
+    // pa_tkns[pa_info->pipes_count + 1].cmd = NULL;
     // pa_tkns[pa_info.pipes_count + 1].cmd_splitted = NULL;
     // pa_tkns[pa_info.pipes_count + 1].cmd_full = NULL;
     // pa_tkns[pa_info.pipes_count + 1].fd_in = STDIN_FILENO;

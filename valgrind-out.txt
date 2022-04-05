@@ -1,0 +1,54 @@
+==105618== Memcheck, a memory error detector
+==105618== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==105618== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==105618== Command: ./minishell
+==105618== Parent PID: 105301
+==105618== 
+==105621== 
+==105621== HEAP SUMMARY:
+==105621==     in use at exit: 207,673 bytes in 226 blocks
+==105621==   total heap usage: 534 allocs, 308 frees, 233,339 bytes allocated
+==105621== 
+==105621== 3 bytes in 1 blocks are definitely lost in loss record 2 of 67
+==105621==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==105621==    by 0x489DE5C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105621==    by 0x487B6EB: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105621==    by 0x4885ECA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105621==    by 0x1094CB: get_input (main.c:12)
+==105621==    by 0x109571: main (main.c:36)
+==105621== 
+==105621== LEAK SUMMARY:
+==105621==    definitely lost: 3 bytes in 1 blocks
+==105621==    indirectly lost: 0 bytes in 0 blocks
+==105621==      possibly lost: 0 bytes in 0 blocks
+==105621==    still reachable: 207,670 bytes in 225 blocks
+==105621==         suppressed: 0 bytes in 0 blocks
+==105621== Reachable blocks (those to which a pointer was found) are not shown.
+==105621== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==105621== 
+==105621== For lists of detected and suppressed errors, rerun with: -s
+==105621== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==105618== 
+==105618== HEAP SUMMARY:
+==105618==     in use at exit: 207,673 bytes in 226 blocks
+==105618==   total heap usage: 534 allocs, 308 frees, 233,339 bytes allocated
+==105618== 
+==105618== 3 bytes in 1 blocks are definitely lost in loss record 2 of 67
+==105618==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==105618==    by 0x489DE5C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105618==    by 0x487B6EB: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105618==    by 0x4885ECA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==105618==    by 0x1094CB: get_input (main.c:12)
+==105618==    by 0x109571: main (main.c:36)
+==105618== 
+==105618== LEAK SUMMARY:
+==105618==    definitely lost: 3 bytes in 1 blocks
+==105618==    indirectly lost: 0 bytes in 0 blocks
+==105618==      possibly lost: 0 bytes in 0 blocks
+==105618==    still reachable: 207,670 bytes in 225 blocks
+==105618==         suppressed: 0 bytes in 0 blocks
+==105618== Reachable blocks (those to which a pointer was found) are not shown.
+==105618== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==105618== 
+==105618== For lists of detected and suppressed errors, rerun with: -s
+==105618== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
