@@ -64,6 +64,7 @@ int				pwd(char **str, char **env);
 int				env_var(char **env);
 void			echo(char **str, char **env);
 int				export(char **str, char **env);
+int				unset(char **str, char **env);
 unsigned char 	ft_exit(char **str);
 int     		is_inbuilt(char *cmd);
 int     		ft_perror(int exit_status, char *msg);
