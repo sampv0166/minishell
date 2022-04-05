@@ -9,6 +9,7 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/executor/executor.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
+		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/signal_handling.c \
@@ -18,6 +19,7 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/built_ins/export.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \
+		srcs/built_ins/unset.c \
 		srcs/built_ins/exit.c \
 		srcs/utils/free_functions.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c\
