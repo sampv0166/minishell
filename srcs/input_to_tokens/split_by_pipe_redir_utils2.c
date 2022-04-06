@@ -6,7 +6,7 @@ void create_out_redirection_character(char **arr, t_split *split_info, char **to
         tokens[split_info->k++] = ft_strdup(">>");
         split_info->j = split_info->j + 2;   
     }
-    if (arr[split_info->i][split_info->j] == '>' && arr[split_info->i][split_info->j + 1] != '>')
+    else if(arr[split_info->i][split_info->j] == '>' && arr[split_info->i][split_info->j + 1] != '>')
     {
         tokens[split_info->k++] = ft_strdup(">");
         split_info->j++;   
