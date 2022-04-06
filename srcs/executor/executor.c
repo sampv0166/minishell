@@ -310,8 +310,14 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     char *abs_cmd_path;
     pid_t pid;
     if (is_redir(pa_tokens, i))
-        if(handle_redirections(pa_tokens, i))
+    {
+        printf("here");
+        if(!handle_redirections(pa_tokens, i))
+        {    
             return (EXIT_FAILURE);
+        }
+    }
+
     if (is_inbuilt(pa_tokens->cmd[0]))
 	    return (handle_inbuilt_redir(pa_tokens, i));  ; 
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);

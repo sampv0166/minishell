@@ -19,12 +19,13 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/built_ins/env.c \
 		srcs/built_ins/exit.c \
 		srcs/utils/free_functions.c \
-		srcs/input_to_tokens/split_by_pipe_redir_utils.c\
+		srcs/input_to_tokens/split_by_pipe_redir_utils.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils2.c \
 		srcs/input_to_tokens/split_to_tokens_utils.c \
 		srcs/input_to_tokens/split_to_tokens_utils_2.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
 		srcs/parcer/parcer_utils.c \
+		srcs/built_ins/unset.c 
 		
 OBJS = ${SRCS:.c=.o}
 
@@ -32,7 +33,7 @@ RM = rm -rf
 CC = gcc -ggdb
 
 #CFLAGS = -Wall -Wextra -Werror
-R_FLAG = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+R_FLAG = -lreadline 
 
 # CFLAGS = -Wall -Wextra -Werror
 

@@ -11,16 +11,9 @@ void get_len_out_redirection(char **arr, int *i, int *j, int *size)
     else if (arr[*i][*j] == '>' && arr[*i][(*j) + 1] != '>')
     {
         if (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0' ) 
-            (*size)++;    
-        while (arr[*i][*j] == '>')
-        {
-            if(arr[*i] && arr[*i][*j] && arr[*i][(*j) + 1] != '>')
-                break ;
-            (*j)++;
-        }
-        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
             (*size)++;
-
+        if (arr[*i][(*j) + 1] != ' ' && arr[*i][(*j) + 1] != '\0' ) 
+            (*size)++;    
     } 
 }
 
