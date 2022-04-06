@@ -5,26 +5,36 @@ extern t_env_var env;
 char *fetch_echo(char *str, char **env_var)
 {
 	char *lk_up;
+	char	*tmp;
 	int i;
+	int	j;
 
 	i = 0;
+	tmp = ft_strdup(env_var[i]);
 	lk_up = ft_strdup(str);
-	lk_up = ft_strchr(lk_up, '$');
-	++lk_up;
-	while (lk_up[i] != ' ' && lk_up[i] != '\0')
+	while (ft_isenv(lk_up[i]))
 		i++;
 	lk_up[i] = '\0';
 	i = 0;
 	while (env_var[i] != NULL)
 	{
 		if (ft_strstr(env_var[i], lk_up))
-			break;
+		{
+			free(tmp);
+			tmp = ft_strdup(env_var[i]);
+			j = 0;
+			while (tmp[j] != '=' && tmp[j] != '\0')
+				j++;
+			tmp[j] = '\0';
+			if (!ft_strcmp(tmp, lk_up));
+				break;
+		}
 		i++;
 	}
+	free(tmp);
 	if (env_var[i] == NULL)
 		return (NULL);
 	lk_up = ft_strdup(ft_strstr(env_var[i], lk_up));
-	;
 	lk_up = ft_strchr(lk_up, '=');
 	if (lk_up)
 		lk_up++;
@@ -45,7 +55,7 @@ static void print(char *str, char **env_var, int *qte)
 		*qte = 34;
 	while (str[i])
 	{
-		if ((str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == '?')) && *qte == 34)
+		if ((str[i] == '$' && (ft_isenv(str[i + 1]) || str[i + 1] == '?')) && *qte == 34)
 		{
 			if (str[i + 1] == '?')
 			{
@@ -53,12 +63,13 @@ static void print(char *str, char **env_var, int *qte)
 				ft_putstr_fd(val, 1);
 				free(val);
 			}
-			else if (ft_isalpha(str[i + 1]))
+			else if (ft_isenv(str[i + 1]))
 			{
 				val = NULL;
 				j = 0;
+				i += 1;
 				cat = ft_strdup(str);
-				while (str[i] != ' ' && str[i] != '\0' && str[i] != *qte)
+				while (ft_isenv(str[i]))
 				{
 					cat[j] = str[i];
 					i++;
@@ -70,13 +81,18 @@ static void print(char *str, char **env_var, int *qte)
 				if (val)
 					ft_putstr_fd(val, 1);
 			}
-			while (str[i] != ' ' && str[i] != '\0')
-					++i;
+			while (ft_isenv(str[i]))
+				++i;
 		}
 		else
 		{
 			if (!(!i && str[i] == *qte) && !(str[i + 1] == '\0' && str[i] == *qte))
 				ft_putchar_fd(str[i], 1);
+			// else if (str[i] == *qte)
+			// {
+			// 	if (i > 0 && str[i + 1] != '\0')
+			// 		ft_putchar_fd(str[i], 1);
+			// }
 			++i;
 		}
 	}
@@ -115,8 +131,11 @@ void echo(char **str, char **env_var)
 	int i;
 	t_flags flags;
 	int qte;
-	//print_2d_array(str);
+	int	print_f;
+
+
 	i = 1;
+	print_f = 0;
 	qte = 0;
 	flags.newl_flag = 0;
 	if (str[i])
@@ -124,11 +143,38 @@ void echo(char **str, char **env_var)
 		i = n_flag_cmp(str, &flags);
 		while (str[i] != NULL)
 		{
+			print_f = 0;
 			if (str[i][0] == 39 || str[i][0] == 34)
 				qte = str[i][0];
 			if (ft_strchr(str[i], '>') || ft_strchr(str[i], '<') || ft_strchr(str[i], '|'))
-				break;
-			print(str[i], env_var, &qte);
+			{
+				if (ft_strchr(str[i], '>'))
+				{
+					if (!ft_strcmp(str[i], ">") || !ft_strcmp(str[i], ">>"))
+					{
+						print_f = 1;
+						break;
+					}
+				}
+				else if (ft_strchr(str[i], '<'))
+				{
+					if (!ft_strcmp(str[i], "<") || !ft_strcmp(str[i], "<<"))
+					{
+						print_f = 1;
+						break;
+					}
+				}
+				else if (ft_strchr(str[i], '|'))
+				{
+					if (!ft_strcmp(str[i], "|"))
+					{
+						print_f = 1;
+						break;
+					}
+				}
+			}
+			if (!print_f)
+				print(str[i], env_var, &qte);
 			i++;
 			if (str[i] != NULL)
 				ft_putchar_fd(' ', 1);

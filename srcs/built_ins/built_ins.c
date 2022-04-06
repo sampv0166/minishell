@@ -2,11 +2,6 @@
 
 extern t_env_var env;
 
-int cd(char *path) 
-{
-    return chdir(path);
-}
-
 /*
 TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 * echo -n -n -nnnn -nnnnm
@@ -53,8 +48,8 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 		return (export(pa_tokens->cmd, env.env_var));
 	if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
 		return (env_var(env.env_var));
-	// if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
-	// 	return (cd(pa_tokens->cmd));
+	if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
+		return (cd(pa_tokens->cmd));
 	if (ft_strcmp(pa_tokens->cmd[0], "unset") == 0)
 		return (unset(pa_tokens->cmd, env.env_var));
 	if (ft_strcmp(pa_tokens->cmd[0], "pwd") == 0)

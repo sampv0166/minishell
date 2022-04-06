@@ -9,14 +9,17 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/executor/executor.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
+		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/signal_handling.c \
 		srcs/utils/ft_putstr_2d.c \
 		srcs/built_ins/echo.c \
+		srcs/built_ins/cd.c \
 		srcs/built_ins/export.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \
+		srcs/built_ins/unset.c \
 		srcs/built_ins/exit.c \
 		srcs/utils/free_functions.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c \
@@ -34,6 +37,7 @@ CC = gcc -ggdb
 
 #CFLAGS = -Wall -Wextra -Werror
 R_FLAG = -lreadline 
+#R_FLAG = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 # CFLAGS = -Wall -Wextra -Werror
 
