@@ -1,5 +1,3 @@
-// #include "../../includes/mini_shell.h"
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,68 +19,178 @@ typedef struct	s_info
 	int	slash;
 }				t_info;
 
-int	chge_dir(char *path)
+char	*tilde_dir(void)
 {
-	int	i;
-	int	count;
+	int		count;
+	char	s[1000];
+	int		i;
+	char	*tmp;
+
+	tmp = malloc(5);
+	count = 0;
+	while (count != 2)
+	{
+		count = 0;
+		i = 0;
+		free(tmp);
+		tmp = strdup(getcwd(s, 1000));
+		while (tmp[i])
+		{
+			if (tmp[i] == '/')
+				count++;
+			i++;
+		}
+		if (count > 2)
+		{
+			if (chdir(".."))
+				break;
+		}
+		else if (!strcmp(tmp, "/home"))
+		{
+			if (chdir("student42abudhabi"))
+				break;
+		}
+		else if (!strcmp(tmp, "/"))
+		{
+			if (chdir("home"))
+				break;
+		}
+	}
+	if (count != 2)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	return (tmp);
+}
+
+char	*slash_dir(void)
+{
+	int		count;
+	char	s[1000];
+	int		i;
+	char	*tmp;
+
+	tmp = calloc(1, 5);
+	count = 0;
+	while (count != 1 || (strlen(tmp) != 1))
+	{
+		count = 0;
+		i = 0;
+		free(tmp);
+		tmp = strdup(getcwd(s, 1000));
+		while (tmp[i])
+		{
+			if (tmp[i] == '/')
+				count++;
+			i++;
+		}
+		if (count > 1)
+		{
+			if (chdir(".."))
+				break;
+		}
+		else if (!strcmp(tmp, "/home"))
+		{
+			if (chdir(".."))
+				break;
+		}
+	}
+	if (count != 1 || (strcmp(tmp, "/") && strcmp(tmp, "//")))
+	{
+		free(tmp);
+		return (NULL);
+	}
+	return (tmp);
+}
+
+int	chge_dir(char *path, char *pwd)
+{
+	int		i;
+	int		count;
 	char	*tmp;
 	char	s[1000];
+	char	*old_pwd;
 
 	i = 0;
 	count = 0;
-	tmp = malloc(sizeof(char) * 5);
+	tmp = malloc(5);
+	if (pwd != NULL)
+		pwd = strdup(getcwd(s, 1000));
 	if (!strcmp(path, "~"))
 	{
-		while (count != 2)
+		free(tmp);
+		tmp = tilde_dir();
+		if (tmp != NULL)
 		{
-			count = 0;
-			i = 0;
-			free(tmp);
-			tmp = strdup(getcwd(s, 1000));
-			while (tmp[i])
-			{
-				if (tmp[i] == '/')
-					count++;
-				i++;
-			}
-			printf("Count: %d\tDir: %s\n", count, tmp);
-			if (count != 2)
-				chdir("..");
+			old_pwd = strdup(pwd);
+			free(pwd);
+			pwd = strdup(getcwd(s, 1000));
+		}
+	}
+	else if (!strcmp(path, "//"))
+	{
+		free(tmp);
+		tmp = slash_dir();
+		if (tmp != NULL)
+		{
+			old_pwd = strdup(pwd);
+			free(pwd);
+			pwd = strdup("//");
+		}
+	}
+	else if (!strcmp(path, "/"))
+	{
+		free(tmp);
+		tmp = slash_dir();
+		if (tmp != NULL)
+		{
+			old_pwd = strdup(pwd);
+			free(pwd);
+			pwd = strdup(getcwd(s, 1000));
 		}
 	}
 	free(tmp);
+	printf("%s\n", pwd);
+	free(pwd);
+	return (0);
 }
 
 int	cd(char **str)
 {
 	int	i;
+	char	*pwd;
+	char	*old_pwd;
 	char	s[1000];
-	int		j;
-	int		count;
 
 	i = 0;
-	j = 0;
-	count = 0;
-	// while (str[i] != NULL)
-	// {
-	// 	if (str[i][0] == '~' && str[i][1] == '/')
-	// 	{
-	// 		chge_dir("~");
-	// 	}
-	// 	i++;
-	// }
+	pwd = strdup(getcwd(s, 1000));
+	while (str[i] != NULL)
+	{
+		if (!strcmp(str[i], "//") || !strcmp(str[i], "/"))
+		{
+			if (!chdir("/"))
+			{
+				if (!strcmp(str[i], "//"))
+					chge_dir("//", pwd);
+				else if (!strcmp(str[i], "/"))
+					chge_dir("/", pwd);
+			}
+			return (0);
+		}
+		else if (!chdir(str[i]))
+		{
+			chdir("..");
+			return (chge_dir(str[i], NULL));
+		}
+		else if (str[i][0] == '~')
+			chge_dir("~", NULL);
+		else
+		{
+			printf("cd: %s: Not a directory\n", str[i]);
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }
-
-// int main(void)
-// {
-// 	char	**str;
-
-// 	str = (char **)malloc(sizeof(char *) * 5);
-// 	str[0] = strdup("~/Desktop/built-ins");
-// 	str[1] = NULL;
-// 	cd(str);
-// 	free(str[0]);
-// 	free(str);
-// 	return (0);
-// }

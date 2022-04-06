@@ -26,7 +26,7 @@ char *fetch_echo(char *str, char **env_var)
 			while (tmp[j] != '=' && tmp[j] != '\0')
 				j++;
 			tmp[j] = '\0';
-			if (!ft_strcmp(tmp, lk_up));
+			if (!ft_strcmp(tmp, lk_up))
 				break;
 		}
 		i++;
@@ -62,6 +62,7 @@ static void print(char *str, char **env_var, int *qte)
 				val = ft_itoa(env.stat_code);
 				ft_putstr_fd(val, 1);
 				free(val);
+				i += 2;
 			}
 			else if (ft_isenv(str[i + 1]))
 			{

@@ -54,7 +54,7 @@ void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)
     pa_info->len = get_count(tokens);
     pa_info->arr = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what
     pa_info->arr1 = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what  
-    pa_info->str = '\0';
+    pa_info->str = ((char *)0);
     pa_info->len = 0;
 }
 
