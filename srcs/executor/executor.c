@@ -123,7 +123,7 @@ static char *get_abs_cmd(char *cmd)
 
 void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
 {
-    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out)
+    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd)
     {    
         if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out)
         {
@@ -133,17 +133,16 @@ void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
     }
     if (pa_tokens[i].pipe == 1)
     {
- 
         close(pa_tokens[i].fd_in);
-
-        if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-             exit(1);          
+            if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
+                exit(1);          
         if (pa_tokens[i].fd_out != STDOUT_FILENO && (pa_tokens[i].is_out || pa_tokens[i].is_out_appnd))
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
         }
     }
+
 }
 
 void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
