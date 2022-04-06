@@ -4,7 +4,7 @@ extern t_env_var env;
 
 static bool is_redir(t_pars_tokens *pa_tok, int i)
 {
-    if (pa_tok[i].is_in == 1 || pa_tok[i].is_out == 1 || pa_tok[i].here_doc == 1 || pa_tok[i].pipe)
+    if (pa_tok[i].is_in == 1 || pa_tok[i].is_out == 1 || pa_tok[i].here_doc == 1 || pa_tok[i].pipe || pa_tok[i].is_out_appnd == 1 )
         return (true);
     return (false);
 }
@@ -125,11 +125,16 @@ void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
 {
     if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd)
     {    
-        if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out)
+        if (pa_tokens[i].fd_out != STDOUT_FILENO)
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
         }
+        // if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out_appnd)
+        // {
+        //     if (dup2(pa_tokens[i].is_out_appnd, STDOUT_FILENO) == -1)
+        //         exit(1);   
+        // }
     }
     if (pa_tokens[i].pipe == 1)
     {
@@ -259,7 +264,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
         if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
     }
-    if(pa_tokens[i].is_out)
+    if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
     {
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
@@ -288,6 +293,14 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
 
 void close_fds(t_pars_tokens *pa_tokens, int i)
 {
+    // if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd)
+    // {    
+    //     if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out)
+    //     {
+    //         if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
+    //             exit(1);   
+    //     }
+    // }
     if (pa_tokens[i].pipe == 1)
     {
         close(pa_tokens[i].fd_in);
