@@ -94,6 +94,7 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 
 int	is_inbuilt(char *cmd)
 {
+
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	if (ft_strcmp(cmd, "export") == 0)

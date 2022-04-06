@@ -24,6 +24,9 @@ SYNTAX ERROR TEST
 |
 ls -la ||||||
 ls -la >>> d
+ls>
+ls>>>
+
 
 ECHO TESTS CASES
 --------------------------

@@ -96,6 +96,7 @@ static char *get_abs_cmd(char *cmd)
     char *dup;
     int i;
     init(&path_split);
+    
     i = 0;
     while (path_split[i])
     {
@@ -328,13 +329,14 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
             return (EXIT_FAILURE);
         }
     }
-
-    if (is_inbuilt(pa_tokens->cmd[0]))
-	    return (handle_inbuilt_redir(pa_tokens, i));  ; 
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+    if (is_inbuilt(pa_tokens[i].cmd_splitted[0]))
+	    return (handle_inbuilt_redir(pa_tokens, i));
+    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd_splitted[0]);
     if(abs_cmd_path == NULL)
     {
-        if(is_inbuilt(pa_tokens[i].cmd[0]))
+        if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
+            return (0);
+        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>')
             return (0);
         else
             printf (":::command not found\n");

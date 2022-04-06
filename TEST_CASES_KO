@@ -1,6 +1,7 @@
 WAIT FOR THE USER TO INPUT COMMAND AFTER PIPE AND EXECUTE
 ----------------------------------------------------------
 ls -al |
+ls -la >> > filename
 
 THIS SHOULD BE A SYTAX ERROR
 ------------------------------
