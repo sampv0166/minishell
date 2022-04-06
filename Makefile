@@ -34,14 +34,14 @@ OBJS = ${SRCS:.c=.o}
 RM = rm -rf
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -lreadline
 # R_FLAG = -lreadline 
-CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+# CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 ${NAME}:	
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./
-			${CC} ${CFLAGS} ${SRCS} libft.a -o ${NAME}
+			${CC} ${SRCS} libft.a ${CFLAGS} -o ${NAME}
 		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
