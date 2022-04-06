@@ -1,11 +1,11 @@
 WAIT FOR THE USER TO INPUT COMMAND AFTER PIPE AND EXECUTE
 ----------------------------------------------------------
-ls -al |
+ls -al | (segfault)
 ls -la >> > filename
 
 THIS SHOULD BE A SYTAX ERROR
 ------------------------------
-ls -la >>> d
+
 
 SEGFAULTS
 ------------
@@ -13,5 +13,3 @@ SEGFAULTS
 
 ECHO TESTS_KO
 -------------------
-echo "bip | bip ; coyotte > < \" "
-echo $USER$var\$USER$USER\$USERtest$USER

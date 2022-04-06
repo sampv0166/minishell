@@ -95,6 +95,11 @@ static char *get_abs_cmd(char *cmd)
     char **path_split;
     char *dup;
     int i;
+    
+    if (access(cmd, F_OK) == 0)
+    {
+        return (ft_strdup(cmd));
+    }
     init(&path_split);
     
     i = 0;

@@ -5,6 +5,14 @@ $
 $LESS$VAR
 ls | exit
 sleep 5 | exit
+ctrl-\
+ctrl-C
+l^Ds
+
+WITH ABSOLUTE PATH
+-------------------
+/bin/ls
+
 
 PIPE AND REDIRECTION TESTS
 ----------------------------------
@@ -16,6 +24,8 @@ ls -la | grep "117" > hi
 ls >> hi
 ls -la | wc -l | wc -l >> hi
 cat Makefile | grep pr | head -n 5 
+>file
+ ls -la | wc -l >> hi | cat >> 7 > j
 
 SYNTAX ERROR TEST
 ----------------------------
@@ -27,7 +37,6 @@ ls -la >>> d
 ls>
 ls>>>
 
-
 ECHO TESTS CASES
 --------------------------
 echo "\s" ; echo "\\s"
@@ -38,4 +47,6 @@ echo "'abc'"
 echo "" bonjour
 echo[TAB]a
 echo\ a
+echo "bip | bip ; coyotte > < \" "
+echo $USER$var\$USER$USER\$USERtest$USER
 

@@ -63,6 +63,5 @@ int free_everything()
         i++;
     }
     free(env.pa_tkns);
-    free((void *) env.pa_info);
     return (0);
 }

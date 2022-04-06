@@ -74,7 +74,7 @@ void create_cmds(t_parser_info *pa_info, char **tokens)
 void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     int i;
-    i = 0;
+    i = 2;
     
     while (i < pa_info->pipes_count)
     {

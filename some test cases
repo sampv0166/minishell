@@ -5,20 +5,16 @@ cat Makefile | grep pr | head -n 5 | cd file_not_exit
 >a cat <b >>c 
 >a ls >b >>c >d
 >a ls <machin >>c >d     avec machin n'exite pas
->file
+
 cat -e > test1 < test2
 cat < test
 echo 2 > out1 >> out2
 echo 2 >> out1 > out2
 echo bonjour > test\ 1
 echo test > file test1
+
 not_cmd bonjour > salut
-ctrl-\
-ctrl-C
 
-
-
- ls -la | wc -l >> hi | cat >> 7 > j
  echo bonjour ; |
  echo bonjour | |
  |
@@ -103,7 +99,7 @@ ctrl-C
  # write something then press ctrl+d
  # write something then press ctrl+\
  echo $?
- l^Ds
+ 
  echo |
  | echo
  sort | ls # check output order
