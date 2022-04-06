@@ -48,6 +48,7 @@ typedef struct	s_flags
 */
 
 void	ft_putstr_2d(char **str);
+int		ft_isenv(char c);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strstr(char *str, char *to_find);
 t_pars_tokens *parser (char **tokens);
@@ -58,8 +59,8 @@ t_pars_tokens *parser (char **tokens);
 ** =============================================================================
 */
 
-char	*fetch_echo(char *str, char **env);
-int     		cd(char *path) ;
+char			*fetch_echo(char *str, char **env);
+int				cd(char **str);
 int				pwd(char **str, char **env);
 int				env_var(char **env);
 void			echo(char **str, char **env);

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static long int	ft_atoi_atoi(char *str, int sign, int *index)
 {
