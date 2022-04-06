@@ -10,7 +10,6 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
         {
             split_info->len = 0;
             create_out_redirection_character(arr, split_info, tokens);
-            printf("\n%c\n",arr[split_info->i][split_info->j]);
             create_in_redirection_character(arr, split_info, tokens);
             create_pipe_redirection_character(arr, split_info, tokens);
             while(arr[split_info->i][split_info->j] && arr[split_info->i][split_info->j] != '>' && arr[split_info->i][split_info->j] != '<' && arr[split_info->i][split_info->j] != '|') 
@@ -125,38 +124,38 @@ int input_to_tokens(char *input)
     pa_tkns = parser(tokens);
      
     free_split_info(si, si2, tokens);
-    int y;
-    y = 0;
-       while (y < env.count)
-    {
-        int j;
-        j = 0;
-        printf("\n struct = %d\n", y);
-        printf("\n-------------cmd---------------------------\n");
-        while (pa_tkns[y].cmd[j])
-        {
-            printf ("%s ",pa_tkns[y].cmd[j]);
-            j++;
-        }
-        printf("\n-------------cmd_splitted---------------------------\n");
-        j = 0;
-        while (pa_tkns[y].cmd_splitted[j])
-        {
-            printf ("%s ",pa_tkns[y].cmd_splitted[j]);
-            j++;
-        }
-        printf("\n-------------cmd_full---------------------------\n");
-        printf ("%s ",pa_tkns[y].cmd_full);
-        printf("\npipe = %d\n", pa_tkns[y].pipe);
-        printf("\npipe_read_end = %d\n", pa_tkns[y].pipe_read_end);
-        printf("\npipe_write_end = %d\n", pa_tkns[y].pipe_write_end);
-        printf("\nis_out = %d\n", pa_tkns[y].is_out);
-        printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
-        printf("\nis_in = %d\n", pa_tkns[y].is_in);
-        printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
-        printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
-        y++;
-    }
+    // int y;
+    // y = 0;
+    //    while (y < env.count)
+    // {
+    //     int j;
+    //     j = 0;
+    //     printf("\n struct = %d\n", y);
+    //     printf("\n-------------cmd---------------------------\n");
+    //     while (pa_tkns[y].cmd[j])
+    //     {
+    //         printf ("%s ",pa_tkns[y].cmd[j]);
+    //         j++;
+    //     }
+    //     printf("\n-------------cmd_splitted---------------------------\n");
+    //     j = 0;
+    //     while (pa_tkns[y].cmd_splitted[j])
+    //     {
+    //         printf ("%s ",pa_tkns[y].cmd_splitted[j]);
+    //         j++;
+    //     }
+    //     printf("\n-------------cmd_full---------------------------\n");
+    //     printf ("%s ",pa_tkns[y].cmd_full);
+    //     printf("\npipe = %d\n", pa_tkns[y].pipe);
+    //     printf("\npipe_read_end = %d\n", pa_tkns[y].pipe_read_end);
+    //     printf("\npipe_write_end = %d\n", pa_tkns[y].pipe_write_end);
+    //     printf("\nis_out = %d\n", pa_tkns[y].is_out);
+    //     printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
+    //     printf("\nis_in = %d\n", pa_tkns[y].is_in);
+    //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
+    //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
+    //     y++;
+    // }
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }

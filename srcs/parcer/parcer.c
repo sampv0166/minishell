@@ -33,7 +33,9 @@ void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
     if(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>')
+    {     
         pa_tkns[pa_info->j].is_out_appnd = 1; 
+    }
     else if(tokens[pa_info->i][0] == '>')
         pa_tkns[pa_info->j].is_out = 1;
     if(tokens[pa_info->i][0] == '<' && tokens[pa_info->i][1] == '<')
