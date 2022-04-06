@@ -28,7 +28,6 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/input_to_tokens/split_to_tokens_utils_2.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
 		srcs/parcer/parcer_utils.c \
-		srcs/built_ins/unset.c 
 		
 OBJS = ${SRCS:.c=.o}
 

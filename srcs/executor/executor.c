@@ -311,8 +311,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     pid_t pid;
     if (is_redir(pa_tokens, i))
     {
-        printf("here");
-        if(!handle_redirections(pa_tokens, i))
+        if(handle_redirections(pa_tokens, i))
         {    
             return (EXIT_FAILURE);
         }
