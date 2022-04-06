@@ -9,9 +9,7 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
         while (arr[split_info->i][split_info->j])
         {
             split_info->len = 0;
-            create_out_redirection_character(arr, split_info, tokens);
-            printf("\n%c\n",arr[split_info->i][split_info->j]);
-            if(arr[split_info->i][split_info->j] == '>')        
+            create_out_redirection_character(arr, split_info, tokens);   
             create_in_redirection_character(arr, split_info, tokens);
             create_pipe_redirection_character(arr, split_info, tokens);
             while(arr[split_info->i][split_info->j] && arr[split_info->i][split_info->j] != '>' && arr[split_info->i][split_info->j] != '<' && arr[split_info->i][split_info->j] != '|') 
@@ -158,6 +156,7 @@ int input_to_tokens(char *input)
     //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
     //     y++;
     // }
+
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }
