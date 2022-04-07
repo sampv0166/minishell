@@ -50,7 +50,7 @@ void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **toke
 {
     pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);
     pa_info->str = ft_strjoin (pa_info->str, tokens[pa_info->i]);
-    pa_info->arr1[pa_info->len] = '\0';
+    pa_info->arr1[pa_info->len] = ((char *)0);
     pa_info->len++;
     pa_info->i++;
     pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;

@@ -48,7 +48,8 @@ int free_env()
 {
     ft_free_str_array(&env.env_var);
     if (env.pwd)
-        free_me (&env.pwd);          
+        free_me (&env.pwd); 
+    return (0);         
 }
 
 int free_everything()
