@@ -26,7 +26,7 @@ char	**trimmer(char **str)
 	while (str[i] != NULL)
 	{
 		k = 0;
-		trim[i] = strdup(str[i]);
+		trim[i] = ft_strdup(str[i]);
 		while (trim[i][k] != '=')
 			k++;
 		trim[i][k] = '\0';
@@ -44,13 +44,13 @@ char	**sorting(char **trim)
 	i = 0;
 	while (trim[i + 1] != NULL)
 	{
-		if (strcmp(trim[i], trim[i + 1]) > 0)
+		if (ft_strcmp(trim[i], trim[i + 1]) > 0)
 		{
 			temp = ft_strdup(trim[i]);
 			free(trim[i]);
 			trim[i] = ft_strdup(trim[i + 1]);
 			free(trim[i + 1]);
-			trim[i + 1] = strdup(temp);
+			trim[i + 1] = ft_strdup(temp);
 			free(temp);
 			i = 0;
 		}
@@ -184,7 +184,7 @@ char	**declare_s(char **str)
 		j = 0;
 		k = 0;
 		str_len = ft_strlen(value[i]);
-		final[i] = ft_calloc(strlen(value[i]) + 3, sizeof(char));
+		final[i] = ft_calloc(ft_strlen(value[i]) + 3, sizeof(char));
 		if (value[i][j] == '=')
 		{
 			final[i][k] = value[i][j];
@@ -370,7 +370,7 @@ int	export(char **str, char **env)
 	char	**trim;
 	char	**res;
 
-	if (str[1] == NULL || strchr(str[1], '>') || strchr(str[1], '<') || strchr(str[1], '|'))
+	if (str[1] == NULL || ft_strchr(str[1], '>') || ft_strchr(str[1], '<') || ft_strchr(str[1], '|'))
 	{
 		trim = trimmer(env);
 		sorting(trim);

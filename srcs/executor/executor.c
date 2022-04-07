@@ -129,18 +129,18 @@ static char *get_abs_cmd(char *cmd)
 
 void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
 {
-    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd)
+    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd || pa_tokens[i].is_in)
     {    
         if (pa_tokens[i].fd_out != STDOUT_FILENO)
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
         }
-        // if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out_appnd)
-        // {
-        //     if (dup2(pa_tokens[i].is_out_appnd, STDOUT_FILENO) == -1)
-        //         exit(1);   
-        // }
+        if (pa_tokens[i].is_in)
+        {
+            if (dup2(pa_tokens[i].fd_in, STDIN_FILENO) == -1)
+                exit(1);   
+        }
     }
     if (pa_tokens[i].pipe == 1)
     {
@@ -153,7 +153,6 @@ void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
                 exit(1);   
         }
     }
-
 }
 
 void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
@@ -218,7 +217,6 @@ int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tk
 
     i = 0;
     fd = 0;
-
     while (cmd_split[i])
     {
         if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1 && cmd_split[++i])

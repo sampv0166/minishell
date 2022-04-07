@@ -27,6 +27,8 @@ cat Makefile | grep pr | head -n 5
 >file
  ls -la | wc -l >> hi | cat >> 7 > j
 
+ wc -l < filename
+
 SYNTAX ERROR TEST
 ----------------------------
 >>
@@ -36,6 +38,7 @@ ls -la ||||||
 ls -la >>> d
 ls>
 ls>>>
+
 
 ECHO TESTS CASES
 --------------------------
@@ -49,4 +52,3 @@ echo[TAB]a
 echo\ a
 echo "bip | bip ; coyotte > < \" "
 echo $USER$var\$USER$USER\$USERtest$USER
-

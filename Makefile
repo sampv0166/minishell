@@ -2,7 +2,7 @@ RED = \033[0;31m
 BLACK = \033[0;30m
 WHITE = \033[1;37m
 
-EXEC = minishell
+NAME = minishell
 
 SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 		srcs/env/env_vars.c \
@@ -32,52 +32,53 @@ SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
-CC = gcc -ggdb
+CC = gcc
 
-#CFLAGS = -Wall -Wextra -Werror
-R_FLAG = -lreadline 
-#R_FLAG = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+CFLAGS = -lreadline
+# R_FLAG = -lreadline 
+# CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-# CFLAGS = -Wall -Wextra -Werror
+${NAME}:	
+			${MAKE} all -C libft/
+			cp ./libft/libft.a ./
+			${CC} ${SRCS} libft.a ${CFLAGS} -o ${NAME}
+		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+		@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
+		@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
+		@echo "WWWWWWWWWWNO:.${BLACK}TTTTTTTTTTT${RED}...,::c:,..'''''.....,;::;,...${BLACK}TTTTTTTTTTT${WHITE}.:ONWWWWWWWWWW"
+		@echo "WWWWWWWWWKc.${BLACK}TTTTTTTTTT${RED}..,,:cccc:;,,''''.'''''',,,;,,'';;..${BLACK}TTTTTTTTTT${WHITE}.cKWWWWWWWWW"
+		@echo "WWWWWWWNk'${BLACK}TTTTTTTTTT${RED}.',,,;cccc;.${BLACK}TTTTTTTTTTTTTTTTTT${RED}...';c:;'.${BLACK}TTTTTTTTTT${WHITE}'kNWWWWWWW"
+		@echo "WWWWWWXl.${BLACK}TTTTTTTTTT${RED}.,'.,cccccc:'.......${BLACK}TTTTTTTTTTTTTTT${RED}.',,,,.${BLACK}TTTTTTTTTT${WHITE}.lXWWWWWW"
+		@echo "WWWWW0;${BLACK}TTTTTTTTTT${RED}.,,..,cccccccccccc::::::::;;;,,,'...${BLACK}TTTT${RED}..';,.${BLACK}TTTTTTTTTT${WHITE};0WWWWW"
+		@echo "WWWWO,${BLACK}TTTTTTTTTTT${RED}.;'${BLACK}T${RED}.:ccccccccccccccccccccccccccccc:;'.${BLACK}TTT${RED}.;;.${BLACK}TTTTTTTTTTT${WHITE},OWWWW"
+		@echo "WWWO'${BLACK}TTTTTTTTTTTTT${RED}.,,;ccccccccccccccccccccccccccccccccc:'..,,.${BLACK}TTTTTTTTTTTTT${WHITE}'OWWW"
+		@echo "WW0,${BLACK}TTTTTTTTTTTTTTTT${RED}.,ccccccccccccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTT${WHITE},0WW"
+		@echo "${WHITE}WK:${BLACK}TTTTTTTTTTTTTTTTTTT${RED}.,cc;;::ccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTTTTT${WHITE}:KW"
+		@echo "No.${BLACK}TTTTTTTTTTTTT${WHITE}.',;;:;${RED}''','......'''''''''',,;:ccccc:,''${WHITE};:;;,'.${BLACK}TTTTTTTTTTTTT${WHITE}.oN"
+		@echo "0,${BLACK}TTT${WHITE}.';:ldxkl,cONNWWWWXkl${RED};,,..${BLACK}TTTTTTTTTTTTTTTT${RED}':cc:;${WHITE};lkXWWWWNNOc,lkxdl:;'.${BLACK}TTT${WHITE},0"
+		@echo "d..:xKNWWWWWWWNNWWWWWWWWWWXkoc${RED}:;,'............';::${WHITE}cokXWWWWWWWWWWNNWWWWWWWNKx:..d"
+		@echo "dl0WWWWWWWWWWWWWWWWWWWWWWWWWWXOdocc${RED};,'''''',:${WHITE}ccldOXWWWWWWWWWWWWWWWWWWWWWWWWWW0ld"
+		@echo "NNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWX0xl${RED};..${BLACK}TT${RED}..;${WHITE}ox0XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNN"
+		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKxc${RED};;${WHITE}ckKNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+		@echo "                                                                        "
+		@echo "     ███    ███ ██ ███    ██ ██       ███████ ██   ██ ███████ ██      ██     " 
+		@echo "     ████  ████ ██ ████   ██ ██       ██      ██   ██ ██      ██      ██     " 
+		@echo "     ${RED}██ ████ ██ ██ ██ ██  ██ ██ █████ ███████ ███████ █████   ██      ██     " 
+		@echo "     ██  ██  ██ ██ ██  ██ ██ ██       ${RED}     ██ ██   ██ ██      ██      ██     " 
+		@echo "     ██      ██ ██ ██   ████ ██       ${RED}███████ ██   ██ ███████ ███████ ███████"
+		@echo "     ${WHITE}                                                                        "
+		@cat authors
 
-all:
-		${MAKE} all -C libft/
-		cp ./libft/libft.a ./
-		${CC} ${SRCS} libft.a ${R_FLAG} -o ${EXEC}
-	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
-	@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
-	@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
-	@echo "WWWWWWWWWWNO:.${BLACK}TTTTTTTTTTT${RED}...,::c:,..'''''.....,;::;,...${BLACK}TTTTTTTTTTT${WHITE}.:ONWWWWWWWWWW"
-	@echo "WWWWWWWWWKc.${BLACK}TTTTTTTTTT${RED}..,,:cccc:;,,''''.'''''',,,;,,'';;..${BLACK}TTTTTTTTTT${WHITE}.cKWWWWWWWWW"
-	@echo "WWWWWWWNk'${BLACK}TTTTTTTTTT${RED}.',,,;cccc;.${BLACK}TTTTTTTTTTTTTTTTTT${RED}...';c:;'.${BLACK}TTTTTTTTTT${WHITE}'kNWWWWWWW"
-	@echo "WWWWWWXl.${BLACK}TTTTTTTTTT${RED}.,'.,cccccc:'.......${BLACK}TTTTTTTTTTTTTTT${RED}.',,,,.${BLACK}TTTTTTTTTT${WHITE}.lXWWWWWW"
-	@echo "WWWWW0;${BLACK}TTTTTTTTTT${RED}.,,..,cccccccccccc::::::::;;;,,,'...${BLACK}TTTT${RED}..';,.${BLACK}TTTTTTTTTT${WHITE};0WWWWW"
-	@echo "WWWWO,${BLACK}TTTTTTTTTTT${RED}.;'${BLACK}T${RED}.:ccccccccccccccccccccccccccccc:;'.${BLACK}TTT${RED}.;;.${BLACK}TTTTTTTTTTT${WHITE},OWWWW"
-	@echo "WWWO'${BLACK}TTTTTTTTTTTTT${RED}.,,;ccccccccccccccccccccccccccccccccc:'..,,.${BLACK}TTTTTTTTTTTTT${WHITE}'OWWW"
-	@echo "WW0,${BLACK}TTTTTTTTTTTTTTTT${RED}.,ccccccccccccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTT${WHITE},0WW"
-	@echo "${WHITE}WK:${BLACK}TTTTTTTTTTTTTTTTTTT${RED}.,cc;;::ccccccccccccccccccccccccc:,.${BLACK}TTTTTTTTTTTTTTTTTTT${WHITE}:KW"
-	@echo "No.${BLACK}TTTTTTTTTTTTT${WHITE}.',;;:;${RED}''','......'''''''''',,;:ccccc:,''${WHITE};:;;,'.${BLACK}TTTTTTTTTTTTT${WHITE}.oN"
-	@echo "0,${BLACK}TTT${WHITE}.';:ldxkl,cONNWWWWXkl${RED};,,..${BLACK}TTTTTTTTTTTTTTTT${RED}':cc:;${WHITE};lkXWWWWNNOc,lkxdl:;'.${BLACK}TTT${WHITE},0"
-	@echo "d..:xKNWWWWWWWNNWWWWWWWWWWXkoc${RED}:;,'............';::${WHITE}cokXWWWWWWWWWWNNWWWWWWWNKx:..d"
-	@echo "dl0WWWWWWWWWWWWWWWWWWWWWWWWWWXOdocc${RED};,'''''',:${WHITE}ccldOXWWWWWWWWWWWWWWWWWWWWWWWWWW0ld"
-	@echo "NNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWX0xl${RED};..${BLACK}TT${RED}..;${WHITE}ox0XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNN"
-	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKxc${RED};;${WHITE}ckKNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
-	@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
-	@echo "                                                                        "
-	@echo "     ███    ███ ██ ███    ██ ██       ███████ ██   ██ ███████ ██      ██     " 
-	@echo "     ████  ████ ██ ████   ██ ██       ██      ██   ██ ██      ██      ██     " 
-	@echo "     ${RED}██ ████ ██ ██ ██ ██  ██ ██ █████ ███████ ███████ █████   ██      ██     " 
-	@echo "     ██  ██  ██ ██ ██  ██ ██ ██       ${RED}     ██ ██   ██ ██      ██      ██     " 
-	@echo "     ██      ██ ██ ██   ████ ██       ${RED}███████ ██   ██ ███████ ███████ ███████"
-	@echo "     ${WHITE}                                                                        "
-	@cat authors
+all:	${NAME}
 
 clean:
 		${RM} libft.a
+		${RM} ${OBJS}
 		${MAKE} clean -C ./libft/
 
 fclean:	clean
-		${RM} ${EXEC}
+		${RM} ${NAME}
 		${MAKE} fclean -C ./libft/
 
 re:	fclean all
