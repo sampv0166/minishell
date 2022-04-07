@@ -4,7 +4,8 @@ WHITE = \033[1;37m
 
 NAME = minishell
 
-SRCS = 	srcs/main.c srcs/built_ins/built_ins.c \
+SRCS = 	srcs/main.c \
+		srcs/built_ins/built_ins.c \
 		srcs/env/env_vars.c \
 		srcs/executor/executor.c \
 		srcs/input_to_tokens/input_to_tokens.c \
@@ -38,10 +39,10 @@ CFLAGS = -lreadline
 # R_FLAG = -lreadline 
 # CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-${NAME}:	
+${NAME}:	$(OBJS)
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./
-			${CC} ${SRCS} libft.a ${CFLAGS} -o ${NAME}
+			${CC} ${OBJS} libft.a ${CFLAGS} -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include  -o ${NAME}
 		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWW"
