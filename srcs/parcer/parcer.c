@@ -28,8 +28,42 @@ void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         pa_info->j++;
     }
 }
+static int	exit_close_fds(int fd1, int fd2, int exit_status)
+{
+	if (fd1 != -1)
+		close(fd1);
+	if (fd1 != -1)
+		close(fd2);
+	return (exit_status);
+}
 
+int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tkns)
+{
+    int		end[2];
+    char *heredoc;
+    char *buf;
 
+    heredoc = NULL;
+    if (pipe(end) == -1)
+		return (ft_perror(EXIT_FAILURE, "pipe error"));    
+	heredoc = cmd_split[pa_info->i + 1];
+	if (heredoc == NULL)
+		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));
+    //printf("%s",heredoc);    
+    while (true)
+	{
+		buf = readline("> ");
+		if (buf == NULL)
+			return (exit_close_fds(end[1], -1, EXIT_SUCCESS));
+		if (ft_strcmp(buf, heredoc) == 0)
+			break ;
+        ft_putstr_fd(buf, end[1]);
+        ft_putchar_fd('\n', end[1]);
+		free(buf);
+	}
+    close(end[1]);
+    pa_tkns[pa_info->j].fd_in = end[0];
+}
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
     if(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>')
@@ -39,7 +73,10 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
     else if(tokens[pa_info->i][0] == '>')
         pa_tkns[pa_info->j].is_out = 1;
     if(tokens[pa_info->i][0] == '<' && tokens[pa_info->i][1] == '<')
+    {
+        read_here_doc(tokens, pa_info,pa_tkns);
         pa_tkns[pa_info->j].here_doc = 1;
+    }
     else if(tokens[pa_info->i][0] == '<')
         pa_tkns[pa_info->j].is_in = 1; 
 }

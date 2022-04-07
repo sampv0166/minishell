@@ -129,14 +129,14 @@ static char *get_abs_cmd(char *cmd)
 
 void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
 {
-    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd || pa_tokens[i].is_in)
+    if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd || pa_tokens[i].is_in ||  pa_tokens[i].here_doc)
     {    
         if (pa_tokens[i].fd_out != STDOUT_FILENO)
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
                 exit(1);   
         }
-        if (pa_tokens[i].is_in)
+        if (pa_tokens[i].is_in || pa_tokens[i].here_doc)
         {
             if (dup2(pa_tokens[i].fd_in, STDIN_FILENO) == -1)
                 exit(1);   
@@ -190,25 +190,7 @@ int ft_perror(int exit_status, char *msg)
     return (exit_status);
 }
 
-void *get_file_name(char **cmd_split, int *i)
-{   
-    int j;
 
-    j = 0;
-    while (cmd_split[(*i)][j])
-    {
-        if (cmd_split[(*i)][j] == '<' && ft_strlen(cmd_split[(*i)]) == 1)
-            break ;
-        (*i)++;
-    }
-    if (cmd_split[(*i) + 1][j])
-    {
-        (*i)++;
-        return (ft_strdup(cmd_split[(*i)]));
-        (*i)++;
-    }
-    return (NULL);
-}
 
 int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 {
@@ -224,6 +206,10 @@ int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tk
             fd = open(ft_strdup(cmd_split[i]), O_RDONLY);
             if (fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file"));
+        }
+        if (cmd_split[i][0] == '<' && cmd_split[i][1] == '<' && ft_strlen(cmd_split[i]) == 2)
+        {
+            return(EXIT_SUCCESS);
         }
         i++;
     }
@@ -248,6 +234,7 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
         }
         if (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' && ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1])
         {
+              printf("sdd");  
             fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_APPEND, 0644);
             if (fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file"));
@@ -263,7 +250,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
 {
     if(pa_tokens[i].pipe)
         handle_pipes(pa_tokens,i);
-    if(pa_tokens[i].is_in)
+    if(pa_tokens[i].is_in || pa_tokens[i].here_doc)
     {
         if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);

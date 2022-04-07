@@ -156,7 +156,7 @@ int input_to_tokens(char *input)
     //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
     //     y++;
     // }
-
+   /// exit(0);
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }
