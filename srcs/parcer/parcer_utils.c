@@ -16,6 +16,7 @@ int get_pipe_len(char **tokens)
             len++;
         i++;
     }
+    return (len);
 }
 
 int get_count(char **tkns)

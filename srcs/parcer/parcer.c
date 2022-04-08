@@ -81,8 +81,6 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
         pa_tkns[pa_info->j].is_in = 1; 
 }
 
-
-
 void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
     pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);

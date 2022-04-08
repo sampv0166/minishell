@@ -326,7 +326,18 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
             return (0);
         else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>' || pa_tokens[i].cmd_splitted[0][0] == '<'  )
+        {
+            // printf("HI"); 
+            int t;
+            t = i;
+            while(pa_tokens[t].cmd_splitted[0])
+            {   
+                if(pa_tokens[t].cmd_splitted[0] == '|')
+                    break;
+                t++;
+            }    
             return (0);
+        }
         else
             printf (":::command not found\n");
             return(127);
