@@ -96,7 +96,7 @@ static char *get_abs_cmd(char *cmd)
     char *dup;
     int i;
     
-    if (access(cmd, F_OK) == 0)
+    if (access(cmd, X_OK) == 0)
     {
         return (ft_strdup(cmd));
     }
@@ -109,7 +109,7 @@ static char *get_abs_cmd(char *cmd)
         dup = ft_strdup(abs_cmd_path);
         if (abs_cmd_path == NULL)
             return (NULL);
-        if (access(abs_cmd_path, F_OK) == 0)
+        if (access(abs_cmd_path, X_OK) == 0)
         {
             ft_free_split(path_split);
             env.split = path_split;
@@ -234,7 +234,6 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
         }
         if (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' && ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1])
         {
-              printf("sdd");  
             fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_APPEND, 0644);
             if (fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file"));
@@ -326,20 +325,19 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     {
         if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
             return (0);
-        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>')
+        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>' || pa_tokens[i].cmd_splitted[0][0] == '<'  )
             return (0);
         else
             printf (":::command not found\n");
             return(127);
     }   
-    if (access(abs_cmd_path, F_OK) == 0)
+    if (access(abs_cmd_path, X_OK) == 0)
         replace_quote(pa_tokens, i);
     else
     {
         printf ("::command not found\n");
         return(127);
     }
-
     pid = fork();
     if (pid < 0)
         exit(0);
