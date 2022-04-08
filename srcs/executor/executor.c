@@ -178,8 +178,12 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
 
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
+    //char s[2][2] = {"cat", '\0'};
+    //printf("\nss ===%s\n", pa_tokens[i].cmd[0]);
+
     handle_pipe_type_one(pa_tokens, i);
     handle_pipe_type_2_3(pa_tokens, i);
+
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
 	return (env.stat_code);
 }
@@ -189,7 +193,6 @@ int ft_perror(int exit_status, char *msg)
     perror(msg);
     return (exit_status);
 }
-
 
 
 int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
@@ -321,26 +324,67 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if (is_inbuilt(pa_tokens[i].cmd_splitted[0]))
 	    return (handle_inbuilt_redir(pa_tokens, i));
     abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd_splitted[0]);
+    
     if(abs_cmd_path == NULL)
     {
         if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
             return (0);
-        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>' || pa_tokens[i].cmd_splitted[0][0] == '<'  )
+        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>' || pa_tokens[i].cmd_splitted[0][0] == '<')
         {
-            // printf("HI"); 
             int t;
-            t = i;
-            while(pa_tokens[t].cmd_splitted[0])
+            t = 0;
+            int j;
+            j = 0;
+            char *abs_path;
+            abs_path = NULL;
+            while(pa_tokens[i].cmd_splitted[t])
             {   
-                if(pa_tokens[t].cmd_splitted[0] == '|')
-                    break;
+                abs_path = get_abs_cmd(pa_tokens[i].cmd_splitted[t]);
+                if(abs_path != NULL)    
+                {
+                    if(access(abs_path, X_OK) == 0)
+                    {
+                        char **new;
+                        int len;
+                        len = 0;
+                        int ss;
+                        ss = t;
+                        while(pa_tokens[i].cmd_splitted[ss])
+                        {
+                            if(pa_tokens[i].cmd_splitted[ss][0] != '<')
+                                len++;
+                            ss++;
+                        }
+                        new = malloc(sizeof(char *) * len + 1);
+                        len = 0;
+                        while(pa_tokens[i].cmd_splitted[t])
+                        {
+                            if(pa_tokens[i].cmd_splitted[t][0] == '<')
+                            {
+                                t++;
+                                continue;
+                            }
+                                new[len] = ft_strdup(pa_tokens[i].cmd_splitted[t]);
+                            t++;
+                            len++;
+                        }
+                        new[len]  = NULL;
+                        pa_tokens[i].cmd = new ;
+                        j = 1;
+                        abs_cmd_path = abs_path;
+                        break;
+                    }
+                }
                 t++;
-            }    
-            return (0);
+            }
+            if(j == 0)       
+                return (0);
         }
         else
+        {
             printf (":::command not found\n");
             return(127);
+        }
     }   
     if (access(abs_cmd_path, X_OK) == 0)
         replace_quote(pa_tokens, i);
