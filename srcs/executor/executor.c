@@ -323,13 +323,8 @@ int get_len_new_cmd(char **cmd, int j)
     len = 0;
     while(cmd[i])
     {
-        if(cmd[i][0] == '<')
-        {
-            
-        }
-        if(cmd[i][0] != '<' || cmd[i][0] != '>' || cmd[i][0] != '|' || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '>' && cmd[i][1] != '>') || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '<' && cmd[i][1] != '<'))
-            if(cmd[i] && cmd[i + 1] && cmd[i + 1][0] != '<' || cmd[i + 1][0] != '>' || cmd[i + 1][0] != '|' || (ft_strlen(cmd[i]) == 2 && cmd[i + 1][0] != '>' && cmd[i + 1][1] != '>') || (ft_strlen(cmd[i + 1]) == 2 && cmd[i + 1][0] != '<' && cmd[i + 1][1] != '<'))    
-                len++;
+        if(cmd[i][0] != '<' || cmd[i][0] != '>' || cmd[i][0] != '|' || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '>' && cmd[i][1] != '>') || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '<' && cmd[i][1] != '<'))   
+            len++;
         i++;
     }  
     return (len); 
@@ -369,13 +364,19 @@ int split_cmd(t_pars_tokens *pa_tokens,int i, char **abs_path)
                     len++;
                 }   
                 new_cmd[len]  = NULL;
-                //print_2d_array(new_cmd);
+                printf("\nbefore\n");
+                print_2d_array(pa_tokens[i].cmd);
+                print_2d_array(pa_tokens[i].cmd_splitted);
                 pa_tokens[i].cmd = new_cmd;
+                printf("\after\n");
+                print_2d_array(pa_tokens[i].cmd);
+                exit(0);
                 return (1);
             }
         }
         j++;
     }
+   
     return (0);
 }
 

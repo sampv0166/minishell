@@ -328,3 +328,15 @@ t_pars_tokens *parser (char **tokens)
 //     }
 //     return (pa_tkns);    
 // }
+
+
+
+
+// <out1 cat < out2 < out3 out4 < out5
+
+// <out1 | cat < out2 | < out3 out4 | < out5
+// <out1
+// cat < out2
+// < out3 out4
+// < out5
+
