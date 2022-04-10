@@ -124,8 +124,8 @@ int input_to_tokens(char *input)
     pa_tkns = parser(tokens);
      
     free_split_info(si, si2, tokens);
-    // int y;
-    // y = 0;
+    int y;
+    y = 0;
     //    while (y < env.count)
     // {
     //     int j;
@@ -155,6 +155,7 @@ int input_to_tokens(char *input)
     //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
     //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
     //     y++;
+    //     exit(0);
     // }
    /// exit(0);
     executor (pa_tkns);
