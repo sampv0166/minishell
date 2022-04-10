@@ -179,9 +179,8 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
     //char s[2][2] = {"cat", '\0'};
-    // //printf("\nss ===%s\n", pa_tokens[i].cmd[0]);
-    // print_2d_array(pa_tokens[i].cmd);
-    // exit(0);
+    //printf("\nss ===%s\n", pa_tokens[i].cmd[0]);
+
     handle_pipe_type_one(pa_tokens, i);
     handle_pipe_type_2_3(pa_tokens, i);
 
@@ -203,13 +202,11 @@ int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tk
 
     i = 0;
     fd = 0;
-    
     while (cmd_split[i])
     {
         if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1 && cmd_split[++i])
         {
             fd = open(ft_strdup(cmd_split[i]), O_RDONLY);
-            //printf("\n%s\n",cmd_split[i] );
             if (fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file"));
         }
@@ -220,7 +217,6 @@ int handle_input_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tk
         i++;
     }
     pa_tokens[tkn_idx].fd_in = fd;
-   // exit(0);
     return (EXIT_SUCCESS);
 }
 
@@ -323,16 +319,11 @@ int get_len_new_cmd(char **cmd, int j)
     len = 0;
     while(cmd[i])
     {
-        if(cmd[i][0] == '<')
-        {
-            
-        }
         if(cmd[i][0] != '<' || cmd[i][0] != '>' || cmd[i][0] != '|' || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '>' && cmd[i][1] != '>') || (ft_strlen(cmd[i]) == 2 && cmd[i][0] != '<' && cmd[i][1] != '<'))
-            if(cmd[i] && cmd[i + 1] && cmd[i + 1][0] != '<' || cmd[i + 1][0] != '>' || cmd[i + 1][0] != '|' || (ft_strlen(cmd[i]) == 2 && cmd[i + 1][0] != '>' && cmd[i + 1][1] != '>') || (ft_strlen(cmd[i + 1]) == 2 && cmd[i + 1][0] != '<' && cmd[i + 1][1] != '<'))    
-                len++;
+            len++;
         i++;
     }  
-    return (len); 
+    return (len);
 }
 
 int split_cmd(t_pars_tokens *pa_tokens,int i, char **abs_path)
@@ -352,14 +343,11 @@ int split_cmd(t_pars_tokens *pa_tokens,int i, char **abs_path)
         {
             if(access(*abs_path, X_OK) == 0)
             {
-                new_cmd = malloc (sizeof (char *) * (get_len_new_cmd(pa_tokens[i].cmd_splitted,j) + 1));
-                len = 0;
+                new_cmd = malloc (sizeof (char *) * get_len_new_cmd(pa_tokens[i].cmd_splitted + 1,j));
+                 len = 0;
                 while(pa_tokens[i].cmd_splitted[j])
                 {
-                    if(pa_tokens[i].cmd_splitted[j][0] == '<' || pa_tokens[i].cmd_splitted[j][0] == '>' || \
-                    pa_tokens[i].cmd_splitted[j][0] == '|' || ((ft_strlen(pa_tokens[i].cmd_splitted[j]) == 2) \
-                    && (pa_tokens[i].cmd_splitted[j][0] == '>')) || ((ft_strlen(pa_tokens[i].cmd_splitted[j]) == 2) \
-                    && (pa_tokens[i].cmd_splitted[j][0] == '<')))
+                    if(pa_tokens[i].cmd_splitted[j][0] == '<' || pa_tokens[i].cmd_splitted[j][0] == '>' || pa_tokens[i].cmd_splitted[j][0] == '|' || ((ft_strlen(pa_tokens[i].cmd_splitted[j]) == 2) && (pa_tokens[i].cmd_splitted[j][0] == '>')) || ((ft_strlen(pa_tokens[i].cmd_splitted[j]) == 2) && (pa_tokens[i].cmd_splitted[j][0] == '<')) )
                     {
                         j++;
                         continue;
@@ -369,7 +357,6 @@ int split_cmd(t_pars_tokens *pa_tokens,int i, char **abs_path)
                     len++;
                 }   
                 new_cmd[len]  = NULL;
-                //print_2d_array(new_cmd);
                 pa_tokens[i].cmd = new_cmd;
                 return (1);
             }
@@ -386,7 +373,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if (is_redir(pa_tokens, i))
     {
         if(handle_redirections(pa_tokens, i))
-        {   
+        {    
             return (EXIT_FAILURE);
         }
     }

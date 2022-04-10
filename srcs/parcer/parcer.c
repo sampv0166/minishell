@@ -78,7 +78,9 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
         pa_tkns[pa_info->j].here_doc = 1;
     }
     else if(tokens[pa_info->i][0] == '<')
+    {
         pa_tkns[pa_info->j].is_in = 1; 
+    }
 }
 
 void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
@@ -144,6 +146,13 @@ t_pars_tokens *parser (char **tokens)
     init_pa_tkns(pa_tkns, pa_info);
     while (pa_info->j < pa_info->pipes_count)
     {
+        pa_tkns[pa_info->j].fd_in = 0;
+        pa_tkns[pa_info->j].fd_out = 0;
+        pa_tkns[pa_info->j].is_in = 0;
+        pa_tkns[pa_info->j].is_out = 0;
+        pa_tkns[pa_info->j].is_out_appnd = 0;
+        pa_tkns[pa_info->j].pipe = 0;
+          pa_tkns[pa_info->j].here_doc = 0;
         allocate_cmd_memmory(pa_info, tokens);
         while(tokens[pa_info->i])
         {
