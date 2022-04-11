@@ -11,6 +11,7 @@ typedef struct  s_pars_tokens
    int  pipe;          //       pipe_type (1, 2, 3)
 
    int  is_in;         //       if there is a input redirection
+   char **redir
    int  is_out;        //       if there is a ouput redirection
    int is_out_appnd;   //       if there is a output append redirection
 

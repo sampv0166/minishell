@@ -39,8 +39,6 @@ typedef struct	s_flags
 	int	newl_flag;
 }				t_flags;
 
-
-
 /*
 ** =============================================================================
 ** String Functions
@@ -75,7 +73,8 @@ bool 			token_contains_quote(char *str);
 void 			print_2d_array(char **arr);
 void 			free_me (char **ptr);
 void 			free_2d_array(char **arr);
-void	ft_free_str_array(char ***arr);
+void			ft_free_str_array(char ***arr);
+
 /*
 ** =============================================================================
 ** Signals

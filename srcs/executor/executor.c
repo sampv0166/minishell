@@ -283,14 +283,6 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
 
 void close_fds(t_pars_tokens *pa_tokens, int i)
 {
-    // if (!pa_tokens[i].pipe && pa_tokens[i].fd_out || pa_tokens[i].is_out_appnd)
-    // {    
-    //     if (pa_tokens[i].fd_out != STDOUT_FILENO && pa_tokens[i].is_out)
-    //     {
-    //         if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
-    //             exit(1);   
-    //     }
-    // }
     if (pa_tokens[i].pipe == 1)
     {
         close(pa_tokens[i].fd_in);
