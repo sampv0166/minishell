@@ -1,10 +1,10 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
+extern t_env_var	env;
 
 static char	*fetch_unset(char *str, char **env)
 {
-	int	i;
+	int		i;
 	char	*val;
 	int		j;
 

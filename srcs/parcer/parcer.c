@@ -155,6 +155,7 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         count++;
         i++;
     }
+	ft_putendl_fd("Success", 1);
     while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
     {
         trigger = 0;
@@ -179,6 +180,11 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
                     count++;
             }
         }
+		else if (!stp)
+		{
+			count++;
+			i++;
+		}
     }
     cmd = (char **)malloc(sizeof(char *) * (count + 1));
     pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
@@ -213,6 +219,8 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
             if (trigger > 1)
                 stp = 1;
         }
+		else
+			i++;
     }
     if (!stp)
     {

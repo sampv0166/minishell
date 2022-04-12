@@ -4,8 +4,7 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 
-
-extern t_env_var env;
+extern t_env_var	env;
 
 char	*fetch_pwd(char *str, char **env)
 {
@@ -16,7 +15,7 @@ char	*fetch_pwd(char *str, char **env)
 	while (env[i] != NULL)
 	{
 		if (ft_strstr(env[i], str))
-			break;
+			break ;
 		i++;
 	}
 	if (env[i] == NULL)
@@ -28,18 +27,18 @@ char	*fetch_pwd(char *str, char **env)
 
 int	pwd(char **str, char **env)
 {
-	int	i;
+	int		i;
 	char	*s;
 
 	i = 0;
 	while (str[i] != NULL)
 	{
 		if (ft_strchr(str[i], '>'))
-			break;
+			break ;
 		else if (ft_strchr(str[i], '<'))
-			break;
+			break ;
 		else if (ft_strchr(str[i], '|'))
-			break;
+			break ;
 		i++;
 	}
 	s = ft_strdup(fetch_pwd("PWD", env));
