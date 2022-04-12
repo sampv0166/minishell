@@ -143,8 +143,10 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     char    **cmd;
     int     trigger;
     int     stp;
+	int		trig;
 
     i = 0;
+	trig = 0;
     trigger = 0;
     count = 0;
     stp = 0;
@@ -219,10 +221,15 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
             if (trigger > 1)
                 stp = 1;
         }
-		else
+		else if (!stp)
+		{
+			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+        	count++;
 			i++;
+			trig = 1;
+		}
     }
-    if (!stp)
+    if (!stp && !trig)
     {
         cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i - 1]);
         count++;
