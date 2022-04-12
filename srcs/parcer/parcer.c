@@ -136,6 +136,113 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     env.pa_tkns = pa_tkns;
 }
 
+void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
+{
+    int i;
+    int count;
+    char    **cmd;
+    int     trigger;
+    int     stp;
+
+    i = 0;
+    trigger = 0;
+    count = 0;
+    stp = 0;
+    if (ft_strchr(pa_tkns->cmd_splitted[0], '<'))
+        i = 2;
+    if (access(pa_tkns->cmd_splitted[i], X_OK))
+    {
+        count++;
+        i++;
+    }
+    while (pa_tkns->cmd_splitted[i] != NULL)
+    {
+        trigger = 0;
+        if (ft_strchr(pa_tkns->cmd_splitted[i], '<') || ft_strchr(pa_tkns->cmd_splitted[i], '>'))
+        {
+            ++i;
+            while (pa_tkns->cmd_splitted[i] != NULL)
+            {
+                if (ft_strchr(pa_tkns->cmd_splitted[i], '<') || ft_strchr(pa_tkns->cmd_splitted[i], '>'))
+                    break;
+                trigger++;
+                i++;
+            }
+            if (trigger > 1)
+            {
+                count = count + trigger - 1;
+                stp = 1;
+            }
+            else if (!stp)
+            {
+                if ((pa_tkns->cmd_splitted[i] == NULL && !ft_strchr(pa_tkns->cmd_splitted[i - 1], '<')) || (ft_strchr(pa_tkns->cmd_splitted[i], '<') && !ft_strcmp(pa_tkns->cmd_splitted[i], "<")))
+                    count++;
+            }
+        }
+    }
+    cmd = (char **)malloc(sizeof(char *) * (count + 1));
+    pa_tkns->cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
+    i = 0;
+    count = 0;
+    if (ft_strchr(pa_tkns->cmd_splitted[0], '<'))
+        i = 2;
+    if (access(pa_tkns->cmd_splitted[i], X_OK))
+    {
+        cmd[count] = ft_strdup(pa_tkns->cmd_splitted[i]);
+        count++;
+        i++;
+    }
+    while (pa_tkns->cmd_splitted[i] != NULL)
+    {
+        trigger = 0;
+        if (ft_strchr(pa_tkns->cmd_splitted[i], '<') || ft_strchr(pa_tkns->cmd_splitted[i], '>'))
+        {
+            ++i;
+            while (pa_tkns->cmd_splitted[i] != NULL)
+            {
+                if (ft_strchr(pa_tkns->cmd_splitted[i], '<') || ft_strchr(pa_tkns->cmd_splitted[i], '>'))
+                    break;
+                if (trigger >= 1)
+                {
+                    cmd[count] = ft_strdup(pa_tkns->cmd_splitted[i]);
+                    count++;
+                }
+                trigger++;
+                i++;
+            }
+            if (trigger > 1)
+                stp = 1;
+            // else if (!stp)
+            // {
+            //     if ((((pa_tkns->cmd_splitted[i] == NULL && !ft_strchr(pa_tkns->cmd_splitted[i - 1], '<')) || ft_strchr(pa_tkns->cmd_splitted[i], '<'))) || 
+            //         (((pa_tkns->cmd_splitted[i] == NULL && !ft_strchr(pa_tkns->cmd_splitted[i - 1], '>')) || ft_strchr(pa_tkns->cmd_splitted[i], '>'))))
+            //         {
+            //             cmd[count] = ft_strdup(pa_tkns->cmd_splitted[i]);
+            //             count++;
+            //         }
+            // }
+        }
+    }
+    if (!stp)
+    {
+        cmd[count] = ft_strdup(pa_tkns->cmd_splitted[i - 1]);
+        count++;
+    }
+    cmd[count] = NULL;
+    i = 0;
+    while (cmd[i] != NULL)
+    {
+        pa_tkns->cmd_rdr[i] = ft_strdup(cmd[i]);
+        free(cmd[i]);
+        i++;
+    }
+    pa_tkns->cmd_rdr[i] = NULL;
+    free(cmd);
+    ft_putendl_fd("CMD", 1);
+    print_2d_array(pa_tkns->cmd_rdr);
+    ft_putendl_fd("END", 1);
+}
+
 t_pars_tokens *parser (char **tokens)
 {
     t_pars_tokens *pa_tkns;
@@ -163,6 +270,13 @@ t_pars_tokens *parser (char **tokens)
         pa_info->j++;
     }
     set_pipe_type(pa_tkns, pa_info);
+    // printf("is_in: %d\n", pa_tkns->is_in);
+    // printf("is_out: %d\n", pa_tkns->is_out);
+    // printf("is_out_append: %d\n", pa_tkns->is_out_appnd);
+    // printf("here_doc: %d\n", pa_tkns->here_doc);
+    // printf("Pipes: %d\n", pa_tkns->pipe);
+    if ((pa_tkns->is_in == 1) && !pa_tkns->is_out && !pa_tkns->is_out_appnd && !pa_tkns->here_doc && !pa_tkns->pipe)
+        parse_rdr(pa_tkns, pa_info);
     return (pa_tkns);    
 }
 
