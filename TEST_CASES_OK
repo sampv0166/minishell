@@ -1,5 +1,6 @@
 BASIC SHELL TESTS
 -------------------------------------
+command not found
 ""
 $
 $LESS$VAR
@@ -8,11 +9,10 @@ sleep 5 | exit
 ctrl-\
 ctrl-C
 l^Ds
-
+-------------------------------------
 WITH ABSOLUTE PATH
 -------------------
 /bin/ls
-
 
 PIPE AND REDIRECTION TESTS
 ----------------------------------
@@ -26,7 +26,6 @@ ls -la | wc -l | wc -l >> hi
 cat Makefile | grep pr | head -n 5 
 >file
  ls -la | wc -l >> hi | cat >> 7 > j
-
  wc -l < filename
 
 SYNTAX ERROR TEST

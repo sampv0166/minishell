@@ -145,8 +145,8 @@ void handle_pipe_type_one(t_pars_tokens *pa_tokens, int i)
     if (pa_tokens[i].pipe == 1)
     {
         close(pa_tokens[i].fd_in);
-            if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
-                exit(1);          
+        if (dup2(pa_tokens[i - 1].fd_in, STDIN_FILENO) == -1)
+            exit(1);          
         if (pa_tokens[i].fd_out != STDOUT_FILENO && (pa_tokens[i].is_out || pa_tokens[i].is_out_appnd))
         {
             if (dup2(pa_tokens[i].fd_out, STDOUT_FILENO) == -1)
@@ -312,16 +312,23 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     }
     if (is_inbuilt(pa_tokens[i].cmd_splitted[0]))
 	    return (handle_inbuilt_redir(pa_tokens, i));
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd_splitted[0]);
+    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd_splitted[0]); 
     if(abs_cmd_path == NULL)
     {
         if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
             return (0);
-        else if(ft_strlen(pa_tokens[i].cmd_splitted[0]) == 1 && pa_tokens[i].cmd_splitted[0][0] == '>' || pa_tokens[i].cmd_splitted[0][0] == '<'  )
-            return (0);
+        else if(pa_tokens[i].is_in)
+        {
+            pa_tokens[i].cmd = pa_tokens[i].cmd_rdr;
+            print_2d_array(pa_tokens[i].cmd_rdr);
+           // exit(0);
+            abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+        }
         else
+        {
             printf (":::command not found\n");
             return(127);
+        }
     }   
     if (access(abs_cmd_path, X_OK) == 0)
         replace_quote(pa_tokens, i);

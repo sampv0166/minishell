@@ -56,7 +56,7 @@ int free_everything()
 {
     int i;
     i = 0;
-    while(i < env.count)
+    while(env.count != 1 && i < env.count)
     {
         ft_free_str_array(&env.pa_tkns[i].cmd);
         ft_free_str_array(&env.pa_tkns[i].cmd_splitted);
