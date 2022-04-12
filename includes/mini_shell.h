@@ -57,11 +57,12 @@ t_pars_tokens *parser (char **tokens);
 ** =============================================================================
 */
 
-char			*fetch_echo(char *str, char **env);
+int				get_env(char *str);
+char			*fetch_echo(char *str);
 int				cd(char **str);
 int				pwd(char **str, char **env);
-int				env_var(char **env);
-void			echo(char **str, char **env);
+int				env_var(void);
+void			echo(char **str);
 int				export(char **str, char **env);
 int				unset(char **str, char **env);
 unsigned char 	ft_exit(char **str);

@@ -41,13 +41,13 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 {
 	if (ft_strcmp(pa_tokens->cmd[0], "echo") == 0)
 	{
-		echo(pa_tokens->cmd, env.envp);
+		echo(pa_tokens->cmd);
 		return(EXIT_SUCCESS);
 	}
 	if (ft_strcmp(pa_tokens->cmd[0], "export") == 0)
 		return (export(pa_tokens->cmd, env.env_var));
 	if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
-		return (env_var(env.env_var));
+		return (env_var());
 	if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
 		return (cd(pa_tokens->cmd));
 	if (ft_strcmp(pa_tokens->cmd[0], "unset") == 0)

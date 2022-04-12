@@ -2,7 +2,7 @@
 
 extern t_env_var env;
 
-char *fetch_echo(char *str, char **env_var)
+char *fetch_echo(char *str)
 {
 	char *lk_up;
 	char	*tmp;
@@ -10,18 +10,18 @@ char *fetch_echo(char *str, char **env_var)
 	int	j;
 
 	i = 0;
-	tmp = ft_strdup(env_var[i]);
+	tmp = ft_strdup(env.env_var[i]);
 	lk_up = ft_strdup(str);
 	while (ft_isenv(lk_up[i]))
 		i++;
 	lk_up[i] = '\0';
 	i = 0;
-	while (env_var[i] != NULL)
+	while (env.env_var[i] != NULL)
 	{
-		if (ft_strstr(env_var[i], lk_up))
+		if (ft_strstr(env.env_var[i], lk_up))
 		{
 			free(tmp);
-			tmp = ft_strdup(env_var[i]);
+			tmp = ft_strdup(env.env_var[i]);
 			j = 0;
 			while (tmp[j] != '=' && tmp[j] != '\0')
 				j++;
@@ -32,16 +32,16 @@ char *fetch_echo(char *str, char **env_var)
 		i++;
 	}
 	free(tmp);
-	if (env_var[i] == NULL)
+	if (env.env_var[i] == NULL)
 		return (NULL);
-	lk_up = ft_strdup(ft_strstr(env_var[i], lk_up));
+	lk_up = ft_strdup(ft_strstr(env.env_var[i], lk_up));
 	lk_up = ft_strchr(lk_up, '=');
 	if (lk_up)
 		lk_up++;
 	return (lk_up);
 }
 
-static void print(char *str, char **env_var, int *qte)
+static void print(char *str, int *qte)
 {
 	int i;
 	char *val;
@@ -124,7 +124,7 @@ static int n_flag_cmp(char **str, t_flags *flags)
 	return (i);
 }
 
-void echo(char **str, char **env_var)
+void echo(char **str)
 {
 	int i;
 	t_flags flags;
@@ -172,7 +172,7 @@ void echo(char **str, char **env_var)
 				}
 			}
 			if (!print_f)
-				print(str[i], env_var, &qte);
+				print(str[i], &qte);
 			i++;
 			if (str[i] != NULL)
 				ft_putchar_fd(' ', 1);
