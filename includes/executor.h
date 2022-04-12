@@ -8,6 +8,7 @@ typedef struct  s_pars_tokens
    char **cmd;         //       "ls" "-la" NULL
    char *cmd_full;     //       "ls la |"
    char **cmd_splitted;//       "ls" "-la" "|" NULL
+   char  **cmd_rdr;
    int  pipe;          //       pipe_type (1, 2, 3)
 
    int  is_in;         //       if there is a input redirection

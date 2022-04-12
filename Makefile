@@ -35,9 +35,9 @@ OBJS = ${SRCS:.c=.o}
 RM = rm -rf
 CC = gcc
 
-CFLAGS = -lreadline
+# CFLAGS = -lreadline
 # R_FLAG = -lreadline 
-# CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 ${NAME}:	$(OBJS)
 			${MAKE} all -C libft/

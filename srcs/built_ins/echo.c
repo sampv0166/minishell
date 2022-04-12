@@ -77,10 +77,7 @@ static void print(char *str, char **env_var, int *qte)
 					j++;
 				}
 				cat[j] = '\0';
-				val = fetch_echo(cat, env_var);
-				free (cat);
-				if (val)
-					ft_putstr_fd(val, 1);
+				ft_putstr_fd(cat, 1);
 			}
 			while (ft_isenv(str[i]))
 				++i;
