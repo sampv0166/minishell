@@ -73,3 +73,16 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     // pa_tkns[pa_info->j].is_out_appnd = 0;
     // pa_tkns[pa_info->j].pipe = 0;
 }
+
+int	is_rdr(char *str)
+{
+	if (!strcmp(str, ">"))
+		return (1);
+	else if (!strcmp(str, "<"))
+		return (1);
+	else if (!strcmp(str, "<<"))
+		return (1);
+	else if (!strcmp(str, ">>"))
+		return (1);
+	return (0);
+}

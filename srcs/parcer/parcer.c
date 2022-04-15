@@ -136,10 +136,11 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     env.pa_tkns = pa_tkns;
 }
 
-void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
+void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     int i;
     int count;
+	int		flag_trig;
     char    **cmd;
     int     trigger;
     int     stp;
@@ -147,52 +148,89 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 
     i = 0;
 	trig = 0;
+	flag_trig = 0;
     trigger = 0;
     count = 0;
     stp = 0;
-    if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[0], '<'))
+    if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[0], "<"))
         i = 2;
-    if (access(pa_tkns[pa_info->i].cmd_splitted[i], X_OK))
+    if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && access(pa_tkns[pa_info->i].cmd_splitted[i], X_OK))
     {
         count++;
         i++;
     }
-	ft_putendl_fd("Success", 1);
+	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+	{
+		if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			break;
+		flag_trig = 1;
+		count++;
+		i++;
+	}
     while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
     {
-        trigger = 0;
-        if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '<') || ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '>'))
+        if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
         {
+			trigger = 0;
             ++i;
             while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
             {
-                if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '<') || ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '>'))
+				if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
                     break;
                 trigger++;
                 i++;
             }
-            if (trigger > 1)
+            if (trigger >= 1)
             {
-                count = count + trigger - 1;
-                stp = 1;
+				count = count + trigger - 1;
+				if (trigger > 1)
+					stp = 1;
             }
             else if (!stp)
             {
-                if ((pa_tkns[pa_info->i].cmd_splitted[i] == NULL && !ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i - 1], '<')) || (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '<') && !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<")))
+                if ((pa_tkns[pa_info->i].cmd_splitted[i] == NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<")) || !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
                     count++;
             }
         }
 		else if (!stp)
 		{
+			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				i += 2;
+			else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
+			{
+				count++;
+				i++;
+			}
+			else
+				i++;
+		}
+		else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			i += 2;
+		else
+		{
 			count++;
 			i++;
 		}
     }
+	if (count == 1)
+	{
+		while (i > 0)
+		{
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
+			{
+				count++;
+				break;
+			}
+			i--;
+		}
+	}
     cmd = (char **)malloc(sizeof(char *) * (count + 1));
     pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
     i = 0;
+	stp = 0;
+	flag_trig = 0;
     count = 0;
-    if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[0], '<'))
+    if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[0], "<"))
         i = 2;
     if (access(pa_tkns[pa_info->i].cmd_splitted[i], X_OK))
     {
@@ -200,15 +238,24 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         count++;
         i++;
     }
+	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+	{
+		if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			break;
+		flag_trig = 1;
+		cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+		count++;
+		i++;
+	}
     while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
     {
-        trigger = 0;
-        if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '<') || ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '>'))
+        if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
         {
+			trigger = 0;
             ++i;
             while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
             {
-                if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '<') || ft_strchr(pa_tkns[pa_info->i].cmd_splitted[i], '>'))
+                if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
                     break;
                 if (trigger >= 1)
                 {
@@ -223,32 +270,61 @@ void    parse_rdr(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         }
 		else if (!stp)
 		{
+			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				i += 2;
+			else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
+			{
+				cmd[count] = strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+				count++;
+				i++;
+				trig = 1;
+			}
+			else
+				i++;
+		}
+		else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			i += 2;
+		else
+		{
 			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-        	count++;
+			count++;
 			i++;
-			trig = 1;
 		}
     }
-    if (!stp && !trig)
+    if (!stp && !trig && !flag_trig)
     {
-        cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i - 1]);
-        count++;
+		if (i <= 2 || ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 2], ">"))
+		{
+			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i - 1]);
+			count++;
+		}
     }
     cmd[count] = NULL;
-    i = 0;
+    if (count == 1)
+	{
+		while (i > 0)
+		{
+			if (!strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
+			{
+				cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+				count++;
+				break;
+			}
+			i--;
+		}
+	}
+	i = 0;
     while (cmd[i] != NULL)
     {
         pa_tkns[pa_info->i].cmd_rdr[i] = ft_strdup(cmd[i]);
         free(cmd[i]);
         i++;
     }
-    
     pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
-    
-    // ft_putendl_fd("CMD", 1);
-    // print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
+    ft_putendl_fd("CMD", 1);
+    print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
     free(cmd);
-   // ft_putendl_fd("END", 1);
+   ft_putendl_fd("END", 1);
 }
 
 t_pars_tokens *parser (char **tokens)
@@ -296,14 +372,14 @@ t_pars_tokens *parser (char **tokens)
 
     while (pa_info->i < pa_info->pipes_count)
     {
-        if(pa_tkns[pa_info->i].is_in)
+        if((pa_tkns[pa_info->i].is_in && pa_tkns[pa_info->i].is_out) || pa_tkns[pa_info->i].is_in)
         {
-            parse_rdr(pa_tkns, pa_info);
+            parse_rdr_in(pa_tkns, pa_info);
         }
-        if(pa_tkns[pa_info->i].is_out)
-        {
+        // if(pa_tkns[pa_info->i].is_out)
+        // {
             ;//parse_rdr_out(pa_tkns, pa_info);
-        }
+        // }
         pa_info->i++;
     }
 
