@@ -26,6 +26,8 @@ typedef struct  s_pars_tokens
 } t_pars_tokens ;
 
 
+char *get_abs_cmd(char *cmd);
+
 
 
 

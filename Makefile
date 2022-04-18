@@ -33,7 +33,7 @@ SRCS = 	srcs/main.c \
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
-CC = gcc
+CC = gcc -ggdb
 
 # CFLAGS = -lreadline
 # R_FLAG = -lreadline 

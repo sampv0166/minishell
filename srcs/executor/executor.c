@@ -89,7 +89,7 @@ void	*ft_free_split(char **split)
 	return (NULL);
 }
 
-static char *get_abs_cmd(char *cmd)
+char *get_abs_cmd(char *cmd)
 {
     char *abs_cmd_path;
     char **path_split;
