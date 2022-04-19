@@ -46,6 +46,7 @@ typedef struct	s_flags
 */
 
 void	ft_putstr_2d(char **str);
+int		last_char(char *str);
 int		ft_isenv(char c);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strstr(char *str, char *to_find);
@@ -58,19 +59,20 @@ t_pars_tokens *parser (char **tokens);
 */
 
 int				get_env(char *str);
-char			*fetch_echo(char *str);
+char			*get_env_dollar(char *str);
 int				cd(char **str);
 int				pwd(char **str, char **env);
 int				env_var(void);
 void			echo(char **str);
-int				export(char **str, char **env);
-int				unset(char **str, char **env);
+int				export(char **str);
+int				unset(char **str);
 unsigned char 	ft_exit(char **str);
 int     		is_inbuilt(char *cmd);
 int     		ft_perror(int exit_status, char *msg);
 int	    		handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
 bool 			token_contains_quote(char *str);
 
+char			**new_env(char *str);
 void 			print_2d_array(char **arr);
 void 			free_me (char **ptr);
 void 			free_2d_array(char **arr);

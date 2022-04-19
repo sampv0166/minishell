@@ -12,7 +12,7 @@ int	length_2d(char **str)
 	return (i);
 }
 
-char	**trimmer(char **str)
+char	**trimmer(void)
 {
 	int		i;
 	char	**trim;
@@ -21,12 +21,12 @@ char	**trimmer(char **str)
 
 	i = 0;
 	k = 0;
-	length = length_2d(str);
+	length = length_2d(env.env_var);
 	trim = (char **)malloc(sizeof(char *) * (length + 1));
-	while (str[i] != NULL)
+	while (env.env_var[i] != NULL)
 	{
 		k = 0;
-		trim[i] = ft_strdup(str[i]);
+		trim[i] = ft_strdup(env.env_var[i]);
 		while (trim[i][k] != '=')
 			k++;
 		trim[i][k] = '\0';
@@ -57,43 +57,26 @@ char	**sorting(char **trim)
 		i++;
 	}
 	i = 0;
-	// while (trim[i + 1][0] != 'T')
-	// {
-	// 	temp = strdup(trim[i]);
-	// 	free(trim[i]);
-	// 	trim[i] = ft_strdup(trim[i + 1]);
-	// 	free(trim[i + 1]);
-	// 	trim[i + 1] = ft_strdup(temp);
-	// 	free(temp);
-	// 	i++;
-	// }
+	while (trim[i + 1][0] != 'T')
+	{
+		temp = strdup(trim[i]);
+		free(trim[i]);
+		trim[i] = ft_strdup(trim[i + 1]);
+		free(trim[i + 1]);
+		trim[i + 1] = ft_strdup(temp);
+		free(temp);
+		i++;
+	}
 	return (trim);
 }
 
-char	*fetch(char *str, char **env)
-{
-	char	*lk_up;
-	int		i;
-
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (ft_strstr(env[i], str))
-			break;
-		i++;
-	}
-	if (env[i] == NULL)
-		return (NULL);
-	lk_up = ft_strdup(ft_strstr(env[i], str));
-	free(str);
-	return (lk_up);
-}
-
-void	ordered_string(char **trim, char **str)
+void	ordered_string(char **trim)
 {
 	int	i;
+	int	g_env;
 
 	i = 0;
+	g_env = 0;
 	while (trim[i] != NULL)
 		i++;
 	i -= 2;
@@ -104,7 +87,9 @@ void	ordered_string(char **trim, char **str)
 	i = 0;
 	while (trim[i] != NULL)
 	{
-		trim[i] = fetch(trim[i], str);
+		g_env = get_env(trim[i]);
+		free(trim[i]);
+		trim[i] = ft_strdup(env.env_var[g_env]);
 		i++;
 	}
 }
@@ -133,11 +118,13 @@ char	**declare_s(char **str)
 	char	**final;
 	int		trigger;
 	int		str_len;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
 	k = 0;
 	str_len = 0;
+	tmp = NULL;
 	trigger = 0;
 
 	k = length_2d(str);
@@ -218,14 +205,13 @@ char	**declare_s(char **str)
 		res[i] = ft_strdup("declare -x ");
 		if (!trigger && (var[i][0] == 'P'))
 		{
-			res[i] = ft_strjoin(res[i], "OLDPWD");
+			res[i] = ft_strjoin(res[i], "OLDPWD=\"\"");
 			trigger = 1;
 			i++;
 			res[i] = ft_strdup("declare -x ");
 		}
 		res[i] = ft_strjoin(res[i], var[i]);
-		if (ft_strcmp(var[i], "OLDPWD"))
-			res[i] = ft_strjoin(res[i], final[i]);
+		res[i] = ft_strjoin(res[i], final[i]);
 		i++;
 	}
 	res[i] = NULL;
@@ -234,153 +220,349 @@ char	**declare_s(char **str)
 	free_all(var);
 	return (res);
 }
-// char	**new_env(char **env, char *str)
-// {
-// 	char	**new;
-// 	int		length;
-// 	int		i;
+char	**new_env(char *str)
+{
+	char	**new;
+	int		length;
+	int		i;
 
-// 	length = 0;
-// 	i = 0;
-// 	while (env[length] != NULL)
-// 		length++;
-// 	new = (char **)malloc(sizeof(char *) * (length + 2));
-// 	while(env[i] != NULL)
-// 	{
-// 		new[i] = ft_strdup(env[i]);
-// 		i++;
-// 	}
-// 	new[i] = strdup(str);
-// 	i++;
-// 	new[i] = NULL;
-// 	free_all(env);
-// 	return (new);
-// }
+	length = 0;
+	i = 0;
+	while (env.env_var[length] != NULL)
+		length++;
+	new = (char **)malloc(sizeof(char *) * (length + 2));
+	while(env.env_var[i] != NULL)
+	{
+		new[i] = ft_strdup(env.env_var[i]);
+		i++;
+	}
+	new[i] = ft_strdup(str);
+	i++;
+	new[i] = NULL;
+	free_all(env.env_var);
+	return (new);
+}
 
-// int	check(char c)
-// {
-// 	if (isalpha(c))
-// 		return(1);
-// 	else if (c == '_')
-// 		return (1);
-// 	return (0);
-// }
+int	plus_export(char *str)
+{
+	char	*tmp;
+	char	*var;
+	int		g_env;
+	int		i;
+	int		len;
+	int		trig;
 
-// int	plus_export(char **str, char **env)
-// {
-// 	char	*tmp;
-// 	char	*var;
-// 	int		i;
+	i = 0;
+	trig = 0;
+	tmp = NULL;
+	len = 0;
+	g_env = 0;
+	var = ft_strdup(str);
+	while (var[i] != '+')
+		i++;
+	var[i] = '\0';
+	if (var[0] == '$')
+	{
+		g_env = get_env(&var[1]);
+		if (env.env_var[g_env] != NULL)
+		{
+			tmp = get_env_dollar(var);
+			g_env = get_env(tmp);
+			if (env.env_var[g_env] == NULL)
+			{
+				i = 0;
+				while (var[i] != '=')
+					i++;
+				tmp = ft_strjoin(tmp, &var[i]);
+				free(var);
+				var = ft_strdup(tmp);
+				trig = 1;
+				free(env.env_var[g_env]);
+				env.env_var[g_env] = ft_strdup(var);
+			}
+			else
+			{
+				i = 0;
+				while (var[i] != '=')
+					i++;
+				++i;
+				free(tmp);
+				tmp = ft_strdup(env.env_var[g_env]);
+				tmp = ft_strjoin(tmp, &var[i]);
+				free(env.env_var[g_env]);
+				env.env_var[g_env] = ft_strdup(tmp);
+			}
+			free(var);
+			free(tmp);
+			return (0);
+		}
+		else
+		{
+			printf("%s: not a valid identifier\n", ft_strchr(str, '='));
+			free(var);
+			return (1);
+		}
+	}
+	g_env = get_env(var);
+	if (env.env_var[g_env] == NULL)
+	{
+		free(var);
+		var = ft_strdup(str);
+		i = 0;
+		while (var[i] != '+')
+			i++;
+		var[i] = '\0';
+		len = ft_strlen(str);
+		tmp = ft_calloc(1, len + 1);
+		i = 0;
+		while (str[i] != '=' && str[i] != '\0')
+			i++;
+		len = 0;
+		while (str[i])
+		{
+			tmp[len] = str[i];
+			len++;
+			i++;
+		}
+		tmp[len] = '\0';
+		var = ft_strjoin(var, tmp);
+		free(tmp);
+		env.env_var = new_env(var);
+		free(var);
+	}
+	else
+	{
+		free(var);
+		len = ft_strlen(str);
+		tmp = ft_calloc(1, len + 1);
+		i = 0;
+		while (str[i] != '=' && str[i] != '\0')
+			i++;
+		++i;
+		len = 0;
+		while (str[i])
+		{
+			tmp[len] = str[i];
+			len++;
+			i++;
+		}
+		tmp[len] = '\0';
+		var = ft_strdup(env.env_var[g_env]);
+		var = ft_strjoin(var, tmp);
+		free(env.env_var[g_env]);
+		env.env_var[g_env] = ft_strdup(var);
+		free(var);
+		free(tmp);
+	}
+	return (0);
+}
 
-// 	i = 0;
-// 	var = ft_strdup(str[1]);
-// 	while (var[i] != '+')
-// 		i++;
-// 	var[i] = '\0';
-// 	var = fetch(var, env);
-// 	if (!var)
-// 	{
-// 		free(var);
-// 		var = ft_strdup(str[1]);
-// 		i = 0;
-// 		while (var[i] != '+')
-// 			i++;
-// 		var[i] = '\0';
-// 		str[1] = ft_strchr(str[1], '=');
-// 		var = ft_strjoin(var, str[1]);
-// 		env = new_env(env, var);
-// 		ft_putstr_2d(env);
-// 	}
-// 	else
-// 	{
-// 		i = 0;
-// 		while (env[i] != NULL)
-// 		{
-// 			if (!ft_strcmp(env[i], var))
-// 					break;
-// 			i++;
-// 		}
-// 		free(var);
-// 		tmp = ft_strdup(env[i]);
-// 		str[1] = ft_strchr(str[1], '=');
-// 		++str[1];
-// 		tmp = ft_strjoin(tmp, str[1]);
-// 		free(env[i]);
-// 		env[i] = ft_strdup(tmp);
-// 		free(tmp);
-// 	}
-// 	return (0);
-// }
+static char	*delimit_qte(char *str)
+{
+	char	*ret;
+	int		qte;
+	int		i;
+	int		len;
+	int		j;
 
-// int	export_env(char **str, char **env)
-// {
-// 	int	i;
-// 	char	*var;
-// 	char	*value;
+	qte = 0;
+	len = 0;
+	j = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 34 || str[i] == 39)
+		{
+			len++;
+			qte = str[i];
+		}
+		i++;
+	}
+	if (!qte)
+	{
+		ret = ft_strdup(str);
+		return(ret);
+	}
+	else
+	{
+		i = ft_strlen(str);
+		ret = ft_calloc(1, i + 1 - len);
+		i = 0;
+		while (str[i])
+		{
+			if (str[i] != qte)
+			{
+				ret[j] = str[i];
+				j++;
+			}
+			i++;
+		}
+		ret[j] = '\0';
+		free(str);
+	}
+	return(ret);
+}
 
-// 	i = 0;
-// 	var = ft_strdup(str[1]);
-// 	if (check(str[1][0]))
-// 	{
-// 		if (ft_strchr(str[1], '='))
-// 		{
-// 			while (str[1][i] != '=')
-// 				i++;
-// 			if (str[1][i - 1] == '+')
-// 				return (plus_export(str, env));
-// 			i = 0;
-// 			while (str[1][i])
-// 			{
-// 				if (str[1][i] == '=')
-// 					break;
-// 				var[i] = str[1][i];
-// 				i++;
-// 			}
-// 			var[i] = '\0';
-// 			var = fetch(var, env);
-// 			if (!var)
-// 			{
-// 				free(var);
-// 				env = new_env(env, str[1]);
-// 			}
-// 			else
-// 			{
-// 				i = 0;
-// 				while (env[i] != NULL)
-// 				{
-// 					if (!ft_strcmp(env[i], var))
-// 						break;
-// 					i++;
-// 				}
-// 				free(env[i]);
-// 				env[i] = ft_strdup(str[1]);
-// 			}
-// 		}
-// 	}
-// 	else
-// 	{
-// 		printf("%s: not a valid identifier\n", str[1]);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
+int	op_not(char c)
+{
+	if (c == '=')
+		return (1);
+	else if (c == '+')
+		return (1);
+	else if (c == '/')
+		return (1);
+	else if (c == '*')
+		return (1);
+	else if (c == '-')
+		return (1);
+	else if (c == '%')
+		return (1);
+	return (0);
+}
 
-int	export(char **str, char **env)
+int	export_env(char *str)
+{
+	int	i;
+	int		g_env;
+	char	*var;
+	char	*value;
+	int		ret;
+	char	*tmp;
+	int		len;
+	int		trig;
+
+	i = 0;
+	trig = 0;
+	ret = 0;
+	len = 0;
+	g_env = 0;
+	tmp = NULL;
+	var = delimit_qte(str);
+	len = ft_strlen(var);
+	value = ft_calloc(1, len + 1);
+	if (ft_isenv(var[0]) || var[0] == '$')
+	{
+		if (ft_strchr(var, '='))
+		{
+			if (ft_strchr(var, '+'))
+			{
+				while (var[i] != '+')
+					i++;
+				if (var[i + 1] == '=' && !op_not(var[i - 1]))
+				{
+					free(value);
+					ret = plus_export(var);
+					free(var);
+					return(ret);
+				}
+				else
+				{
+					free(value);
+					printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+					free(var);
+					return (1);
+				}
+
+			}
+			i = 0;
+			while (var[i])
+			{
+				if (var[i] == '=')
+					break;
+				value[i] = var[i];
+				i++;
+			}
+			if (op_not(var[i - 1]))
+			{
+				free(value);
+				printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+				free(var);
+				return (1);
+			}
+			value[i] = '\0';
+			if (value[0] == '$')
+			{
+				g_env = get_env(&value[1]);
+				if (env.env_var[g_env] != NULL)
+				{
+					tmp = get_env_dollar(value);
+					g_env = get_env(tmp);
+					i = 0;
+					while (var[i] != '=')
+						i++;
+					tmp = ft_strjoin(tmp, &var[i]);
+					free(var);
+					var = ft_strdup(tmp);
+					trig = 1;
+					free(tmp);
+				}
+				else
+				{
+					free(value);
+					printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+					free(var);
+					return (1);
+				}
+			}
+			if (!trig)
+				g_env = get_env(value);
+			if (env.env_var[g_env] == NULL)
+				env.env_var = new_env(var);
+			else
+			{
+				free(env.env_var[g_env]);
+				env.env_var[g_env] = ft_strdup(var);
+			}
+		}
+		else
+		{
+			free(value);
+			printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+			free(var);
+			return (1);
+		}
+	}
+	else
+	{
+		free(value);
+		printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+		free(var);
+		return (1);
+	}
+	free(var);
+	free(value);
+	return (0);
+}
+
+int	export(char **str)
 {
 	char	**trim;
 	char	**res;
+	int		ret;
+	int		i;
 
-	if (str[1] == NULL || ft_strchr(str[1], '>') || ft_strchr(str[1], '<') || ft_strchr(str[1], '|'))
+	i = 0;
+	if (str[1] == NULL || is_rdr(str[1]) || !ft_strcmp(str[1], "|"))
 	{
-		trim = trimmer(env);
+		trim = trimmer();
 		sorting(trim);
-		ordered_string(trim, env);
+		ordered_string(trim);
 		res = declare_s(trim);
-		ft_putstr_2d(res);
+		print_2d_array(res);
 		free_all(trim);
 		free_all(res);
 	}
-	// else
-	// 	return(export_env(str, env));
+	else
+	{
+		i = 1;
+		while (str[i] != NULL)
+		{
+			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
+				break;
+			ret = export_env(str[i]);
+			i++;
+		}
+		return(ret);
+	}
 	return (EXIT_SUCCESS);
 }
