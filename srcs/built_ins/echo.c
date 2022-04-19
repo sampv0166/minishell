@@ -2,53 +2,16 @@
 
 extern t_env_var env;
 
-char *fetch_echo(char *str)
-{
-	char *lk_up;
-	char	*tmp;
-	int i;
-	int	j;
-
-	i = 0;
-	tmp = ft_strdup(env.env_var[i]);
-	lk_up = ft_strdup(str);
-	while (ft_isenv(lk_up[i]))
-		i++;
-	lk_up[i] = '\0';
-	i = 0;
-	while (env.env_var[i] != NULL)
-	{
-		if (ft_strstr(env.env_var[i], lk_up))
-		{
-			free(tmp);
-			tmp = ft_strdup(env.env_var[i]);
-			j = 0;
-			while (tmp[j] != '=' && tmp[j] != '\0')
-				j++;
-			tmp[j] = '\0';
-			if (!ft_strcmp(tmp, lk_up))
-				break;
-		}
-		i++;
-	}
-	free(tmp);
-	if (env.env_var[i] == NULL)
-		return (NULL);
-	lk_up = ft_strdup(ft_strstr(env.env_var[i], lk_up));
-	lk_up = ft_strchr(lk_up, '=');
-	if (lk_up)
-		lk_up++;
-	return (lk_up);
-}
-
 static void print(char *str, int *qte)
 {
 	int i;
+	int	len;
 	char *val;
 	char	*cat;
 	int	j;
 
 	i = 0;
+	len = 0;
 	cat = NULL;
 	j = 0;
 	if (!(*qte))
@@ -57,29 +20,14 @@ static void print(char *str, int *qte)
 	{
 		if ((str[i] == '$' && (ft_isenv(str[i + 1]) || str[i + 1] == '?')) && *qte == 34)
 		{
-			if (str[i + 1] == '?')
+			cat = get_env_dollar(&str[i]);
+			if (cat != NULL)
 			{
-				val = ft_itoa(env.stat_code);
-				ft_putstr_fd(val, 1);
-				free(val);
-				i += 2;
-			}
-			else if (ft_isenv(str[i + 1]))
-			{
-				val = NULL;
-				j = 0;
-				i += 1;
-				cat = ft_strdup(str);
-				while (ft_isenv(str[i]))
-				{
-					cat[j] = str[i];
-					i++;
-					j++;
-				}
-				cat[j] = '\0';
 				ft_putstr_fd(cat, 1);
+				free(cat);
 			}
-			while (ft_isenv(str[i]))
+			++i;
+			while (ft_isenv(str[i]) || str[i] == '?')
 				++i;
 		}
 		else
@@ -95,6 +43,10 @@ static void print(char *str, int *qte)
 		}
 	}
 }
+
+/*Work with n -flags complications
+Examples: -n -n -n -n,  n_flag is false
+-nnnnnnnnnnnnnnn, n_flag is true*/
 
 static int n_flag_cmp(char **str, t_flags *flags)
 {
@@ -138,29 +90,23 @@ void echo(char **str)
 	flags.newl_flag = 0;
 	if (str[i])
 	{
+		/*First solve the problem with n flags before we print anything*/
 		i = n_flag_cmp(str, &flags);
 		while (str[i] != NULL)
 		{
 			print_f = 0;
+			/*Checking for double or single quotes, First reason is to not print them, Second if there is a double
+			quote or No quote and there is a $ in a str it should fetch the value of the env variable*/
 			if (str[i][0] == 39 || str[i][0] == 34)
 				qte = str[i][0];
+			/*This  condition checks if I'm encountered with pipes or any redirections. If I do it will
+			break out of while loop and will not print anything*/
 			if (ft_strchr(str[i], '>') || ft_strchr(str[i], '<') || ft_strchr(str[i], '|'))
 			{
-				if (ft_strchr(str[i], '>'))
+				if (is_rdr(str[i]))
 				{
-					if (!ft_strcmp(str[i], ">") || !ft_strcmp(str[i], ">>"))
-					{
-						print_f = 1;
-						break;
-					}
-				}
-				else if (ft_strchr(str[i], '<'))
-				{
-					if (!ft_strcmp(str[i], "<") || !ft_strcmp(str[i], "<<"))
-					{
-						print_f = 1;
-						break;
-					}
+					print_f = 1;
+					break;
 				}
 				else if (ft_strchr(str[i], '|'))
 				{
@@ -171,13 +117,17 @@ void echo(char **str)
 					}
 				}
 			}
+			/*The print_flag to check if Im not encountered with any pipe or redirections*/
 			if (!print_f)
 				print(str[i], &qte);
 			i++;
+			/*If first index of 2d array is finished in printing and the second index needs printing, then there should be a
+			space between both the strings in display*/
 			if (str[i] != NULL)
 				ft_putchar_fd(' ', 1);
 		}
 	}
+	/*If n_flag is true, it will not print a new line otherwise it will print*/
 	if (!flags.newl_flag)
 		ft_putchar_fd('\n', 1);
 }

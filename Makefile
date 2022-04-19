@@ -2,6 +2,8 @@ RED = \033[0;31m
 BLACK = \033[0;30m
 WHITE = \033[1;37m
 
+.SILENT:
+
 NAME = minishell
 
 SRCS = 	srcs/main.c \
@@ -13,6 +15,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
+		srcs/utils/last_char.c \
 		srcs/utils/signal_handling.c \
 		srcs/utils/ft_putstr_2d.c \
 		srcs/built_ins/echo.c \
@@ -39,7 +42,8 @@ CC = gcc -ggdb
 # R_FLAG = -lreadline 
 CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-${NAME}:	$(OBJS)
+${NAME}:${OBJS}
+		@echo "${WHITE}Have patience. This will take some moment!"
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./
 			${CC} ${OBJS} libft.a ${CFLAGS} -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include  -o ${NAME}

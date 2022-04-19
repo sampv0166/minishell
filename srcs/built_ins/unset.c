@@ -2,38 +2,7 @@
 
 extern t_env_var	env;
 
-static char	*fetch_unset(char *str, char **env)
-{
-	int		i;
-	char	*val;
-	int		j;
-
-	i = 0;
-	j = 0;
-	val = ft_strdup(env[i]);
-	while (str[j] != '=' && str[j] != '\0')
-		j++;
-	str[j] = '\0';
-	while (env[i] != NULL)
-	{
-		if (ft_strstr(env[i], str))
-		{
-			j = 0;
-			free(val);
-			val = ft_strdup(env[i]);
-			while (val[j] != '=' && val[j] != '\0')
-				j++;
-			val[j] = '\0';
-			if (!ft_strcmp(val, str))
-				break;
-		}
-		i++;
-	}
-	free(val);
-	return (env[i]);
-}
-
-static void	elimination(char *str, char **env)
+static void	elimination(char *str)
 {
 	char	*s;
 	int		i;
@@ -41,32 +10,36 @@ static void	elimination(char *str, char **env)
 
 	i = 0;
 	index = 0;
-	if (fetch_unset(str, env))
+	s = ft_strdup(env.env_var[0]);
+	if (str[0] == '$')
 	{
-		s = ft_strdup(fetch_unset(str, env));
-		while (env[index] != NULL)
+		i = get_env(&str[1]);
+		if (env.env_var[i] != NULL)
 		{
-			if (!ft_strcmp(s, env[index]))
-				break;
-			index++;
+			free(s);
+			s = get_env_dollar(str);
+			i = get_env(s);
 		}
-		if (env[index] != NULL)
-		{
-			i = index;
-			while (env[i + 1] != NULL)
-			{
-				free(env[i]);
-				env[i] = ft_strdup(env[i + 1]);
-				i++;
-			}
-			free(env[i]);
-			env[i] = NULL;
-		}
-		free(s);
 	}
+	else
+		i = get_env(str);
+	index = i;
+	if (env.env_var[index] != NULL)
+	{
+		i = index;
+		while (env.env_var[i + 1] != NULL)
+		{
+			free(env.env_var[i]);
+			env.env_var[i] = ft_strdup(env.env_var[i + 1]);
+			i++;
+		}
+		free(env.env_var[i]);
+		env.env_var[i] = NULL;
+	}
+	free(s);
 }
 
-static void	parser1(char *str)
+static void	parse_unset(char *str)
 {
 	char	*tmp;
 	int		qte;
@@ -76,7 +49,7 @@ static void	parser1(char *str)
 	qte = 0;
 	i = 0;
 	j = 0;
-	if (!ft_strchr(str, '|') || !ft_strchr(str, '>') || !ft_strchr(str, '<'))
+	if (!is_rdr(str))
 	{
 		tmp = ft_strdup(str);
 		if (str[0] == 39 || str[0] == 34)
@@ -102,7 +75,7 @@ static void	parser1(char *str)
 	}
 }
 
-int	unset(char **str, char **env)
+int	unset(char **str)
 {
 	int	i;
 
@@ -110,10 +83,10 @@ int	unset(char **str, char **env)
 
 	while (str[i] != NULL)
 	{
-		parser1(str[i]);
-		if (ft_strchr(str[i], '|') || ft_strchr(str[i], '>') || ft_strchr(str[i], '<'))
+		parse_unset(str[i]);
+		if (is_rdr(str[i]))
 			break;
-		elimination(str[i], env);
+		elimination(str[i]);
 		i++;
 	}
 	return (0);
