@@ -61,7 +61,7 @@ static void	chge_old_pwd(char *old_pwd)
 }
 
 /*This function is to change the directory to the home directory of the system*/
-static void ch_home(void)
+void ch_home(void)
 {
 	int	i;
 	int	count;
@@ -104,7 +104,7 @@ static int	chge_dir(char *pwd, char *str)
 }
 
 /*This function changes the directory to the ~ location*/
-static void	ch_tild(void)
+void	ch_tild(void)
 {
 	int	count;
 	char	s[1000];
@@ -145,7 +145,7 @@ static void	ch_tild(void)
 		{
 			free(tmp);
 			tmp = get_env_dollar("$LOGNAME");
-			chdir("home");
+			chdir("Users");
 			chdir(tmp);
 			free(tmp);
 		}
@@ -253,109 +253,41 @@ static int	tild_c_dir(char *pwd, char *str)
 	return(0);
 }
 
-/*This function is to manipulate the dollar string to fetch the value of the env
-variable and changes the directory according to it*/
-int	dol_dir(char *pwd, char *str)
-{
-	int		i;
-	char	*tmp;
-	char	*cur;
-	char	s[1000];
-
-	i = 0;
-	cur = ft_strdup(pwd);
-	tmp = NULL;
-	if (ft_strstr(str, "$") && (ft_strlen(str) > 1))
-	{
-		free(cur);
-		cur = ft_strdup(&str[1]);
-		while (ft_isenv(cur[i]) && cur[i])
-			i++;
-		cur[i] = '\0';
-		i = get_env(cur);
-		if (env.env_var[i] != NULL)
-		{
-			tmp = ft_calloc(ft_strlen(cur) + 2, sizeof(char));
-			tmp[0] = '$';
-			tmp = ft_strjoin(tmp, cur);
-			free(cur);
-			cur = ft_strdup(tmp);
-			free(tmp);
-			tmp = get_env_dollar(cur);
-			free(cur);
-			cur = ft_strdup(tmp);
-			if (ft_strchr(str, '/'))
-				cur = ft_strjoin(cur, ft_strchr(str, '/'));
-			free(tmp);
-		}
-	}
-	else
-		i = get_env(&str[1]);
-	if (env.env_var[i] == NULL)
-	{
-		/*If env variable does not exist it changes the directory to tilde and
-		updates it*/
-		ch_tild();
-		free(cur);
-		cur = ft_strdup(getcwd(s, 1000));
-		chge_pwd(cur);
-		chge_old_pwd(pwd);
-	}
-	else if (!chdir(cur))
-	{
-		if (!ft_strcmp(cur, "//"))
-		{
-			free(cur);
-			cur = ft_strdup(("//"));
-		}
-		else
-		{
-			free(cur);
-			cur = ft_strdup(getcwd(s, 1000));
-		}
-		chge_pwd(cur);
-		chge_old_pwd(pwd);
-	}
-	else if (ft_strstr(cur, "/home"))
-	{
-		/*This condition is for changing the dir to $OLDPWD
-		and if in some we encounter any error it goes back from where it started*/
-		ch_home();
-		if (!chdir(cur))
-		{
-			free(cur);
-			cur = ft_strdup(getcwd(s, 1000));
-			chge_pwd(cur);
-			chge_old_pwd(pwd);
-		}
-		else
-		{
-			free(cur);
-			chdir(pwd);
-			free(pwd);
-			return (1);
-		}
-	}
-	else
-	{
-		/*Error Message*/
-		free(pwd);
-		printf("cd: %s: No such file or directory\n", cur);
-		free(cur);
-		return (1);
-	}
-	free(cur);
-	free(pwd);
-	return (0);
-}
-
 int	cd(char **str)
 {
 	int	i;
 	char	*pwd;
 	char	s[1000];
+	int		qte;
+	int		j;
+	char	*dir;
 
+	qte = 0;
+	j = 0;
+	dir = NULL;
 	i = 0;
+	/*Delimiting quotes*/
+	if (str[1] != NULL)
+	{
+		if (str[1][0] == 34 || str[1][0] == 39)
+			qte = str[1][0];
+		if (qte)
+		{
+			dir = ft_strdup(str[1]);
+			while (dir[i])
+			{
+				if (dir[i] != qte)
+				{
+					str[1][j] = dir[i];
+					j++;
+				}
+				i++;
+			}
+			str[1][j] = '\0';
+			free(dir);
+		}
+	}
+	/*Getting current PWD if the PWD doesn't exist in env then get the current one using getcwd*/
 	i = get_env("PWD");
 	if (env.env_var[i] == NULL)
 		pwd = ft_strdup(getcwd(s, 1000));
@@ -368,14 +300,12 @@ int	cd(char **str)
 		return (chge_dir(pwd, "//"));
 	else if (!ft_strcmp(str[i], "/"))
 		return (chge_dir(pwd, "/"));
-	else if (!ft_strcmp(str[i], "~") || !ft_strcmp(str[i], "~/"))
+	else if ((!ft_strcmp(str[i], "~") || !ft_strcmp(str[i], "~/")) && (qte != 39))
 		return (chge_tilde(pwd));
 	else if (!chdir(str[i]))
 		return(chge_c_dir(pwd));
-	else if (str[i][0] == '~')
+	else if (str[i][0] == '~' && (ft_strlen(str[i]) > 2))
 		return (tild_c_dir(pwd, str[i]));
-	else if (str[i][0] == '$')
-		return (dol_dir(pwd, str[i]));
 	else
 	{
 		/*Error Message*/
@@ -383,4 +313,5 @@ int	cd(char **str)
 		printf("cd: %s: No such file or directory\n", str[i]);
 		return (1); 
 	}
+	return (0);
 }

@@ -11,18 +11,7 @@ static void	elimination(char *str)
 	i = 0;
 	index = 0;
 	s = ft_strdup(env.env_var[0]);
-	if (str[0] == '$')
-	{
-		i = get_env(&str[1]);
-		if (env.env_var[i] != NULL)
-		{
-			free(s);
-			s = get_env_dollar(str);
-			i = get_env(s);
-		}
-	}
-	else
-		i = get_env(str);
+	i = get_env(str);
 	index = i;
 	if (env.env_var[index] != NULL)
 	{

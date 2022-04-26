@@ -250,10 +250,8 @@ int	plus_export(char *str)
 	int		g_env;
 	int		i;
 	int		len;
-	int		trig;
 
 	i = 0;
-	trig = 0;
 	tmp = NULL;
 	len = 0;
 	g_env = 0;
@@ -261,48 +259,6 @@ int	plus_export(char *str)
 	while (var[i] != '+')
 		i++;
 	var[i] = '\0';
-	if (var[0] == '$')
-	{
-		g_env = get_env(&var[1]);
-		if (env.env_var[g_env] != NULL)
-		{
-			tmp = get_env_dollar(var);
-			g_env = get_env(tmp);
-			if (env.env_var[g_env] == NULL)
-			{
-				i = 0;
-				while (var[i] != '=')
-					i++;
-				tmp = ft_strjoin(tmp, &var[i]);
-				free(var);
-				var = ft_strdup(tmp);
-				trig = 1;
-				free(env.env_var[g_env]);
-				env.env_var[g_env] = ft_strdup(var);
-			}
-			else
-			{
-				i = 0;
-				while (var[i] != '=')
-					i++;
-				++i;
-				free(tmp);
-				tmp = ft_strdup(env.env_var[g_env]);
-				tmp = ft_strjoin(tmp, &var[i]);
-				free(env.env_var[g_env]);
-				env.env_var[g_env] = ft_strdup(tmp);
-			}
-			free(var);
-			free(tmp);
-			return (0);
-		}
-		else
-		{
-			printf("%s: not a valid identifier\n", ft_strchr(str, '='));
-			free(var);
-			return (1);
-		}
-	}
 	g_env = get_env(var);
 	if (env.env_var[g_env] == NULL)
 	{
@@ -422,111 +378,72 @@ int	op_not(char c)
 
 int	export_env(char *str)
 {
-	int	i;
+	int		i;
 	int		g_env;
 	char	*var;
 	char	*value;
 	int		ret;
-	char	*tmp;
 	int		len;
-	int		trig;
 
 	i = 0;
-	trig = 0;
 	ret = 0;
 	len = 0;
 	g_env = 0;
-	tmp = NULL;
 	var = delimit_qte(str);
 	len = ft_strlen(var);
 	value = ft_calloc(1, len + 1);
-	if (ft_isenv(var[0]) || var[0] == '$')
+	if (ft_strchr(var, '='))
 	{
-		if (ft_strchr(var, '='))
+		if (ft_strchr(var, '+'))
 		{
-			if (ft_strchr(var, '+'))
-			{
-				while (var[i] != '+')
-					i++;
-				if (var[i + 1] == '=' && !op_not(var[i - 1]))
-				{
-					free(value);
-					ret = plus_export(var);
-					free(var);
-					return(ret);
-				}
-				else
-				{
-					free(value);
-					printf("%s: not a valid identifier\n", ft_strchr(var, '='));
-					free(var);
-					return (1);
-				}
-
-			}
-			i = 0;
-			while (var[i])
-			{
-				if (var[i] == '=')
-					break;
-				value[i] = var[i];
+			while (var[i] != '+')
 				i++;
+			if (var[i + 1] == '=' && !op_not(var[i - 1]))
+			{
+				free(value);
+				ret = plus_export(var);
+				free(var);
+				return(ret);
 			}
-			if (op_not(var[i - 1]))
+			else
 			{
 				free(value);
 				printf("%s: not a valid identifier\n", ft_strchr(var, '='));
 				free(var);
 				return (1);
 			}
-			value[i] = '\0';
-			if (value[0] == '$')
-			{
-				g_env = get_env(&value[1]);
-				if (env.env_var[g_env] != NULL)
-				{
-					tmp = get_env_dollar(value);
-					g_env = get_env(tmp);
-					i = 0;
-					while (var[i] != '=')
-						i++;
-					tmp = ft_strjoin(tmp, &var[i]);
-					free(var);
-					var = ft_strdup(tmp);
-					trig = 1;
-					free(tmp);
-				}
-				else
-				{
-					free(value);
-					printf("%s: not a valid identifier\n", ft_strchr(var, '='));
-					free(var);
-					return (1);
-				}
-			}
-			if (!trig)
-				g_env = get_env(value);
-			if (env.env_var[g_env] == NULL)
-				env.env_var = new_env(var);
-			else
-			{
-				free(env.env_var[g_env]);
-				env.env_var[g_env] = ft_strdup(var);
-			}
+
 		}
-		else
+		i = 0;
+		while (var[i])
+		{
+			if (var[i] == '=')
+				break;
+			value[i] = var[i];
+			i++;
+		}
+		if (op_not(var[i - 1]) || (!var[i + 1]))
 		{
 			free(value);
 			printf("%s: not a valid identifier\n", ft_strchr(var, '='));
 			free(var);
 			return (1);
 		}
+		value[i] = '\0';
+		g_env = get_env(value);
+		if (env.env_var[g_env] == NULL)
+			env.env_var = new_env(var);
+		else
+		{
+			free(env.env_var[g_env]);
+			env.env_var[g_env] = ft_strdup(var);
+		}
 	}
 	else
 	{
-		free(value);
-		printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+		printf("%s: not a valid identifier\n", var);
 		free(var);
+		free(value);
 		return (1);
 	}
 	free(var);

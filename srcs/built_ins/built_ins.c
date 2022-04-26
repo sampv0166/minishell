@@ -39,8 +39,12 @@ TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 
 int	execute_inbuilt(t_pars_tokens *pa_tokens)
 {
+	int	ret;
+
+	ret = 0;
 	if (ft_strcmp(pa_tokens->cmd[0], "echo") == 0)
 	{
+		// print_2d_array(pa_tokens->cmd);
 		echo(pa_tokens->cmd);
 		return(EXIT_SUCCESS);
 	}
@@ -49,13 +53,20 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 	if (ft_strcmp(pa_tokens->cmd[0], "env") == 0)
 		return (env_var());
 	if (ft_strcmp(pa_tokens->cmd[0], "cd") == 0)
-		return (cd(pa_tokens->cmd));
+	{
+		ret = cd(pa_tokens->cmd);
+		return (ret);
+	}
 	if (ft_strcmp(pa_tokens->cmd[0], "unset") == 0)
 		return (unset(pa_tokens->cmd));
 	if (ft_strcmp(pa_tokens->cmd[0], "pwd") == 0)
 		return (pwd(pa_tokens->cmd, env.env_var));
 	if (ft_strcmp(pa_tokens->cmd[0], "exit") == 0)
+	{
+		ret = ft_exit(pa_tokens->cmd);
+		exit(ret);
 		return (ft_exit(pa_tokens->cmd));
+	}
 	return (EXIT_FAILURE);
 }
 

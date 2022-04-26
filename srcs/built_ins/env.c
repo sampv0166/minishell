@@ -113,6 +113,6 @@ char	*get_env_dollar(char *str)
 
 int	env_var(void)
 {
-	ft_putstr_2d(env.env_var);
+	print_2d_array(env.env_var);
 	return (0);
 }

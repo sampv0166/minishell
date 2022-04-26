@@ -13,3 +13,23 @@ SEGFAULTS
 
 ECHO TESTS_KO
 -------------------
+
+echo "bla"bla ""''"'''" bla"bla   "'   "  ""  'sdc" ssdsd " sd' s''d s'sd 's'sd ' s' "vd v'd 'v df 'd df' v' dfv' dv' df 'dvf ' df vdf    v'df v' df'v "
+echo"" parsing failed
+echo ~
+echo $USER $USER9999 $USER8888 $USER7777 "$USER"
+echo -n"-n" bonjour
+echo "-n -n -n"-n bonjour
+
+EXPORT TESTS_KO
+-------------------
+
+
+EXIT TESTS_KO
+-------------------
+
+exit "1"23
+exit "2"32"32"
+exit '42'"42"42
+exit +'42'"42"42
+exit -'42'"42"42
