@@ -37,6 +37,12 @@ typedef struct s_env_var
     t_parser_info *pa_info;
     t_split *split_info;
     char    **split;
+
+    int tmp_in;
+    int tmp_out;
+
+    int fd_in;
+    int fd_out;
 }            t_env_var;
 
 /*

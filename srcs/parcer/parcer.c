@@ -62,7 +62,8 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 		free(buf);
 	}
     close(end[1]);
-    pa_tkns[pa_info->j].fd_in = end[0];
+    //pa_tkns[pa_info->j].fd_in = end[0];
+    pa_tkns[pa_info->j].here_doc_fd = end[0];
 }
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
@@ -85,7 +86,7 @@ void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char *
 
 void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
-    pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);
+    pa_info->arr[pa_info->len] = NULL;
     pa_info->str = ft_strjoin (pa_info->str, tokens[pa_info->i]);
     pa_info->arr1[pa_info->len] = ((char *)0);
     pa_info->len++;
@@ -487,7 +488,6 @@ t_pars_tokens *parser (char **tokens)
         pa_info->j++;
     }
     set_pipe_type(pa_tkns, pa_info);
-   
     // printf("is_in: %d\n", pa_tkns->is_in);
     // printf("is_out: %d\n", pa_tkns->is_out);
     // printf("is_out_append: %d\n", pa_tkns->is_out_appnd);
@@ -496,18 +496,18 @@ t_pars_tokens *parser (char **tokens)
     pa_info->i = 0;
     pa_info->j = 0;
 
-    while (pa_info->i < pa_info->pipes_count)
-    {
-        if((pa_tkns[pa_info->i].is_in && pa_tkns[pa_info->i].is_out) || pa_tkns[pa_info->i].is_in)
-        {
-			parse_rdr_in(pa_tkns, pa_info);
-        }
-        else if(pa_tkns[pa_info->i].is_out && !pa_tkns[pa_info->i].is_in)
-        {
-            parse_rdr_out(pa_tkns, pa_info);
-        }
-        pa_info->i++;
-    }
+    // while (pa_info->i < pa_info->pipes_count)
+    // {
+    //     if((pa_tkns[pa_info->i].is_in && pa_tkns[pa_info->i].is_out) || pa_tkns[pa_info->i].is_in)
+    //     {
+	// 		parse_rdr_in(pa_tkns, pa_info);
+    //     }
+    //     else if(pa_tkns[pa_info->i].is_out && !pa_tkns[pa_info->i].is_in)
+    //     {
+    //         parse_rdr_out(pa_tkns, pa_info);
+    //     }
+    //     pa_info->i++;
+    // }
 
     //if ((pa_tkns->is_in == 1) && !pa_tkns->is_out && !pa_tkns->is_out_appnd && !pa_tkns->here_doc && !pa_tkns->pipe)
        // parse_rdr(pa_tkns, pa_info);  

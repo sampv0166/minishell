@@ -34,6 +34,21 @@ int get_count(char **tkns)
   
     return (i);
 }
+int get_count_no(char **tkns)
+{
+    int i;
+
+    i = 0;
+
+    while(tkns[i])
+    {
+        if(tkns[i][0] == '|')
+            return (i);
+        i++;    
+    }
+  
+    return (i);
+}
 
 void init_parser_info(t_parser_info *pa_info, char **tokens)
 {

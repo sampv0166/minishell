@@ -19,6 +19,7 @@ typedef struct  s_pars_tokens
    int  fd_in;         //      file descriptor number for fd in
    int  fd_out;        //       file descriptor for fdout
    int  here_doc;      //       file descriptor for fd append
+   int here_doc_fd   ;
 
    int pipe_read_end;  //       fd for pipe read end
    int pipe_write_end; //       fd for pipe write end

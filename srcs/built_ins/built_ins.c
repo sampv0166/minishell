@@ -66,27 +66,8 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 	int		exit_status;
 	// int		saved_fds[2];
 	if(i)
-		i =0;
-	// if (pa_toks->fd_in != STDIN_FILENO)
-	// {
-	// 	saved_fds[STDIN_FILENO] = dup(STDIN_FILENO);
-	// 	if (saved_fds[STDIN_FILENO] == -1)
-	// 		return (ft_perror(EXIT_FAILURE, "Piping error"));
-	// 	if (dup2(pa_toks->fd_in , STDIN_FILENO) == -1)
-	// 		return (ft_perror(EXIT_FAILURE, "Piping error"));
-	// }
-	// if (pa_toks->fd_out != STDOUT_FILENO)
-	// {
-	// 	saved_fds[STDOUT_FILENO] = dup(STDOUT_FILENO);
-	// 	if (saved_fds[STDOUT_FILENO] == -1)
-	// 		return (ft_perror(EXIT_FAILURE, "dup error"));
-	// 	if (dup2(pa_toks->fd_out, STDOUT_FILENO) == -1)
-	// 		return (ft_perror(EXIT_FAILURE, "dup2 error"));
-	// }
-	// if (pa_toks->pipe == true)
-	// 	exit_status = execute_inbuilt_child(pa_toks);
-	// else
-
+		i = 0;
+	// handle builtint redirections here . 
 	exit_status = execute_inbuilt(pa_toks);
 	//execute_inbuilt_reset_fds(pa_toks, saved_fds);
 	return (exit_status);

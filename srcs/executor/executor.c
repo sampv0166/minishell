@@ -241,6 +241,8 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
         }
         i++;
     }
+    if(pa_tokens[tkn_idx].pipe)
+        close(pa_tokens[tkn_idx].fd_out);
     pa_tokens[tkn_idx].fd_out = fd;
     return (EXIT_SUCCESS);
 }
@@ -249,11 +251,11 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
 {
     if(pa_tokens[i].pipe)
         handle_pipes(pa_tokens,i);
-    if(pa_tokens[i].is_in || pa_tokens[i].here_doc)
-    {
-        if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
-            return (EXIT_FAILURE);
-    }
+    // if(pa_tokens[i].is_in || pa_tokens[i].here_doc)
+    // {
+    //     if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
+    //         return (EXIT_FAILURE);
+    // }
     if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
     {
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
@@ -348,14 +350,235 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
 	return (EXIT_SUCCESS);
 }
 
+int check_for_input_files(t_pars_tokens *pa_tkns, int i)
+{
+    int j;
+    j = 0;
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+            continue;
+        else
+        {
+            j++;
+            break ;
+        }
+    }
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            //printf("\n%s\n",pa_tkns[i].cmd_splitted[j]);  
+            continue;
+        }
+        else
+            return(1);
+    }
+    return (0);
+}
+
+int get_2d_arr_len(char **arr)
+{
+    int i;
+
+    while(arr[i])
+    {
+        i++;
+    }
+    if(i != 0)
+        i = i - 1;
+    return (i);
+}
+
+int open_files(char **cmd_split, int i)
+{
+    int fd;
+   
+    fd = 0;
+    while (cmd_split[i] && i >= 0)
+    {
+        if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1)
+        {
+            fd = open(cmd_split[i + 1], O_RDONLY);
+            if (fd == -1)
+                return (ft_perror(EXIT_FAILURE, "error opening file"));
+        }
+        printf("\nfile_name = %s\n", cmd_split[i + 1]);
+        i--;
+    }
+}
+
+void find_input_fd(t_pars_tokens  *pa_tkns,int i)
+{
+    int len;
+    int j;
+    int fd;
+    len = get_2d_arr_len(pa_tkns[i].cmd_splitted);
+    printf("\n n -- %d\n",len);
+    j = len;
+    fd = 0; 
+    while(pa_tkns[i].cmd_splitted[j] && j >=0)
+    {
+        if(pa_tkns[i].cmd_splitted[j][0] == '<')
+        {
+            if(ft_strlen(pa_tkns[i].cmd_splitted[j]) == 1)
+            {
+                fd = open(pa_tkns[i].cmd_splitted[j + 1], O_RDONLY);
+                if (fd == -1)
+                    ft_perror(EXIT_FAILURE, "error opening file");
+                env.fd_in = fd;
+                open_files(pa_tkns[i].cmd_splitted , j);
+                break;
+            }
+            else
+            {
+              env.fd_in = pa_tkns[i].here_doc_fd;
+              open_files(pa_tkns[i].cmd_splitted , j);
+              break;  
+            }
+        }
+        j--;
+    }
+
+}
+
+int get_files_arr_len(t_pars_tokens *pa_tkns, int i)
+{
+    int len ;
+    int j;
+
+    len = 0;
+    j = 0;
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+            continue;
+        else
+        {
+            len++;
+            j++;
+        }
+    }
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            //printf("\n%s\n",pa_tkns[i].cmd_splitted[j]);  
+            continue;
+        }
+        else
+        {
+            j++;
+            len++;
+        }
+    }
+}
+
+void find_input_file_names(t_pars_tokens *pa_tkns, int i)
+{
+    int j;
+    int arr_len;
+    j = 0;
+
+    int len;
+    len = get_files_arr_len(pa_tkns, i);
+    char **files;
+    arr_len = 0;
+    files = malloc(sizeof (char *) * len + 1);
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+            continue;
+        else
+        {            
+            files[arr_len++] = pa_tkns[i].cmd_splitted[j];
+            j++;
+        }
+    }
+    while(pa_tkns[i].cmd_splitted[j])
+    {
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            j++;
+            if(pa_tkns[i].cmd_splitted[j])
+                j++;
+        }
+        if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
+        {
+            continue;
+        }
+        else
+        {
+            files[arr_len++] = pa_tkns[i].cmd_splitted[j];
+            j++;
+        }
+    }
+    files[arr_len] = NULL;
+    pa_tkns[i].cmd = files;
+}
+
 int executor(t_pars_tokens *pa_tkns)
 {
     int i;
     i = 0;
+    
+    env.tmp_in = dup(0);
+    env.tmp_out = dup(1);
+    env.fd_in = env.tmp_in;
     while (i < env.count)
     {
+        if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+        {
+            if (!check_for_input_files(pa_tkns, i))
+            {
+                find_input_fd(pa_tkns, i);
+            }
+            else
+            {
+               find_input_file_names(pa_tkns, i);
+            }
+            print_2d_array(pa_tkns[i].cmd);
+            //printf("\n return ==  %d\n", check_for_input_files(pa_tkns, i));
+            exit(0);
+        }
+        dup2(env.fd_in, 0);
+        close(env.fd_in);
         execute_cmd(pa_tkns, i);
         i++;
     }
+    dup2(env.tmp_in,0);
+    dup2(env.tmp_out, 1);
+    close(env.tmp_in);
+    close(env.tmp_out);    
     return (0);
 }
