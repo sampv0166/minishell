@@ -1,8 +1,4 @@
 #include "../../includes/mini_shell.h"
-// #include <unistd.h>
-// #include <string.h>
-// #include <stdio.h>
-// #include <stdlib.h>
 
 extern t_env_var	env;
 

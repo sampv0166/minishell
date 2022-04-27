@@ -13,6 +13,7 @@ SRCS = 	srcs/main.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
 		srcs/utils/ft_isenv.c \
+		srcs/utils/ft_isqte.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/last_char.c \

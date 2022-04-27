@@ -6,7 +6,7 @@
 /*   By: makhtar <makhtar@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 14:48:02 by apila-va          #+#    #+#             */
-/*   Updated: 2022/04/05 16:08:21 by makhtar          ###   ########.fr       */
+/*   Updated: 2022/04/21 11:25:42 by makhtar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static long int	ft_atoi_atoi(char *str, int sign, int *index)
 	ft_putstr_fd("exit: ", 1);
 	ft_putstr_fd(str, 1);
 	ft_putendl_fd(": numeric argument requred", 1);
-	if (i >= 19)
-		return (255);
-	return (1);
+	// if (i >= 19)
+	// 	return (255);
+	return (255);
 }
 
 long int	ft_atoi(const char *str)

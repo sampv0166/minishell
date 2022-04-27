@@ -144,209 +144,260 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     char    **cmd;
     int     trigger;
     int     stp;
+	int		index;
 	int		trig;
+	int		here_doc;
 	char	*str;
 
     i = 0;
 	trig = 0;
+	cmd = NULL;
 	flag_trig = 0;
+	here_doc = 0;
     trigger = 0;
     count = 0;
+	index = 0;
 	str = NULL;
     stp = 0;
-    if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[0], "<"))
-        i = 2;
-	str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-    if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
-    {
-        count++;
-        i++;
-    }
-	free(str);
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+		i += 2;
+	index = i;
+	if (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 	{
-		if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-			break;
-		flag_trig = 1;
-		count++;
-		i++;
-	}
-    while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-    {
-        if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
-        {
-			trigger = 0;
-            ++i;
-            while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-            {
-				if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-                    break;
-                trigger++;
-                i++;
-            }
-            if (trigger >= 1)
-            {
-				count = count + trigger - 1;
-				if (trigger > 1)
-					stp = 1;
-            }
-            else if (!stp)
-            {
-                if ((pa_tkns[pa_info->i].cmd_splitted[i] == NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<")) || !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
-                    count++;
-            }
-        }
-		else if (!stp)
-		{
-			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-			{
-				i += 2;
-				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
-					stp = 1;
-			}
-			else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
-			{
-				count++;
-				i++;
-			}
-			else
-				i++;
-		}
-		else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-		{
-			i += 2;
-			if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || ((pa_tkns[pa_info->i].cmd_splitted[i] != NULL) && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
-				stp = 1;
-		}
-		else
+		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
+		if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
 		{
 			count++;
 			i++;
 		}
-    }
-	if (count == 1)
-	{
-		while (i > 0)
-		{
-			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
-			{
-				count++;
-				break;
-			}
-			i--;
-		}
-	}
-    cmd = (char **)malloc(sizeof(char *) * (count + 1));
-    pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
-    i = 0;
-	stp = 0;
-	flag_trig = 0;
-    count = 0;
-    if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[0], "<"))
-        i = 2;
-	str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-    if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
-    {
-        cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-        count++;
-        i++;
-    }
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-	{
-		if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-			break;
-		flag_trig = 1;
-		cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-		count++;
-		i++;
-	}
-    while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-    {
-        if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
-        {
-			trigger = 0;
-            ++i;
-            while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-            {
-                if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
-                    break;
-                if (trigger >= 1)
-                {
-                    cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-                    count++;
-                }
-                trigger++;
-                i++;
-            }
-            if (trigger > 1)
-                stp = 1;
-        }
-		else if (!stp)
+		free(str);
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
 			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				break;
+			flag_trig = 1;
+			count++;
+			i++;
+		}
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+		{
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<") || !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<<"))
+			{
+				trigger = 0;
+				++i;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+						break;
+					trigger++;
+					i++;
+				}
+				if (trigger >= 1)
+				{
+					count = count + trigger - 1;
+					if (trigger > 1)
+						stp = 1;
+				}
+				else if (!stp)
+				{
+					if ((pa_tkns[pa_info->i].cmd_splitted[i] == NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<")) || !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<"))
+						count++;
+					else if ((pa_tkns[pa_info->i].cmd_splitted[i] == NULL && strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<<")) || !strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<<"))
+						count++;
+				}
+			}
+			else if (!stp)
+			{
+				if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				{
+					i += 2;
+					if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
+						stp = 1;
+				}
+				else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
+				{
+					count++;
+					i++;
+				}
+				else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<<"))
+				{
+					count++;
+					i++;
+				}
+				else
+					i++;
+			}
+			else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
 			{
 				i += 2;
-				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || ((pa_tkns[pa_info->i].cmd_splitted[i] != NULL) && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
 					stp = 1;
 			}
-			else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
+			else
 			{
-				cmd[count] = strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 				count++;
 				i++;
-				trig = 1;
 			}
-			else
-				i++;
 		}
-		else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+		if (count == 1)
 		{
-			i += 2;
-			if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || ((pa_tkns[pa_info->i].cmd_splitted[i] != NULL) && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
-				stp = 1;
+			while (i > 0)
+			{
+				if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
+				{
+					count++;
+					break;
+				}
+				else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<<"))
+				{
+					here_doc = 1;
+					count++;
+					break;
+				}
+				i--;
+			}
 		}
-		else
+		cmd = (char **)malloc(sizeof(char *) * (count + 1));
+		pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
+		i = 0;
+		stp = 0;
+		flag_trig = 0;
+		count = 0;
+		while (pa_tkns[pa_info->i].cmd_splitted[i] == NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			i += 2;
+		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
+		if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
 		{
 			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 			count++;
 			i++;
 		}
-    }
-    if (!stp && !trig && !flag_trig)
-    {
-		if (i <= 2 || ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 2], ">"))
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
-			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i - 1]);
+			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				break;
+			flag_trig = 1;
+			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 			count++;
+			i++;
 		}
-    }
-    cmd[count] = NULL;
-    if (count == 1)
-	{
-		while (i > 0)
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
-			if (!strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<") || !ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], "<<"))
+			{
+				trigger = 0;
+				++i;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					/*Trigger is applied here to check how many files are there after input redirection file*/
+					/*Taking all the files after there is input redirection files if any and breaks out of the loop after encountered with any redirections*/
+					if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+						break;
+					if (trigger >= 1)
+					{
+						cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+						count++;
+					}
+					trigger++;
+					i++;
+				}
+				/*If trigger is applied then stop trigger is applied*/
+				if (trigger > 1)
+					stp = 1;
+			}
+			else if (!stp)
+			{
+				/*If stp trigger is zero*/
+				if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+				{
+					i += 2;
+					/*stp is triggered since there are more files after the output redirection file if the criteria meets*/
+					if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
+						stp = 1;
+				}
+				else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<"))
+				{
+					/*Taking the file before the input redirection sign*/
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					i++;
+					/*Applying the trigger so that the function will not take the filename at the end*/
+					trig = 1;
+				}
+				else if (pa_tkns[pa_info->i].cmd_splitted[i + 1] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i + 1], "<<"))
+				{
+					/*Taking the file before the input redirection sign*/
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					i++;
+					/*Applying the trigger so that the function will not take the filename at the end*/
+					trig = 1;
+				}
+				else
+					i++;
+			}
+			else if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+			{
+				i += 2;
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL || ((pa_tkns[pa_info->i].cmd_splitted[i] != NULL) && !is_rdr(pa_tkns[pa_info->i].cmd_splitted[i])))
+					stp = 1;
+			}
+			else
 			{
 				cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 				count++;
-				break;
+				i++;
 			}
-			i--;
 		}
+		/*This condition is to take the file name at the end
+		Special case scenario: wc < file < file2 < file4*/
+		if (!stp && !trig && !flag_trig)
+		{
+			if (i <= 2 || ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 2], ">") || ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 2], ">>"))
+			{
+				if (ft_strcmp(cmd[count - 1], pa_tkns[pa_info->i].cmd_splitted[i - 1]))
+				{
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i - 1]);
+					count++;
+				}
+			}
+		}
+		/*This condition is to check if the count is 1 and after iterating the whole command, Going backwards to get the file*/ 
+		if (count == 1 )
+		{
+			while (i > index)
+			{
+				if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
+				{
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					break;
+				}
+				else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<<"))
+				{
+					here_doc = 1;
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					break;
+				}
+				i--;
+			}
+		}
+		cmd[count] = NULL;
+		i = 0;
+		while (cmd[i] != NULL)
+		{
+			pa_tkns[pa_info->i].cmd_rdr[i] = ft_strdup(cmd[i]);
+			free(cmd[i]);
+			i++;
+		}
+		pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
+		free(str);
+		free(cmd);
+		ft_putendl_fd("CMD", 1);
+		print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
+		ft_putendl_fd("END", 1);
 	}
-	i = 0;
-    while (cmd[i] != NULL)
-    {
-        pa_tkns[pa_info->i].cmd_rdr[i] = ft_strdup(cmd[i]);
-        free(cmd[i]);
-        i++;
-    }
-    pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
-    ft_putendl_fd("CMD", 1);
-    print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
-    free(cmd);
-	free(str);
-	ft_putendl_fd("END", 1);
 }
 
 void    parse_rdr_out(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
@@ -355,102 +406,161 @@ void    parse_rdr_out(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 	int	count;
 	char	**cmd;
 	char	*str;
+	int		index;
 
 	i = 0;
 	count = 0;
-	str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-	if (!access(str, X_OK))
+	cmd = NULL;
+	str = NULL;
+	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
+		i += 2;
+	if (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 	{
-		count++;
-		i++;
-		free(str);
-	}
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-	{
-		if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
-			break;
-		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
+		if (!access(str, X_OK))
 		{
 			count++;
 			i++;
+			free(str);
 		}
-	}
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-	{
-		if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
-			i += 2;
-			if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
 				break;
-			while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+			else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+				break;
+			while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+			{
+				if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+					break;
+				else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+					break;
+				count++;
+				i++;
+			}
+		}
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+		{
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+			{
+				i += 2;
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+					break;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+						break;
+					else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+						break;
+					count++;
+					i++;
+				}
+			}
+			else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+			{
+				i += 2;
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+					break;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+						break;
+					else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+						break;
+					count++;
+					i++;
+				}
+			}
+			else
 			{
 				count++;
 				i++;
 			}
 		}
-		else
-		{
-			count++;
-			i++;
-		}
-	}
-	cmd = (char **)malloc(sizeof(char *) * (count + 1));
-	pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
-	i = 0;
-	count = 0;
-	str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-	if (!access(str, X_OK))
-	{
-		cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-		count++;
-		i++;
-		free(str);
-	}
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-	{
-		if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
-			break;
-		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+		cmd = (char **)malloc(sizeof(char *) * (count + 1));
+		pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
+		i = 0;
+		count = 0;
+		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
+		if (!access(str, X_OK))
 		{
 			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 			count++;
 			i++;
+			free(str);
 		}
-	}
-	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
-	{
-		if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
-			i += 2;
-			if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
 				break;
-			while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+			else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+				break;
+			while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+			{
+				if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+					break;
+				else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+					break;
+				cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+				count++;
+				i++;
+			}
+		}
+		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+		{
+			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+			{
+				i += 2;
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+					break;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+						break;
+					else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+						break;
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					i++;
+				}
+			}
+			else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+			{
+				i += 2;
+				if (pa_tkns[pa_info->i].cmd_splitted[i] == NULL)
+					break;
+				while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
+				{
+					if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
+						break;
+					else if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">>"))
+						break;
+					cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
+					count++;
+					i++;
+				}
+			}
+			else
 			{
 				cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 				count++;
 				i++;
 			}
 		}
-		else
+		cmd[count] = NULL;
+		i = 0;
+		while (cmd[i] != NULL)
 		{
-			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-			count++;
+			pa_tkns[pa_info->i].cmd_rdr[i] = ft_strdup(cmd[i]);
+			free(cmd[i]);
 			i++;
 		}
+		pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
+		ft_putendl_fd("CMD", 1);
+		print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
+		ft_putendl_fd("END", 1);
+		free(cmd);
 	}
-	cmd[count] = NULL;
-	i = 0;
-	while (cmd[i] != NULL)
-    {
-        pa_tkns[pa_info->i].cmd_rdr[i] = ft_strdup(cmd[i]);
-        free(cmd[i]);
-        i++;
-    }
-    pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
-    ft_putendl_fd("CMD", 1);
-    print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
-	ft_putendl_fd("END", 1);
-    free(cmd);
 }
 
 t_pars_tokens *parser (char **tokens)
@@ -498,17 +608,16 @@ t_pars_tokens *parser (char **tokens)
 
     while (pa_info->i < pa_info->pipes_count)
     {
-        if((pa_tkns[pa_info->i].is_in && pa_tkns[pa_info->i].is_out) || pa_tkns[pa_info->i].is_in)
+		if(pa_tkns[pa_info->i].is_in || pa_tkns[pa_info->i].here_doc)
         {
 			parse_rdr_in(pa_tkns, pa_info);
         }
-        else if(pa_tkns[pa_info->i].is_out && !pa_tkns[pa_info->i].is_in)
+        else if(pa_tkns[pa_info->i].is_out || pa_tkns[pa_info->i].is_out_appnd)
         {
             parse_rdr_out(pa_tkns, pa_info);
         }
         pa_info->i++;
     }
-
     //if ((pa_tkns->is_in == 1) && !pa_tkns->is_out && !pa_tkns->is_out_appnd && !pa_tkns->here_doc && !pa_tkns->pipe)
        // parse_rdr(pa_tkns, pa_info);  
     return (pa_tkns);    
