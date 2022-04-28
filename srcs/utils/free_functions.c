@@ -22,10 +22,10 @@ void free_2d_array(char **arr)
     i = 0;
     while(arr && arr[i])
     {
-        free_me(&arr[i]);
+        free(arr[i]);
         i++;
     }
-   free_me(arr); 
+   free(arr); 
 }
 
 

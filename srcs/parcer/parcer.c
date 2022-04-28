@@ -136,6 +136,15 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     env.pa_tkns = pa_tkns;
 }
 
+int	cmd_w_flags(char *str)
+{
+	if (!ft_strcmp(str,"ls"))
+		return (1);
+	else if (!ft_strcmp(str,"wc"))
+		return (1);
+	return (0);
+}
+
 void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
     int i;
@@ -147,7 +156,6 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 	int		index;
 	int		trig;
 	int		here_doc;
-	char	*str;
 
     i = 0;
 	trig = 0;
@@ -157,20 +165,12 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     trigger = 0;
     count = 0;
 	index = 0;
-	str = NULL;
     stp = 0;
 	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
 		i += 2;
 	index = i;
 	if (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 	{
-		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-		if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
-		{
-			count++;
-			i++;
-		}
-		free(str);
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
 			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
@@ -178,6 +178,11 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 			flag_trig = 1;
 			count++;
 			i++;
+		}
+		if (count == 2 && cmd_w_flags(pa_tkns[pa_info->i].cmd_splitted[count - 2]))
+		{
+			if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[count - 1], '-'))
+				flag_trig = 0;
 		}
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
@@ -239,9 +244,9 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 				i++;
 			}
 		}
-		if (count == 1)
+		if (count == 1 || (count == 2 && cmd_w_flags(pa_tkns[pa_info->i].cmd_splitted[index]) && ft_strchr(pa_tkns[pa_info->i].cmd_splitted[index + 1], '-')))
 		{
-			while (i > 0)
+			while (i > index)
 			{
 				if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i - 1], "<"))
 				{
@@ -265,13 +270,6 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 		count = 0;
 		while (pa_tkns[pa_info->i].cmd_splitted[i] == NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
 			i += 2;
-		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-		if (!is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]) && !access(str, X_OK))
-		{
-			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-			count++;
-			i++;
-		}
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
 			if (is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
@@ -280,6 +278,12 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
 			count++;
 			i++;
+		}
+		/*Flag trigger needs to be turned off if cmd contains such commands(ls -la, wc -l, ls -l)*/
+		if (count == 2 && cmd_w_flags(pa_tkns[pa_info->i].cmd_splitted[count - 2]))
+		{
+			if (ft_strchr(pa_tkns[pa_info->i].cmd_splitted[count - 1], '-'))
+				flag_trig = 0;
 		}
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
@@ -363,7 +367,7 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 			}
 		}
 		/*This condition is to check if the count is 1 and after iterating the whole command, Going backwards to get the file*/ 
-		if (count == 1 )
+		if (count == 1 || (count == 2 && cmd_w_flags(cmd[0]) && ft_strchr(cmd[1], '-')))
 		{
 			while (i > index)
 			{
@@ -392,7 +396,6 @@ void    parse_rdr_in(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 			i++;
 		}
 		pa_tkns[pa_info->i].cmd_rdr[i] = NULL;
-		free(str);
 		free(cmd);
 		ft_putendl_fd("CMD", 1);
 		print_2d_array(pa_tkns[pa_info->i].cmd_rdr);
@@ -405,24 +408,15 @@ void    parse_rdr_out(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 	int	i;
 	int	count;
 	char	**cmd;
-	char	*str;
 	int		index;
 
 	i = 0;
 	count = 0;
 	cmd = NULL;
-	str = NULL;
 	while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL && is_rdr(pa_tkns[pa_info->i].cmd_splitted[i]))
 		i += 2;
 	if (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 	{
-		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-		if (!access(str, X_OK))
-		{
-			count++;
-			i++;
-			free(str);
-		}
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
 			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
@@ -481,14 +475,6 @@ void    parse_rdr_out(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 		pa_tkns[pa_info->i].cmd_rdr = (char **)malloc(sizeof(char *) * (count + 1));
 		i = 0;
 		count = 0;
-		str = get_abs_cmd(pa_tkns[pa_info->i].cmd_splitted[i]);
-		if (!access(str, X_OK))
-		{
-			cmd[count] = ft_strdup(pa_tkns[pa_info->i].cmd_splitted[i]);
-			count++;
-			i++;
-			free(str);
-		}
 		while (pa_tkns[pa_info->i].cmd_splitted[i] != NULL)
 		{
 			if (!ft_strcmp(pa_tkns[pa_info->i].cmd_splitted[i], ">"))
