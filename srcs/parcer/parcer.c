@@ -13,13 +13,13 @@ void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
             pa_tkns[pa_info->j].pipe_write_end = 1;
             pa_tkns[pa_info->j].pipe = 3;
         }
-        else if (pa_tkns[pa_info->j].cmd_full[0] != '|' && pa_tkns[pa_info->j].cmd_full[ft_strlen(pa_tkns[pa_info->j].cmd_full) - 1] == '|')
+        else if (pa_tkns[pa_info->j].cmd_full && pa_tkns[pa_info->j].cmd_full[0] != '|' && pa_tkns[pa_info->j].cmd_full[ft_strlen(pa_tkns[pa_info->j].cmd_full) - 1] == '|')
         {
             pa_tkns[pa_info->j].pipe_read_end = 0;
             pa_tkns[pa_info->j].pipe_write_end = 1;
             pa_tkns[pa_info->j].pipe = 2;
         }
-        else if (pa_tkns[pa_info->j].cmd_full[0] == '|' && pa_tkns[pa_info->j].cmd_full[ft_strlen(pa_tkns[pa_info->j].cmd_full) - 1] != '|')
+        else if (pa_tkns[pa_info->j].cmd_full && pa_tkns[pa_info->j].cmd_full[0] == '|' && pa_tkns[pa_info->j].cmd_full[ft_strlen(pa_tkns[pa_info->j].cmd_full) - 1] != '|')
         {
             pa_tkns[pa_info->j].pipe_read_end = 1;
             pa_tkns[pa_info->j].pipe_write_end = 0;
@@ -42,7 +42,9 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
     int		end[2];
     char *heredoc;
     char *buf;
+    char *join;
 
+    join = NULL;
     heredoc = NULL;
     if (pipe(end) == -1)
 		return (ft_perror(EXIT_FAILURE, "pipe error"));    
@@ -57,13 +59,22 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 			return (exit_close_fds(end[1], -1, EXIT_SUCCESS));
 		if (ft_strcmp(buf, heredoc) == 0)
 			break ;
-        ft_putstr_fd(buf, end[1]);
-        ft_putchar_fd('\n', end[1]);
+        else if(buf)
+        {
+            join = ft_strjoin(join, buf);    
+            join = ft_strjoin(join, "\n");
+        }
 		free(buf);
 	}
+    int i;
+    //int len;
+    i = 0;
+    write(end[1],join, ft_strlen(join));
     close(end[1]);
     //pa_tkns[pa_info->j].fd_in = end[0];
     pa_tkns[pa_info->j].here_doc_fd = end[0];
+    env.fd_in = end[0];
+    ft_putnbr_fd(end[0], 2);
 }
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
@@ -92,21 +103,23 @@ void deal_with_pipes(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **toke
     pa_info->len++;
     pa_info->i++;
     pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
-    pa_tkns[pa_info->j].is_in = 0;
-    pa_tkns[pa_info->j].is_out = 0;
-    pa_tkns[pa_info->j].is_out_appnd = 0;
-    pa_tkns[pa_info->j].pipe = 0;
-
+    // pa_tkns[pa_info->j].is_in = 0;
+    // pa_tkns[pa_info->j].is_out = 0;
+    ///pa_tkns[pa_info->j].is_out_appnd = 0;
+    //pa_tkns[pa_info->j].pipe = 0;
 }
 void create_cmds(t_parser_info *pa_info, char **tokens)
 {
     pa_info->arr[pa_info->len] = ft_strdup(tokens[pa_info->i]);
     if(!(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>') && tokens[pa_info->i][0] != '>' && !(tokens[pa_info->i][0] == '<' && tokens[pa_info->i][1] == '<') && tokens[pa_info->i][0] != '<')
             pa_info->arr1[pa_info->len] = ft_strdup(tokens[pa_info->i]);
+    else
+    {
+        pa_info->arr1[pa_info->len] = NULL;
+    }
     pa_info->str = ft_strjoin (pa_info->str, tokens[pa_info->i]);
     pa_info->len++;
     pa_info->i++;
-    
 }
 
 void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
@@ -494,8 +507,6 @@ t_pars_tokens *parser (char **tokens)
     // printf("here_doc: %d\n", pa_tkns->here_doc);
     // printf("Pipes: %d\n", pa_tkns->pipe);
     pa_info->i = 0;
-    pa_info->j = 0;
-
     // while (pa_info->i < pa_info->pipes_count)
     // {
     //     if((pa_tkns[pa_info->i].is_in && pa_tkns[pa_info->i].is_out) || pa_tkns[pa_info->i].is_in)

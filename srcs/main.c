@@ -21,7 +21,7 @@ static int get_input()
             continue;            
         env.stat_code = input_to_tokens(input);
         if(!env.stat_code)
-           free_everything();
+           ;//free_everything();
     }
     return (0);
 }

@@ -2,6 +2,8 @@
 
 extern t_env_var env;
 
+
+
 int get_pipe_len(char **tokens)
 {
     int i;
@@ -13,42 +15,29 @@ int get_pipe_len(char **tokens)
     while (tokens[i])
     {
         if(tokens[i][0] == '|')
-            len++;
+            len++;      
         i++;
     }
     return (len);
 }
 
-int get_count(char **tkns)
+int get_count(char **tkns , int j)
 {
     int i;
 
-    i = 0;
+    i = j;
 
     while(tkns[i])
     {
         if(tkns[i][0] == '|')
+        {
             return (++i);
+        }
         i++;    
     }
-  
     return (i);
 }
-int get_count_no(char **tkns)
-{
-    int i;
 
-    i = 0;
-
-    while(tkns[i])
-    {
-        if(tkns[i][0] == '|')
-            return (i);
-        i++;    
-    }
-  
-    return (i);
-}
 
 void init_parser_info(t_parser_info *pa_info, char **tokens)
 {
@@ -67,7 +56,7 @@ void init_parser_info(t_parser_info *pa_info, char **tokens)
 
 void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)
 {        
-    pa_info->len = get_count(tokens);
+    pa_info->len = get_count(tokens, pa_info->i);
     pa_info->arr = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what
     pa_info->arr1 = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what  
     pa_info->str = ((char *)0);

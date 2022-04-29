@@ -77,7 +77,8 @@ void 			print_2d_array(char **arr);
 void 			free_me (char **ptr);
 void 			free_2d_array(char **arr);
 void			ft_free_str_array(char ***arr);
-
+int get_2d_arr_len(char **arr);
+int get_2d_arr_len2(char **arr);
 /*
 ** =============================================================================
 ** Signals

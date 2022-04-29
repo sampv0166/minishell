@@ -100,6 +100,32 @@ char **split_to_tokens(char *str, t_split *split_info)
     return (split_info->arr);
 }
 
+char **join_toks(char **tok1, char **tok2)
+{
+    int len;
+    len = get_2d_arr_len2(tok1) + get_2d_arr_len2(tok2);
+    char **new_toks;
+    int i;
+    int j;
+    new_toks = malloc(sizeof(char *) * len + 1);
+    i = 0;
+    j = 0;
+    while(tok1[i])
+    {
+        new_toks[i] = ft_strdup(tok1[i]);
+        i++;
+    }
+    while(tok2[j])
+    {
+        new_toks[j + i] = ft_strdup(tok2[j]);
+        j++;
+    }
+    new_toks[j + i] = NULL;
+    ft_free_str_array(&tok1);
+    ft_free_str_array(&tok2);
+    return (new_toks);
+}
+
 int input_to_tokens(char *input)
 {
     char **tokens;
@@ -112,7 +138,11 @@ int input_to_tokens(char *input)
     tokens = split_to_tokens(input, si);
     if(!tokens) 
         return(EXIT_FAILURE);
+    //remove_empty_quotes();    
     tokens = split_by_pipe_redir(tokens, si2);
+    //print_2d_array(tokens);
+    //exit(0);
+
     if(!tokens) 
         return(EXIT_FAILURE);
     if (!is_token_syntax_valid(tokens))
@@ -120,9 +150,53 @@ int input_to_tokens(char *input)
         printf("Invalid Syntax\n");
         return(258);
     }
+
+    int d_len;
+    d_len = get_2d_arr_len(tokens);
+    if(tokens[d_len][0] == '|')
+    {
+        char *in;
+        char *buf;
+        in = NULL;
+        buf = NULL;
+        while(1)
+        {
+            buf = readline(">");
+            in = ft_strjoin(in, buf);
+            if(in[ft_strlen(in) - 1] == '|')
+                continue;
+            else
+                break;    
+        }
+        t_split *s1;
+        t_split *s2;
+        char **toks;
+        s1 = malloc (sizeof (t_split));
+        s2 = malloc (sizeof (t_split));
+        if(!s1 || !s2)
+            return (EXIT_FAILURE);
+        toks = split_to_tokens(in, s1);
+        if(!toks) 
+            return(EXIT_FAILURE);
+        //remove_empty_quotes();    
+        toks = split_by_pipe_redir(toks, s2);
+        //print_2d_array(tokens);
+        //exit(0);
+
+        if(!toks) 
+            return(EXIT_FAILURE);
+        if (!is_token_syntax_valid(toks))
+        {
+            printf("Invalid Syntax\n");
+            return(258);
+        }
+        tokens = join_toks(tokens, toks);
+    }
+    // print_2d_array(tokens);
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
     free_split_info(si, si2, tokens);
+
     // int y;
     // y = 0;
     // while (y < env.count)
@@ -160,20 +234,15 @@ int input_to_tokens(char *input)
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }
-
-
-
- 
-
-
-    void print_2d_array(char **arr)
+void print_2d_array(char **arr)
 {
     int i;
 
     i = 0;
     while (arr[i])
     {
-        printf("%s\n", arr[i]);
+        ft_putstr_fd(arr[i], 2);
+         ft_putstr_fd("\n", 2);
         i++;
     }
 }
