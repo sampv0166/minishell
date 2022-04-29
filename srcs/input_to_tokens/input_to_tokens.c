@@ -110,7 +110,7 @@ char	*getting_tild(void)
 	pwd = ft_strdup(getcwd(s, 1000));
 	ch_tild();
 	ret = ft_strdup(getcwd(s, 1000));
-	ft_putendl_fd(ret, 1);
+	// ft_putendl_fd(ret, 1);
 	ch_home();
 	chdir(pwd);
 	free(pwd);

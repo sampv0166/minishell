@@ -28,31 +28,43 @@ static void	elimination(char *str)
 	free(s);
 }
 
+static char	*get_unset_env(char *str)
+{
+	int		i;
+	int		j;
+	int		qte;
+	char	*tmp;
+
+	qte = 0;
+	tmp = NULL;
+	i = 0;
+	j = 0;
+	tmp = ft_strdup(str);
+	delimit_qtes(str);
+	while (str[i] != '=' && str[i] != '\0')
+	{
+		if (str[i] != qte)
+		{
+			tmp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
+
 static void	parse_unset(char *str)
 {
 	char	*tmp;
 	int		qte;
 	int		j;
-	int		i;
 
-	qte = 0;
-	i = 0;
+	tmp = NULL;
 	j = 0;
 	if (!is_rdr(str))
 	{
-		tmp = ft_strdup(str);
-		if (str[0] == 39 || str[0] == 34)
-			qte = str[0];
-		while (str[i] != '=' && str[i] != '\0')
-		{
-			if (str[i] != qte)
-			{
-				tmp[j] = str[i];
-				j++;
-			}
-			i++;
-		}
-		tmp[j] = '\0';
+		tmp = get_unset_env(str);
 		j = 0;
 		while (tmp[j])
 		{
@@ -69,12 +81,11 @@ int	unset(char **str)
 	int	i;
 
 	i = 1;
-
 	while (str[i] != NULL)
 	{
 		parse_unset(str[i]);
 		if (is_rdr(str[i]))
-			break;
+			break ;
 		elimination(str[i]);
 		i++;
 	}

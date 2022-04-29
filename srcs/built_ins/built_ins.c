@@ -64,8 +64,9 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens)
 	if (ft_strcmp(pa_tokens->cmd[0], "exit") == 0)
 	{
 		ret = ft_exit(pa_tokens->cmd);
-		exit(ret);
-		return (ft_exit(pa_tokens->cmd));
+		if (!env.trigger)
+			exit(ret);
+		return (ret);
 	}
 	return (EXIT_FAILURE);
 }

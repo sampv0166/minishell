@@ -12,9 +12,9 @@ int	pwd(char **str, char **env)
 	while (str[i] != NULL)
 	{
 		if (is_rdr(str[i]))
-			break;
+			break ;
 		else if (!ft_strcmp(str[i], "|"))
-			break;
+			break ;
 		i++;
 	}
 	s = get_env_dollar("$PWD");

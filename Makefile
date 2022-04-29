@@ -8,20 +8,29 @@ NAME = minishell
 
 SRCS = 	srcs/main.c \
 		srcs/built_ins/built_ins.c \
+		srcs/env/get_env.c \
 		srcs/env/env_vars.c \
 		srcs/executor/executor.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_isqte.c \
+		srcs/utils/ft_delimit_qtes.c \
+		srcs/utils/length_2d.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/last_char.c \
 		srcs/utils/signal_handling.c \
 		srcs/utils/ft_putstr_2d.c \
-		srcs/built_ins/echo.c \
-		srcs/built_ins/cd.c \
-		srcs/built_ins/export.c \
+		srcs/built_ins/echo/echo_utils.c \
+		srcs/built_ins/echo/echo.c \
+		srcs/built_ins/cd/cd_pwd_up.c \
+		srcs/built_ins/cd/cd_tild.c \
+		srcs/built_ins/cd/cd.c \
+		srcs/built_ins/export/export_sort_utils1.c \
+		srcs/built_ins/export/export_sort_utils2.c \
+		srcs/built_ins/export/export_sort_utils3.c \
+		srcs/built_ins/export/export.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \
 		srcs/built_ins/unset.c \
@@ -37,7 +46,7 @@ SRCS = 	srcs/main.c \
 OBJS = ${SRCS:.c=.o}
 
 RM = rm -rf
-CC = gcc -ggdb
+CC = gcc -ggdb -g
 
 # CFLAGS = -lreadline
 # R_FLAG = -lreadline 
