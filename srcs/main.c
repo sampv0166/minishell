@@ -9,6 +9,10 @@ static int get_input()
     input = NULL;
     while(1)
     {
+        ft_putstr_fd("\n", 2);
+        ft_putstr_fd("exit code :   ", 2);
+        ft_putnbr_fd(env.stat_code, 2);
+        ft_putstr_fd("\n", 2);
         input = readline("MS SHELL====>");
         if(input == NULL)
         {

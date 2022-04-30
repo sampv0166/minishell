@@ -2,6 +2,42 @@
 
 extern t_env_var env;
 
+void print_strcut(t_pars_tokens *pa_tkns)
+{
+    int y;
+    y = 0;
+    while (y < env.count)
+    {
+        int j;
+        j = 0;
+        printf("\n struct = %d\n", y);
+        printf("\n-------------cmd---------------------------\n");
+        while (pa_tkns[y].cmd[j])
+        {
+            printf ("%s ",pa_tkns[y].cmd[j]);
+            j++;
+        }
+        printf("\n-------------cmd_splitted---------------------------\n");
+        j = 0;
+        while (pa_tkns[y].cmd_splitted[j])
+        {
+            printf ("%s ",pa_tkns[y].cmd_splitted[j]);
+            j++;
+        }
+        printf("\n-------------cmd_full---------------------------\n");
+        printf ("%s ",pa_tkns[y].cmd_full);
+        printf("\npipe = %d\n", pa_tkns[y].pipe);
+        printf("\npipe_read_end = %d\n", pa_tkns[y].pipe_read_end);
+        printf("\npipe_write_end = %d\n", pa_tkns[y].pipe_write_end);
+        printf("\nis_out = %d\n", pa_tkns[y].is_out);
+        printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
+        printf("\nis_in = %d\n", pa_tkns[y].is_in);
+        printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
+        printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
+        y++;
+    }
+}
+
 void split_by_redirection(char **arr, char **tokens, t_split *split_info)
 {
     if (!token_contains_quote(arr[split_info->i]))
@@ -53,7 +89,7 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
         split_info->i++;
     }
     tokens[split_info->k] = NULL;
-    free_2d_array(arr);
+    //free_2d_array(arr);
     return (tokens);
 }
 /*
@@ -126,9 +162,50 @@ char **join_toks(char **tok1, char **tok2)
     return (new_toks);
 }
 
+
+int join_pipes(char **tokens)
+{
+    char *in;
+    char *buf;
+    in = NULL;
+    buf = NULL;
+    while(1)
+    {
+        buf = readline(">");
+        in = ft_strjoin(in, buf);
+        if(in[ft_strlen(in) - 1] == '|')
+            continue;
+        else
+            break;    
+    }
+    t_split *s1;
+    t_split *s2;
+    char **toks;
+    s1 = malloc (sizeof (t_split));
+    s2 = malloc (sizeof (t_split));
+    if(!s1 || !s2)
+        return (EXIT_FAILURE);
+    toks = split_to_tokens(in, s1);
+    if(!toks) 
+        return(EXIT_FAILURE);
+    toks = split_by_pipe_redir(toks, s2);
+    if(!toks) 
+        return(EXIT_FAILURE);
+    if (!is_token_syntax_valid(toks))
+    {
+        printf("Invalid Syntax\n");
+        return(258);
+    }
+    tokens = join_toks(tokens, toks);
+}
+
 int input_to_tokens(char *input)
 {
     char **tokens;
+    int d_len;
+    int ret;
+
+    ret = 0;
     t_split *si;
     t_split *si2;
     si = malloc (sizeof (t_split));
@@ -137,12 +214,8 @@ int input_to_tokens(char *input)
         return (EXIT_FAILURE);
     tokens = split_to_tokens(input, si);
     if(!tokens) 
-        return(EXIT_FAILURE);
-    //remove_empty_quotes();    
+        return(EXIT_FAILURE);  
     tokens = split_by_pipe_redir(tokens, si2);
-    //print_2d_array(tokens);
-    //exit(0);
-
     if(!tokens) 
         return(EXIT_FAILURE);
     if (!is_token_syntax_valid(tokens))
@@ -150,87 +223,19 @@ int input_to_tokens(char *input)
         printf("Invalid Syntax\n");
         return(258);
     }
-
-    int d_len;
     d_len = get_2d_arr_len(tokens);
     if(tokens[d_len][0] == '|')
     {
-        char *in;
-        char *buf;
-        in = NULL;
-        buf = NULL;
-        while(1)
-        {
-            buf = readline(">");
-            in = ft_strjoin(in, buf);
-            if(in[ft_strlen(in) - 1] == '|')
-                continue;
-            else
-                break;    
-        }
-        t_split *s1;
-        t_split *s2;
-        char **toks;
-        s1 = malloc (sizeof (t_split));
-        s2 = malloc (sizeof (t_split));
-        if(!s1 || !s2)
-            return (EXIT_FAILURE);
-        toks = split_to_tokens(in, s1);
-        if(!toks) 
-            return(EXIT_FAILURE);
-        //remove_empty_quotes();    
-        toks = split_by_pipe_redir(toks, s2);
-        //print_2d_array(tokens);
-        //exit(0);
-
-        if(!toks) 
-            return(EXIT_FAILURE);
-        if (!is_token_syntax_valid(toks))
-        {
-            printf("Invalid Syntax\n");
-            return(258);
-        }
-        tokens = join_toks(tokens, toks);
+        ret = join_pipes(tokens);
+        if(ret)
+            return (ret);
     }
-    // print_2d_array(tokens);
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
     free_split_info(si, si2, tokens);
-
-    // int y;
-    // y = 0;
-    // while (y < env.count)
-    // {
-    //     int j;
-    //     j = 0;
-    //     printf("\n struct = %d\n", y);
-    //     printf("\n-------------cmd---------------------------\n");
-    //     while (pa_tkns[y].cmd[j])
-    //     {
-    //         printf ("%s ",pa_tkns[y].cmd[j]);
-    //         j++;
-    //     }
-    //     printf("\n-------------cmd_splitted---------------------------\n");
-    //     j = 0;
-    //     while (pa_tkns[y].cmd_splitted[j])
-    //     {
-    //         printf ("%s ",pa_tkns[y].cmd_splitted[j]);
-    //         j++;
-    //     }
-    //     printf("\n-------------cmd_full---------------------------\n");
-    //     printf ("%s ",pa_tkns[y].cmd_full);
-    //     printf("\npipe = %d\n", pa_tkns[y].pipe);
-    //     printf("\npipe_read_end = %d\n", pa_tkns[y].pipe_read_end);
-    //     printf("\npipe_write_end = %d\n", pa_tkns[y].pipe_write_end);
-    //     printf("\nis_out = %d\n", pa_tkns[y].is_out);
-    //     printf("\nis_append = %d\n", pa_tkns[y].is_out_appnd);
-    //     printf("\nis_in = %d\n", pa_tkns[y].is_in);
-    //     printf("\nhere_doc = %d\n", pa_tkns[y].here_doc);
-    //     printf("\nfd_out = %d\n", pa_tkns[y].fd_out);
-    //     y++;
-    //    // exit(0);
-    // }
-    //exit(0);
+    expander(pa_tkns);
+    // TO PRINT THE STRUCTURE
+    // print_strcut(pa_tkns);
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }
@@ -246,3 +251,4 @@ void print_2d_array(char **arr)
         i++;
     }
 }
+

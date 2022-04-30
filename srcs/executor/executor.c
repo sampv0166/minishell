@@ -98,7 +98,8 @@ char *get_abs_cmd(char *cmd)
     char **path_split;
     char *dup;
     int i;
-    
+    if(!cmd)
+        return (cmd);
     if (access(cmd, X_OK) == 0)
     {
         return (ft_strdup(cmd));
@@ -180,19 +181,8 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
 
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
-    // int g;
-    // g = 0;
-    // while(pa_tokens[i].cmd[g])
-    // {
-    //     ft_putstr_fd(pa_tokens[i].cmd[g],2);
-    //     g++;
-    // }
-    // ft_putstr_fd("\n\n",2);
-    //  ft_putstr_fd(pa_tokens[i].cmd[g + 1],2);
-    //print_2d_array(pa_tokens[i].cmd);
-    // handle_pipe_type_one(pa_tokens, i);
-    // handle_pipe_type_2_3(pa_tokens, i);
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
+    ft_putchar_fd('s', 2);
 	return (env.stat_code);
 }
 
@@ -322,42 +312,32 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
 {
     char *abs_cmd_path;
     pid_t pid;
+    abs_cmd_path = NULL;
     if (is_redir(pa_tokens, i))
     {
         if(handle_redirections(pa_tokens, i))
-        {    
             return (EXIT_FAILURE);
-        }
     }
     dup2(env.fd_out, 1);
     close(env.fd_out);
-    //     int g;
-    // g = 0;
-    // while(pa_tokens[i].cmd[g])
-    // {
-    //     ft_putstr_fd(pa_tokens[i].cmd[g],2);
-    //     g++;
-    // }
-    if (is_inbuilt(pa_tokens[i].cmd[0]))
+    if(pa_tokens[i].cmd[0])
     {
-	    return (handle_inbuilt_redir(pa_tokens, i));
+        if(is_inbuilt(pa_tokens[i].cmd[0]))
+            return (handle_inbuilt_redir(pa_tokens, i));
     }
-     
-    abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+    if(pa_tokens[i].cmd)
+        abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
     if(abs_cmd_path == NULL)
     {
-        if(is_inbuilt(pa_tokens[i].cmd_splitted[0]))
-            return (0); 
-        else if(pa_tokens[i].is_in)
+        if(pa_tokens[i].cmd[0])
         {
-            pa_tokens[i].cmd = pa_tokens[i].cmd_rdr;
-           // exit(0);
-            abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+            if(is_inbuilt(pa_tokens[i].cmd[0]))
+                return (0);
         }
         else
         {
             printf (":::command not found\n");
-            return(127);
+            return(127);  
         }
     }
     if (access(abs_cmd_path, X_OK) == 0)
@@ -367,7 +347,6 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         printf ("::command not found\n");
         return(127);
     }
-    
     pid = fork();
     if (pid < 0)
         exit(0);
@@ -383,10 +362,10 @@ int check_for_input_files(t_pars_tokens *pa_tkns, int i)
 {
     int j;
     j = 0;
+    char *abs_path;
    // print_2d_array(pa_tkns[i].cmd_splitted);
     while(pa_tkns[i].cmd_splitted[j])
     {
-       
         if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
         {
             j++;
@@ -415,7 +394,15 @@ int check_for_input_files(t_pars_tokens *pa_tkns, int i)
         }
         else if(pa_tkns[i].cmd_splitted[j])
         {
-            return(1);
+            if(access(pa_tkns[i].cmd_splitted[j], F_OK) == 0)
+            {
+                return(1);
+            }
+            else
+            {
+                j++;
+                continue;    
+            }
         }
         else
         {
@@ -480,7 +467,7 @@ void find_input_fd(t_pars_tokens  *pa_tkns,int i)
     fd = 0; 
     while(pa_tkns[i].cmd_splitted[j] && j >=0 )
     {
-        if(pa_tkns[i].cmd_splitted[j] &&pa_tkns[i].cmd_splitted[j][0] == '<')
+        if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<')
         {
             if(ft_strlen(pa_tkns[i].cmd_splitted[j]) == 1)
             {
@@ -577,7 +564,6 @@ void find_input_file_names(t_pars_tokens *pa_tkns, int i)
             continue;
         else if(pa_tkns[i].cmd_splitted[j])
         {        
-             
             files[arr_len++] = pa_tkns[i].cmd_splitted[j];
             j++;
         }
@@ -600,13 +586,15 @@ void find_input_file_names(t_pars_tokens *pa_tkns, int i)
             continue;
         }
         else if(pa_tkns[i].cmd_splitted[j])
-        {            
+        {   
+
             files[arr_len++] = pa_tkns[i].cmd_splitted[j];
             j++;
         }
         else
             break;
     }
+
     files[arr_len] = NULL;
     pa_tkns[i].cmd = files;
 }
@@ -614,44 +602,27 @@ void find_input_file_names(t_pars_tokens *pa_tkns, int i)
 int executor(t_pars_tokens *pa_tkns)
 {
     int i;
-    i = 0;
     
+    i = 0;
     env.tmp_in = dup(0);
     env.tmp_out = dup(1);
-    // env.fd_in = 0;
-    // env.fd_out = 1;
-    // printf("%s", )
-    // if(pa_tkns[env.count].cmd_full[ft_strlen(pa_tkns[env.count].cmd_full)] == '|')
-    //     env.count = env.count - 1;
+    env.fd_in = 0;
+    env.fd_out = env.tmp_out;
     while (i < env.count)
     {
-        // if((env.count - 1 ) == i)
-        // {
-        //     if(pa_tkns[i].cmd_full[ft_strlen(pa_tkns[i].cmd_full) - 1] == '|')
-        //     {
-               
-        //     }
-        // }
-        //   ft_putstr_fd(pa_tkns[i].cmd_full, 2);
         if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
         {
             if (!check_for_input_files(pa_tkns, i))
             {
                 find_input_fd(pa_tkns, i);
-                find_input_file_names(pa_tkns, i);
                 env.fd_in = dup(env.fd_in);
-            }
-            else
-            {
-               find_input_file_names(pa_tkns, i);
             }
         }
         else
-        {
             env.fd_in = dup(env.fd_in);
-        }
+     
         dup2(env.fd_in, 0);
-        close(env.fd_in);
+        close(env.fd_in);;
         execute_cmd(pa_tkns, i);
         i++;
     }

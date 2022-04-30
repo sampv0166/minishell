@@ -37,6 +37,10 @@
 typedef struct	s_flags
 {
 	int	newl_flag;
+	int	print_flag;
+	int	i;
+	int	qte;
+	int	trigger;
 }				t_flags;
 
 /*
@@ -46,11 +50,16 @@ typedef struct	s_flags
 */
 
 void	ft_putstr_2d(char **str);
+int		length_2d(char **str);
 int		last_char(char *str);
+int		ft_isqt(char c);
 int		ft_isenv(char c);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strstr(char *str, char *to_find);
 t_pars_tokens *parser (char **tokens);
+void 	ch_home(void);
+void	ch_tild(void);
+void	delimit_qtes(char *str);
 
 /*
 ** =============================================================================
@@ -58,14 +67,61 @@ t_pars_tokens *parser (char **tokens);
 ** =============================================================================
 */
 
-int				get_env(char *str);
-char			*get_env_dollar(char *str);
-int				cd(char **str);
-int				pwd(char **str, char **env);
-int				env_var(void);
-void			echo(char **str);
+void			free_all(char **str);
+ /*
+ ** =============================================================================
+ ** ECHO
+ ** =============================================================================
+ */
+void			check_qtes(char *tmp, int j, int *i, t_flags *flags);
+int				operations(char *tmp, t_flags *flags, int *i);
+int				is_rdr_flag(char *str);
+void			ft_init(t_flags *flags);
+int				check_old_pwd(char **var);
+int				check_rdr_pipes(char *str, t_flags *flags);
+void 			echo(char **str);
+ /*
+ ** =============================================================================
+ ** EXPORT
+ ** =============================================================================
+ */
+char			**declare_s(char **str);
+void			exp_one_arg(void);
 int				export(char **str);
+ /*
+ ** =============================================================================
+ ** CD
+ ** =============================================================================
+ */
+void			chge_pwd(char *pwd);
+void			chge_old_pwd(char *old_pwd);
+int				chge_tilde(char *pwd);
+int				chge_c_dir(char *pwd);
+int				cd(char **str);
+ /*
+ ** =============================================================================
+ ** PWD
+ ** =============================================================================
+ */
+int				pwd(char **str, char **env);
+ /*
+ ** =============================================================================
+ ** ENV
+ ** =============================================================================
+ */
+char			*get_env_dollar(char *str);
+int				env_var(void);
+ /*
+ ** =============================================================================
+ ** UNSET
+ ** =============================================================================
+ */
 int				unset(char **str);
+ /*
+ ** =============================================================================
+ ** EXIT
+ ** =============================================================================
+ */
 unsigned char 	ft_exit(char **str);
 int     		is_inbuilt(char *cmd);
 int     		ft_perror(int exit_status, char *msg);
@@ -79,6 +135,9 @@ void 			free_2d_array(char **arr);
 void			ft_free_str_array(char ***arr);
 int get_2d_arr_len(char **arr);
 int get_2d_arr_len2(char **arr);
+void expander();
+
+void find_input_file_names(t_pars_tokens *pa_tkns, int i);
 /*
 ** =============================================================================
 ** Signals

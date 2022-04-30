@@ -2,6 +2,24 @@
 
 extern t_env_var env;
 
+void	ft_free_str_array(char ***arr)
+{
+	int	i;
+
+	i = 0;
+    // printf("%s", (*arr)[i]);
+
+    // exit(0);
+	while (*arr && (*arr)[i])
+	{
+		free_me(&(*arr)[i]);
+		(*arr)[i] = NULL;
+		i++;
+	}
+	free(*arr);
+	*arr = NULL;
+}
+
 void free_split_info(t_split *split_info, t_split *split_infoo, char **tokens)
 {
     ft_free_str_array(&split_info->arr);
@@ -22,27 +40,14 @@ void free_2d_array(char **arr)
     i = 0;
     while(arr && arr[i])
     {
-        free_me(&arr[i]);
+        free(arr[i]);
         i++;
     }
-   free_me(arr); 
+   free(arr); 
 }
 
 
-void	ft_free_str_array(char ***arr)
-{
-	int	i;
 
-	i = 0;
-	while (*arr && (*arr)[i])
-	{
-		free_me(&(*arr)[i]);
-		(*arr)[i] = NULL;
-		i++;
-	}
-	free(*arr);
-	*arr = NULL;
-}
 
 int free_env()
 {

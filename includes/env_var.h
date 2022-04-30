@@ -37,7 +37,7 @@ typedef struct s_env_var
     t_parser_info *pa_info;
     t_split *split_info;
     char    **split;
-
+    int             trigger;
     int tmp_in;
     int tmp_out;
 
@@ -51,8 +51,9 @@ typedef struct s_env_var
 ** =============================================================================
 */
 
-int init_env_vars(char **envp);
-char *get_env_value (char *var);
-int free_env();
-int executor(t_pars_tokens *pa_tkns);
+int     init_env_vars(char **envp);
+char    *get_env_value (char *var);
+int     free_env();
+int     executor(t_pars_tokens *pa_tkns);
+int     get_env(char *str);
 #endif

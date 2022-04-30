@@ -1,8 +1,4 @@
 #include "../../includes/mini_shell.h"
-// #include <unistd.h>
-// #include <string.h>
-// #include <stdio.h>
-// #include <stdlib.h>
 
 extern t_env_var	env;
 
@@ -16,9 +12,9 @@ int	pwd(char **str, char **env)
 	while (str[i] != NULL)
 	{
 		if (is_rdr(str[i]))
-			break;
+			break ;
 		else if (!ft_strcmp(str[i], "|"))
-			break;
+			break ;
 		i++;
 	}
 	s = get_env_dollar("$PWD");

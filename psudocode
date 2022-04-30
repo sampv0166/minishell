@@ -83,3 +83,28 @@ MUAZZAM
     | wc -l > hi 
 
 11.           
+
+
+
+
+while (i < env.count)
+    {
+        if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+        {
+            if (!check_for_input_files(pa_tkns, i))
+            {
+                find_input_fd(pa_tkns, i);
+                find_input_file_names(pa_tkns, i);
+                env.fd_in = dup(env.fd_in);
+            }
+            else
+               find_input_file_names(pa_tkns, i);
+        }
+        else
+            env.fd_in = dup(env.fd_in);
+     
+        dup2(env.fd_in, 0);
+        close(env.fd_in);;
+        execute_cmd(pa_tkns, i);
+        i++;
+    }

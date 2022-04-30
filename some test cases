@@ -1,30 +1,10 @@
-ls -la >> out1 > out4 out5 > out4
-ls <<eof | ls > hi
-
-cat Makefile | grep pr | head -n 5 | cd file_not_exit
-<a cat <b <c
-<a cat <b <c      avec b n'existe pas (ou pas les droits)
-> test | echo blabla; rm test
->a cat <b >>c 
->a ls >b >>c >d
->a ls <machin >>c >d     avec machin n'exite pas
-
-cat -e > test1 < test2
-cat < test
-echo 2 > out1 >> out2
-echo 2 >> out1 > out2
-echo bonjour > test\ 1
-echo test > file test1
-
-not_cmd bonjour > salut
 
  echo bonjour ; |
  echo bonjour | |
  |
- echo bonjour |;
- echo bonjour ; ls
- echo bonjour > test\ 1
+echo bonjour |;
  cd $HOME/Documents
+
  echo "\s" & echo "\s"
  echo >
  echo -n -n -nnnn -nnnnm
@@ -43,7 +23,7 @@ not_cmd bonjour > salut
  echo 2 >> out1 > out2
  echo 2 > out1 >> out2
  cat < test # with non-existent test
- export var; export var=test
+ export var; export var=testww
  echo bonjour > $test # with test not defined
  file_name_in_current_dir
  cd ../../../../../.. ; pwd

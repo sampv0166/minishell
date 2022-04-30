@@ -1,3 +1,5 @@
+#include "../../includes/mini_shell.h"
+
 int	last_char(char *str)
 {
 	int	i;

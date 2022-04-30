@@ -61,16 +61,11 @@ int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
 int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
 {
     (*i)++;
-    // if(str[*i] == '\"')
-    // {
-    //     (*i)++;
-    //     return (0);
-    // }
+
     if(str[*i] && ft_strchr_2(str + *i, '\"'))
     {
         while(str[*i] && str[*i] != '\"')
-          (*i)++;
-          
+          (*i)++;   
     (*len)++;
     if(str[*i] == '\"')
         (*i)++;

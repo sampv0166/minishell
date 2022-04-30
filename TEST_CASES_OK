@@ -23,10 +23,20 @@ ls -la > hi
 ls -la | grep "117" > hi
 ls >> hi
 ls -la | wc -l | wc -l >> hi
-cat Makefile | grep pr | head -n 5 
+cat Makefile | grep s | head -n 5 
 >file
- ls -la | wc -l >> hi | cat >> 7 > j
- wc -l < filename
+ls -la | wc -l >> hi | cat >> 7 > j
+wc -l < filename
+cat Makefile | grep pr | head -n 5 | cd file_not_exit
+<a cat <b <c
+>a cat <b >>c 
+out1 ls >out2 >>out3 >out4
+> test | echo blabla; rm test
+cat -e > test1 < test2
+cat < out11
+echo 2 > out1 >> out2
+echo test > file test1
+not_cmd > newfile
 
 SYNTAX ERROR TEST
 ----------------------------
@@ -37,7 +47,6 @@ ls -la ||||||
 ls -la >>> d
 ls>
 ls>>>
-
 
 ECHO TESTS CASES
 --------------------------
@@ -51,3 +60,8 @@ echo[TAB]a
 echo\ a
 echo "bip | bip ; coyotte > < \" "
 echo $USER$var\$USER$USER\$USERtest$USER
+
+I/O MIX REDIRECTION
+--------------------------- 
+ls -la >> out1 > out4 out5 > out4
+ls << f | ls > hi 
