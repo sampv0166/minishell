@@ -234,6 +234,7 @@ int input_to_tokens(char *input)
     pa_tkns = parser(tokens);
     free_split_info(si, si2, tokens);
     expander(pa_tkns);
+    
     // TO PRINT THE STRUCTURE
     // print_strcut(pa_tkns);
     executor (pa_tkns);
