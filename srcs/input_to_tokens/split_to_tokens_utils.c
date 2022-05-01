@@ -90,6 +90,27 @@ int create_string_in_between_dbl_quotes(char *str,t_split *split_info)
             inrement_i_len(split_info);
         if(str[split_info->i] == '\"')
             inrement_i_len(split_info);
+		while(str[split_info->i] && (str[split_info->i] != ' ') && (str[split_info->i] != '<') && (str[split_info->i] != '>') && (str[split_info->i] != '|'))
+		{
+			if (str[split_info->i] == '\'')
+			{
+				inrement_i_len(split_info);
+				while(str[split_info->i] && str[split_info->i] != '\'')
+            		inrement_i_len(split_info);
+				if (str[split_info->i] == '\'')
+					inrement_i_len(split_info);
+			}
+			else if (str[split_info->i] == '\"')
+			{
+				inrement_i_len(split_info);
+				while(str[split_info->i] && str[split_info->i] != '\"')
+            		inrement_i_len(split_info);
+				if (str[split_info->i] == '\"')
+					inrement_i_len(split_info);
+			}
+			else
+				inrement_i_len(split_info);
+		}
         split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
         split_info->len = 0;
     }
@@ -130,6 +151,27 @@ int create_string_in_between_sngl_quotes(char *str, t_split *split_info)
             inrement_i_len(split_info);
         if(str[split_info->i] == '\'')
             inrement_i_len(split_info);
+		while(str[split_info->i] && (str[split_info->i] != ' ') && (str[split_info->i] != '<') && (str[split_info->i] != '>') && (str[split_info->i] != '|'))
+		{
+			if (str[split_info->i] == '\'')
+			{
+				inrement_i_len(split_info);
+				while(str[split_info->i] && str[split_info->i] != '\'')
+            		inrement_i_len(split_info);
+				if (str[split_info->i] == '\'')
+					inrement_i_len(split_info);
+			}
+			else if (str[split_info->i] == '\"')
+			{
+				inrement_i_len(split_info);
+				while(str[split_info->i] && str[split_info->i] != '\"')
+            		inrement_i_len(split_info);
+				if (str[split_info->i] == '\"')
+					inrement_i_len(split_info);
+			}
+			else
+				inrement_i_len(split_info);
+		}
         split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
         split_info->len = 0;
     }

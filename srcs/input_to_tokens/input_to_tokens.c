@@ -236,7 +236,7 @@ int input_to_tokens(char *input)
     expander(pa_tkns);
     
     // TO PRINT THE STRUCTURE
-    // print_strcut(pa_tkns);
+    print_strcut(pa_tkns);
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }
