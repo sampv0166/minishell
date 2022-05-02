@@ -23,7 +23,7 @@ static int get_input()
             add_history(input);
         else
             continue;            
-        env.stat_code = input_to_tokens(input);
+        input_to_tokens(input);
         if(!env.stat_code)
            ;//free_everything();
     }

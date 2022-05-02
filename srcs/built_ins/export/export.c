@@ -226,10 +226,7 @@ int	export_env(char *str)
 	var = ft_strdup(str);
 	value = NULL;
 	if (exp_op(var, value, 0))
-	{
-		free(var);
 		return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 

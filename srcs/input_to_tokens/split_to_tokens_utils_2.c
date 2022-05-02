@@ -33,6 +33,38 @@ int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
 //     printf("%d", *i);
 //    exit(0);
 //    *i++;
+	if(str[*i] && ft_strchr_2(str + *i, '\''))
+    {
+        while(str[*i] && str[*i] != '\'')
+          (*i)++;   
+		if(str[*i] == '\'')
+			(*i)++;
+		while (str[*i])
+		{
+			if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
+				break;
+			else if (str[*i] == '\'')
+			{
+				while(str[*i] && str[*i] != '\'')
+				(*i)++;
+				if(str[*i] == '\'')
+					(*i)++;
+			}
+			else if (str[*i] == '\"')
+			{
+				while(str[*i] && str[*i] != '\"')
+				(*i)++;
+				if(str[*i] == '\"')
+					(*i)++;
+			}
+			else
+			{
+				(*i)++;
+				continue;
+			}	
+		}
+		(*len)++;
+    }
     if(str[*i] && ft_strchr_2(str + *i, '\''))
     {
         while(str[*i] && str[*i] != '\'')
@@ -66,9 +98,33 @@ int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
     {
         while(str[*i] && str[*i] != '\"')
           (*i)++;   
-    (*len)++;
-    if(str[*i] == '\"')
-        (*i)++;
+		if(str[*i] == '\"')
+			(*i)++;
+		while (str[*i])
+		{
+			if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
+				break;
+			else if (str[*i] == '\'')
+			{
+				while(str[*i] && str[*i] != '\'')
+				(*i)++;
+				if(str[*i] == '\'')
+					(*i)++;
+			}
+			else if (str[*i] == '\"')
+			{
+				while(str[*i] && str[*i] != '\"')
+				(*i)++;
+				if(str[*i] == '\"')
+					(*i)++;
+			}
+			else
+			{
+				(*i)++;
+				continue;
+			}	
+		}
+		(*len)++;
     }
     else
     {

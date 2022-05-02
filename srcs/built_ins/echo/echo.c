@@ -2,21 +2,23 @@
 
 extern t_env_var	env;
 
-static void	print(char *str, int *qte)
+static void	print(char *str, t_flags *flags)
 {
 	int	i;
 	int	trig;
 
 	i = 0;
 	trig = 0;
-	if (!(*qte))
-		*qte = 34;
 	while (str[i])
 	{
-		trig = 0;
-		if (str[i] == *qte)
+		if (ft_isqt(str[i]) && !trig)
+		{
+			flags->qte = str[i];
 			trig = 1;
-		else if (!trig && !(!i && str[i] == *qte) && !(str[i + 1] == '\0' && str[i] == *qte))
+		}
+		else if (ft_isqt(str[i]) == flags->qte && trig)
+			trig = 0;
+		else if (!ft_isqt(str[i]) || ft_isqt(str[i]) != flags->qte)
 			ft_putchar_fd(str[i], 1);
 		// else if (str[i] == *qte)
 		// {
@@ -109,7 +111,7 @@ void echo(char **str)
 				break ;
 			/*The print_flag to check if Im not encountered with any pipe or redirections*/
 			if (!flags.print_flag)
-				print(str[flags.i], &flags.qte);
+				print(str[flags.i], &flags);
 			flags.i++;
 			/*If first index of 2d array is finished in printing and the second index needs printing, then there should be a
 			space between both the strings in display*/

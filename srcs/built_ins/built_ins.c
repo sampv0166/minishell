@@ -81,9 +81,9 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 	// 	i = 0;
 	// handle builtint redirections here . 
 	//exit(0);
-	exit_status = execute_inbuilt(pa_toks, i);
+	env.stat_code = execute_inbuilt(pa_toks, i);
 	//execute_inbuilt_reset_fds(pa_toks, saved_fds);
-	return (exit_status);
+	return (env.stat_code);
 }
 
 int	is_inbuilt(char *cmd)
