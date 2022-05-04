@@ -19,6 +19,23 @@ char	*getting_tild(void)
 	return (ret);
 }
 
+void	qte_enc(char c, int *trig, int *qte)
+{
+	if (ft_isqt(c))
+	{
+		if (*trig == 1 && *qte == ft_isqt(c))
+		{
+			*qte = 0;
+			*trig = 0;
+		}
+		else if (!(*qte))
+		{
+			*trig = 1;
+			*qte = ft_isqt(c);
+		}
+	}
+}
+
 void expander(t_pars_tokens *pa_tkns)
 {
 
@@ -26,20 +43,20 @@ void expander(t_pars_tokens *pa_tkns)
      char    *tmp;
     char    *dol;
     int     qte;
-    qte = 0;
 	int y;
-    y = 0;
     int j;
-    j = 0;
     int i;
-    i = 0;
     int k;
-    k = 0;
     int l;
     char    *cat;
 	char    *res;
 	int		m;
 	int		trig;
+    y = 0;
+    i = 0;
+    k = 0;
+    j = 0;
+    qte = 0;
     l = 0;
 	trig = 0;
     tmp = NULL;
@@ -60,19 +77,8 @@ void expander(t_pars_tokens *pa_tkns)
 		{
 			/*Taking quotes in the account for $-values or ~-values*/
 			if (ft_isqt(tmp[k]))
-			{
-				if (trig == 1 && qte == ft_isqt(tmp[k]))
-				{
-					qte = 0;
-					trig = 0;
-				}
-				else if (!qte)
-				{
-					trig = 1;
-					qte = ft_isqt(tmp[k]);
-				}
-			}
-			if ((tmp[k] == '$' && (ft_isenv(tmp[k + 1]) || tmp[k + 1] == '?')) && qte != 39)
+				qte_enc(tmp[k], &trig, &qte);
+			if (qte != 39 &&( tmp[k] == '$' && tmp[k + 1] == '?') || (qte != 39 && (tmp[k] == '$' && ft_isenv(tmp[k + 1]))))
 			{
 				if (tmp[k + 1] == '?')
 				{
@@ -129,7 +135,7 @@ void expander(t_pars_tokens *pa_tkns)
 				free(cat);
 			}
 			/*Iterating for quote after dollar or for digits after dollar or for alphabets*/
-			else if (tmp[k] == '$' && ft_isqt(tmp[k + 1]) && !ft_isqt(tmp[k - 1]))
+			else if (tmp[k] == '$' && ft_isqt(tmp[k + 1]) && !trig)
 				k++;
 			else if ((tmp[k] == '~' && (tmp[k + 1] == '/' || tmp[k + 1] == '\0')) && !qte)
 			{

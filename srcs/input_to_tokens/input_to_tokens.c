@@ -14,7 +14,7 @@ void print_strcut(t_pars_tokens *pa_tkns)
         printf("\n-------------cmd---------------------------\n");
         while (pa_tkns[y].cmd[j])
         {
-            printf ("%s ",pa_tkns[y].cmd[j]);
+            printf ("%d: %s ",j , pa_tkns[y].cmd[j]);
             j++;
         }
         printf("\n-------------cmd_splitted---------------------------\n");
@@ -109,26 +109,33 @@ char **split_to_tokens(char *str, t_split *split_info)
     char *temp ;
     split_info->arr = (char **)ft_calloc(sizeof (char *), (get_arr_len(str) + 1));
     if (!split_info->arr)
-        return (NULL);    
+        return (NULL);
     while (str[split_info->i] != '\0' && split_info->brk_flg)
     {
 	    if (str[split_info->i] == ' ')
+		{
+			temp =  split_info->arr[split_info->array_index];
+			split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+			split_info->len = 0; 
 			split_info->i++;
+		}
 		else if (str[split_info->i] && str[split_info->i] != ' ')
 		{
             if(str[split_info->i] && str[split_info->i] == '\"')
                 create_string_in_between_dbl_quotes(str ,split_info);
-            else if(str[split_info->i] && str[split_info->i] == '\'')
+            else if(str[split_info->i] && (str[split_info->i] == '\''))
                 create_string_in_between_sngl_quotes(str ,split_info);
             else
             {
-                while (str[split_info->i] && str[split_info->i] != ' ')
-                    inrement_i_len(split_info);
-                temp =  split_info->arr[split_info->array_index];
-			    split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
-                split_info->len = 0; 
+				inrement_i_len(split_info);
                 if(str[split_info->i] == 0)
+				{
+					temp =  split_info->arr[split_info->array_index];
+					split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+					split_info->len = 0; 
+					split_info->i++;
                     break ;  
+				}
             }
 		}
     }
@@ -233,11 +240,14 @@ int input_to_tokens(char *input)
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
     free_split_info(si, si2, tokens);
+	print_strcut(pa_tkns);
     expander(pa_tkns);
     
     // TO PRINT THE STRUCTURE
-    print_strcut(pa_tkns);
+    // print_strcut(pa_tkns);
     executor (pa_tkns);
+	if (env.trigger)
+		free_everything(pa_tkns);
 	return (EXIT_SUCCESS);
 }
 void print_2d_array(char **arr)

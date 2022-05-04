@@ -15,7 +15,7 @@ static int	check_args(char *str, int i, unsigned char *c)
 	{
 		*c = 1;
 		ft_putendl_fd("exit: too many arguments", 1);
-		env.trigger = 1;
+		env.trigger = 0;
 		return (1);
 	}
 	*c = ft_atoi(str);
@@ -29,7 +29,7 @@ unsigned char	ft_exit(char **str)
 
 	c = 0;
 	i = 0;
-	env.trigger = 0;
+	env.trigger = 1;
 	while (str[++i] != NULL)
 	{
 		delimit_qtes(str[i]);
