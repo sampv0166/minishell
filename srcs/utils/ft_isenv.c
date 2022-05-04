@@ -10,5 +10,7 @@ int	ft_isenv(char c)
 		return (1);
 	else if (ft_isdigit(c))
 		return (1);
+	else if (c == '\\')
+		return (1);
 	return (0);
 }

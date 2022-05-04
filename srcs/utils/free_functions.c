@@ -57,9 +57,10 @@ int free_env()
     return (0);         
 }
 
-int free_everything()
+int free_everything(t_pars_tokens *tokens)
 {
     int i;
+
     i = 0;
     while(env.count != 1 && i < env.count)
     {
