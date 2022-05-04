@@ -193,9 +193,10 @@ int join_pipes(char **tokens)
         return(EXIT_FAILURE);
     if (!is_token_syntax_valid(toks))
     {
-        printf("Invalid Syntax\n");
+        ft_putstr_fd("Invalid Syntax\n", 2);
         return(258);
     }
+      ft_putstr_fd("Invalid Syntax\n", 2);
     tokens = join_toks(tokens, toks);
 }
 
@@ -220,7 +221,7 @@ int input_to_tokens(char *input)
         return(EXIT_FAILURE);
     if (!is_token_syntax_valid(tokens))
     {
-        printf("Invalid Syntax\n");
+        ft_putstr_fd("Invalid Syntax\n", 2);
         return(258);
     }
     d_len = get_2d_arr_len(tokens);
@@ -237,6 +238,7 @@ int input_to_tokens(char *input)
     
     // TO PRINT THE STRUCTURE
     print_strcut(pa_tkns);
+    exit(0);
     executor (pa_tkns);
 	return (EXIT_SUCCESS);
 }

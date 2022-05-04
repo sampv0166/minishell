@@ -224,21 +224,24 @@ int handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int t
 
     i = 0;
     fd = 0;
-    while (cmd_split[i])
+    if(!(pa_tokens[i].is_in))
     {
-        if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
+        while (cmd_split[i])
         {
-            fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_TRUNC, 0644);
-            if (fd == -1)
-                return (ft_perror(EXIT_FAILURE, "error opening file"));
+            if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
+            {
+                fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_TRUNC, 0644);
+                if (fd == -1)
+                    return (ft_perror(EXIT_FAILURE, "error opening file"));
+            }
+            if (cmd_split[i] && (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' && ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1]))
+            {
+                fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_APPEND, 0644);
+                if (fd == -1)
+                    return (ft_perror(EXIT_FAILURE, "error opening file")); 
+            }
+            i++;
         }
-        if (cmd_split[i] && (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' && ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1]))
-        {
-            fd = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_APPEND, 0644);
-            if (fd == -1)
-                return (ft_perror(EXIT_FAILURE, "error opening file")); 
-        }
-        i++;
     }
     pa_tokens[tkn_idx].fd_out = fd;
     if(pa_tokens[tkn_idx].pipe)
@@ -258,7 +261,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
     //     if (handle_input_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
     //         return (EXIT_FAILURE);
     // }
-    if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
+    if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd && !(pa_tokens[i].is_in))
     {
         if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
             return (EXIT_FAILURE);
@@ -336,7 +339,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         }
         else
         {
-            printf (":::command not found\n");
+            ft_putstr_fd(":::command not found\n", 2);
             return(127);  
         }
     }
@@ -344,7 +347,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         replace_quote(pa_tokens, i);
     else
     {
-        printf ("::command not found\n");
+        ft_putstr_fd("::command not found\n", 2);
         return(127);
     }
     pid = fork();
@@ -471,16 +474,17 @@ void find_input_fd(t_pars_tokens  *pa_tkns,int i)
         {
             if(ft_strlen(pa_tkns[i].cmd_splitted[j]) == 1)
             {
-                fd = open(pa_tkns[i].cmd_splitted[j + 1], O_RDONLY);
-                if (fd == -1)
-                    ft_perror(EXIT_FAILURE, "error opening file");
-                env.fd_in = fd;
-                open_files(pa_tkns[i].cmd_splitted , j);
+                // fd = open(pa_tkns[i].cmd_splitted[j + 1], O_RDONLY);
+                // if (fd == -1)
+                //     ft_perror(EXIT_FAILURE, "error opening file");
+                //env.fd_in = fd;
+               // return (0);
+                //open_files(pa_tkns[i].cmd_splitted , j);
                 break;
             }
             else
             {
-              env.fd_in = pa_tkns[i].here_doc_fd;
+                env.fd_in = pa_tkns[i].here_doc_fd;
             //open_files(pa_tkns[i].cmd_splitted , j);
               break;  
             }
@@ -508,9 +512,6 @@ int get_files_arr_len(t_pars_tokens *pa_tkns, int i)
             continue;
         else if(pa_tkns[i].cmd_splitted[j])
         {
-            // ft_putnbr_fd(j, 2);
-            // ft_putstr_fd(pa_tkns[i].cmd_splitted[j] , 2);
-            // printf("\n");
             len++;
             j++;
         }
@@ -527,7 +528,6 @@ int get_files_arr_len(t_pars_tokens *pa_tkns, int i)
         }
         if(pa_tkns[i].cmd_splitted[j] &&  pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
         {
-            //printf("\n%s\n",pa_tkns[i].cmd_splitted[j]);  
             continue;
         }
         else if(pa_tkns[i].cmd_splitted[j])
@@ -598,6 +598,42 @@ void find_input_file_names(t_pars_tokens *pa_tkns, int i)
     files[arr_len] = NULL;
     pa_tkns[i].cmd = files;
 }
+int open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
+{
+    int i;
+    int fd_out;
+    int fd_in;
+
+    i = 0;
+    fd_out = 0;
+    fd_in = 0;
+    while (cmd_split[i])
+    {
+        if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
+        {
+            fd_out = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_TRUNC, 0644);
+            if (fd_out == -1)
+                return (ft_perror(EXIT_FAILURE, "error opening file"));
+        }
+        if (cmd_split[i] && (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' && ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1]))
+        {
+            fd_out = open(ft_strdup(cmd_split[i + 1]), O_RDWR | O_CREAT | O_APPEND, 0644);
+            if (fd_out == -1)
+                return (ft_perror(EXIT_FAILURE, "error opening file")); 
+        }
+        if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1])
+        {
+            fd_in = open(ft_strdup(cmd_split[i + 1]), O_RDONLY);
+            if (fd_in == -1)
+                return (ft_perror(EXIT_FAILURE, "error opening file"));
+        }
+        i++;
+    }
+    if(pa_tokens[tkn_idx].is_out)
+        env.fd_out = fd_out;
+    if(pa_tokens[tkn_idx].is_in)
+        env.fd_in = fd_in;     
+}
 
 int executor(t_pars_tokens *pa_tkns)
 {
@@ -612,10 +648,12 @@ int executor(t_pars_tokens *pa_tkns)
     {
         if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
         {
+            if (open_files_fd(pa_tkns[i].cmd_splitted, pa_tkns, i) == EXIT_FAILURE)
+                return (EXIT_FAILURE);   
             if (!check_for_input_files(pa_tkns, i))
             {
                 find_input_fd(pa_tkns, i);
-                env.fd_in = dup(env.fd_in);
+                env.fd_in = dup(env.fd_in);     
             }
         }
         else

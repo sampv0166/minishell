@@ -51,8 +51,7 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 		return (ft_perror(EXIT_FAILURE, "pipe error"));    
 	heredoc = cmd_split[pa_info->i + 1];
 	if (heredoc == NULL)
-		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));
-    //printf("%s",heredoc);    
+		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
     while (true)
 	{
 		buf = readline("> ");

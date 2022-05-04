@@ -30,9 +30,6 @@ char	*ft_strchr_2(const char *str, int c)
 int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
 {
     (*i)++;
-//     printf("%d", *i);
-//    exit(0);
-//    *i++;
 	if(str[*i] && ft_strchr_2(str + *i, '\''))
     {
         while(str[*i] && str[*i] != '\'')

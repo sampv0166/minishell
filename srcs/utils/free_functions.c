@@ -7,9 +7,6 @@ void	ft_free_str_array(char ***arr)
 	int	i;
 
 	i = 0;
-    // printf("%s", (*arr)[i]);
-
-    // exit(0);
 	while (*arr && (*arr)[i])
 	{
 		free_me(&(*arr)[i]);
