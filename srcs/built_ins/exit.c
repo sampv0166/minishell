@@ -27,8 +27,8 @@ unsigned char	ft_exit(char **str)
 	unsigned char	c;
 	int				i;
 
-	c = 0;
 	i = 0;
+	c = env.stat_code;
 	env.trigger = 1;
 	while (str[++i] != NULL)
 	{
@@ -38,7 +38,7 @@ unsigned char	ft_exit(char **str)
 			if (check_args(str[i], i, &c))
 				break ;
 		}
-		else if (ft_isalpha(str[i][0]))
+		else if (ft_isalpha(str[i][0]) || ft_isqt(str[i][0]))
 		{
 			ft_putstr_fd("exit: ", 1);
 			ft_putstr_fd(str[i], 1);

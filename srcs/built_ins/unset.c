@@ -32,10 +32,8 @@ static char	*get_unset_env(char *str)
 {
 	int		i;
 	int		j;
-	int		qte;
 	char	*tmp;
 
-	qte = 0;
 	tmp = NULL;
 	i = 0;
 	j = 0;
@@ -43,11 +41,8 @@ static char	*get_unset_env(char *str)
 	delimit_qtes(str);
 	while (str[i] != '=' && str[i] != '\0')
 	{
-		if (str[i] != qte)
-		{
-			tmp[j] = str[i];
-			j++;
-		}
+		tmp[j] = str[i];
+		j++;
 		i++;
 	}
 	tmp[j] = '\0';
@@ -57,7 +52,6 @@ static char	*get_unset_env(char *str)
 static void	parse_unset(char *str)
 {
 	char	*tmp;
-	int		qte;
 	int		j;
 
 	tmp = NULL;
@@ -84,7 +78,7 @@ int	unset(char **str)
 	while (str[i] != NULL)
 	{
 		parse_unset(str[i]);
-		if (is_rdr(str[i]))
+		if (env.pa_tkns->is_out || env.pa_tkns->pipe || env.pa_tkns->is_in || env.pa_tkns->is_out_appnd || env.pa_tkns->here_doc)
 			break ;
 		elimination(str[i]);
 		i++;

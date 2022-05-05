@@ -104,7 +104,7 @@ void	exp_one_arg(void)
 	sorting(trim);
 	ordered_string(trim);
 	res = declare_s(trim);
-	print_2d_array(res);
+	ft_putstr_2d(res);
 	free_2d_array(trim);
 	free_2d_array(res);
 }

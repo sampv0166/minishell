@@ -204,13 +204,14 @@ int join_pipes(char **tokens)
         return(258);
     }
     tokens = join_toks(tokens, toks);
+    return (EXIT_SUCCESS);
 }
 
 int input_to_tokens(char *input)
 {
-    char **tokens;
-    int d_len;
-    int ret;
+    char    **tokens;
+    int     d_len;
+    int     ret;
 
     ret = 0;
     t_split *si;
@@ -240,7 +241,7 @@ int input_to_tokens(char *input)
     t_pars_tokens *pa_tkns;
     pa_tkns = parser(tokens);
     free_split_info(si, si2, tokens);
-	print_strcut(pa_tkns);
+	// print_strcut(pa_tkns);
     expander(pa_tkns);
     
     // TO PRINT THE STRUCTURE

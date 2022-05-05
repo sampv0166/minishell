@@ -55,7 +55,7 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
     //printf("%s",heredoc);    
     while (true)
 	{
-		buf = readline("> ");
+		buf = readline("");
 		if (buf == NULL)
 			return (exit_close_fds(end[1], -1, EXIT_SUCCESS));
 		if (ft_strcmp(buf, heredoc) == 0)

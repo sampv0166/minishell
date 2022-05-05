@@ -51,6 +51,7 @@ void expander(t_pars_tokens *pa_tkns)
     char    *cat;
 	char    *res;
 	int		m;
+	char	*res1;
 	int		trig;
     y = 0;
     i = 0;
@@ -62,6 +63,7 @@ void expander(t_pars_tokens *pa_tkns)
     tmp = NULL;
     cat = NULL;
 	res = NULL;
+	res1 = NULL;
 	char	**full;
     dol = NULL;
 	m = 0;
@@ -78,7 +80,7 @@ void expander(t_pars_tokens *pa_tkns)
 			/*Taking quotes in the account for $-values or ~-values*/
 			if (ft_isqt(tmp[k]))
 				qte_enc(tmp[k], &trig, &qte);
-			if (qte != 39 &&( tmp[k] == '$' && tmp[k + 1] == '?') || (qte != 39 && (tmp[k] == '$' && ft_isenv(tmp[k + 1]))))
+			if ((qte != 39 && (tmp[k] == '$' && tmp[k + 1] == '?')) || (qte != 39 && (tmp[k] == '$' && ft_isenv(tmp[k + 1]))))
 			{
 				if (tmp[k + 1] == '?')
 				{
@@ -89,6 +91,7 @@ void expander(t_pars_tokens *pa_tkns)
 					res = ft_strjoin(res, cat);
 					free(cat);
 					cat = ft_strdup(res);
+					free(res);
 					res = ft_calloc(ft_strlen(cat) + ft_strlen(tmp) - k + 1, sizeof(char));
 					i = 0;
 					while (cat[i])
@@ -97,7 +100,7 @@ void expander(t_pars_tokens *pa_tkns)
 						i++;
 					}
 					res[i] = '\0';
-				}
+				}				
 				else
 				{
 					l = 0;
