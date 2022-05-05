@@ -9,12 +9,12 @@ static int get_input()
 	
 	while (1)
 	{
-		input = NULL;
 		// ft_putstr_fd("\n", 2);
 		// ft_putstr_fd("exit code :   ", 2);
 		// ft_putnbr_fd(env.stat_code, 2);
 		// ft_putstr_fd("\n", 2);
-		input = readline("MS SHELL====>");
+		// c = 11;
+		input = readline("");
 		if (input == NULL)
 		{
 			free_env();
@@ -27,6 +27,9 @@ static int get_input()
 		input_to_tokens(input);
 		if (env.trigger)
 		{
+			// ft_putnbr_fd(env.stat_code, 1);
+			// ft_putchar_fd('\n', 1);
+			// printf("%d\n", env.stat_code);
 			exit(env.stat_code);
 		}
 		free(input);

@@ -340,8 +340,9 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         }
         else
         {
-            ft_putstr_fd(":::command not found\n", 2);
-            return(127);  
+            // printf (":::command not found\n");
+            env.stat_code = 127;
+			return(127);  
         }
     }
     if (access(abs_cmd_path, X_OK) == 0)
@@ -355,7 +356,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if (pid < 0)
         exit(0);
     if (pid == 0)
-        exec_child(pa_tokens, abs_cmd_path, i);    
+        exec_child(pa_tokens, abs_cmd_path, i);
     waitpid(pid, 0, 0);
     free_me(&abs_cmd_path);
     //close_fds(pa_tokens, i);

@@ -17,6 +17,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_isqte.c \
 		srcs/utils/ft_delimit_qtes.c \
 		srcs/utils/length_2d.c \
+		srcs/utils/ft_str_tolower.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/last_char.c \
@@ -53,11 +54,11 @@ CC = gcc -ggdb -g
 # R_FLAG = -lreadline 
 CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-${NAME}:${OBJS}
+${NAME}:
 		@echo "${WHITE}Have patience. This will take some moment!"
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./
-			${CC} ${OBJS} libft.a ${CFLAGS} -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include  -o ${NAME}
+			${CC} ${SRCS} libft.a ${CFLAGS} -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include  -o ${NAME}
 		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNK00KNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWKd;.${BLACK}TT${WHITE}:ONWWWWWWWWNKXWWWWWWWWWWXKNWWWWWWWWNO:${BLACK}TT${WHITE}.;dKWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
 		@echo "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNOc.${BLACK}TTTTTT${WHITE}.';ldk0XXX0${BLACK}:;${WHITE}oddddddddo${BLACK};:${WHITE}0XXK0kdl:'.${BLACK}TTTTTT${WHITE}.cONWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"

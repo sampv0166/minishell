@@ -72,6 +72,7 @@ void	ch_tild(void)
 			count++;
 		i++;
 	}
+	free(tmp);
 	if (count < 2)
 		chge_dir_tild(count);
 }
