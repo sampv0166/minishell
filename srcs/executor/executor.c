@@ -184,6 +184,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
     ft_putchar_fd('s', 2);
 	return (env.stat_code);
+    //exit(0);
 }
 
 int ft_perror(int exit_status, char *msg)

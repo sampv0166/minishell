@@ -34,7 +34,10 @@ int get_arr_len(char *str)
     while(str[i])
     {
         if (str[i] == ' ')
+		{
 			i++;
+			len++;
+		}
 		else if (str[i] != ' ' && str[i])
 		{
             if(str[i] == '\"')
@@ -48,11 +51,11 @@ int get_arr_len(char *str)
                     break;
             }
             else
-            {
-                while (str[i] && str[i] != ' ')
-				    i++;
-			    len++;
-            }
+			{
+				i++;
+				if (str[i] == 0)
+					len++;
+			}
 		}
     }
     // ft_putnbr_fd(len, 2);
@@ -146,7 +149,7 @@ int create_string_in_between_dbl_quotes(char *str,t_split *split_info)
 */
 int create_string_in_between_sngl_quotes(char *str, t_split *split_info)
 {
-    inrement_i_len(split_info);
+	inrement_i_len(split_info);
     if(str[split_info->i] && ft_strchr_2(str + split_info->i, '\''))
     {
         while(str[split_info->i] && str[split_info->i] != '\'')
@@ -179,8 +182,8 @@ int create_string_in_between_sngl_quotes(char *str, t_split *split_info)
     }
     else
     {
-        while(str[split_info->i] && str[split_info->i] != '\'')
-            split_info->len++;
+		while (str[split_info->i] && str[split_info->i] != '\'')
+			inrement_i_len(split_info);
         split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
         split_info->len= 0;
         split_info->brk_flg = 0;

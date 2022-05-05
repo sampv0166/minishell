@@ -42,33 +42,24 @@ int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
 				break;
 			else if (str[*i] == '\'')
 			{
-				while(str[*i] && str[*i] != '\'')
 				(*i)++;
+				while(str[*i] && str[*i] != '\'')
+					(*i)++;
 				if(str[*i] == '\'')
 					(*i)++;
 			}
 			else if (str[*i] == '\"')
 			{
-				while(str[*i] && str[*i] != '\"')
 				(*i)++;
+				while(str[*i] && str[*i] != '\"')
+					(*i)++;
 				if(str[*i] == '\"')
 					(*i)++;
 			}
 			else
-			{
 				(*i)++;
-				continue;
-			}	
 		}
 		(*len)++;
-    }
-    if(str[*i] && ft_strchr_2(str + *i, '\''))
-    {
-        while(str[*i] && str[*i] != '\'')
-          (*i)++;
-    (*len)++;
-    if(str[*i] == '\'')
-        (*i)++;
     }
     else
     {
@@ -90,7 +81,6 @@ int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
 int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
 {
     (*i)++;
-
     if(str[*i] && ft_strchr_2(str + *i, '\"'))
     {
         while(str[*i] && str[*i] != '\"')
@@ -103,23 +93,22 @@ int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
 				break;
 			else if (str[*i] == '\'')
 			{
-				while(str[*i] && str[*i] != '\'')
 				(*i)++;
+				while(str[*i] && str[*i] != '\'')
+					(*i)++;
 				if(str[*i] == '\'')
 					(*i)++;
 			}
 			else if (str[*i] == '\"')
 			{
-				while(str[*i] && str[*i] != '\"')
 				(*i)++;
+				while(str[*i] && str[*i] != '\"')
+					(*i)++;
 				if(str[*i] == '\"')
 					(*i)++;
 			}
 			else
-			{
-				(*i)++;
-				continue;
-			}	
+				(*i)++;	
 		}
 		(*len)++;
     }

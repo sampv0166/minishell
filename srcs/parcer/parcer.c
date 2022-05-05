@@ -568,9 +568,12 @@ t_pars_tokens *parser (char **tokens)
     t_pars_tokens *pa_tkns;
     t_parser_info *pa_info;
     pa_info = malloc (sizeof (t_parser_info));
+	// print_2d_array(tokens);
+	// exit(0);
     init_parser_info(pa_info, tokens);
     pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info->pipes_count));
     init_pa_tkns(pa_tkns, pa_info);
+	
     while (pa_info->j < pa_info->pipes_count)
     {
         pa_tkns[pa_info->j].fd_in = 0;

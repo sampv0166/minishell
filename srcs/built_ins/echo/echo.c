@@ -42,8 +42,15 @@ char	*delimit_echo_qtes(char *str, t_flags *flags)
 	tmp = NULL;
 	j = 0;
 	k = 0;
-	if ((str[0] == 34) || (str[0] == 39))
-		flags->qte = str[0];
+	while (str[k])
+	{
+		if (ft_isqt(str[k]))
+		{
+			flags->qte = str[k];
+			break;
+		}
+		k++;
+	}
 	k = 0;
 	j = 0;
 	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
@@ -102,9 +109,6 @@ void echo(char **str)
 			quote or No quote and there is a $ in a str it should fetch the value of the env variable*/
 			if (str[flags.i][0] == 39 || str[flags.i][0] == 34)
 				flags.qte = str[flags.i][0];
-			else if (last_char(str[flags.i]) == 39
-				|| last_char(str[flags.i]) == 34)
-				flags.qte = last_char(str[flags.i]);
 			/*This  condition checks if I'm encountered with pipes or any redirections. If I do it will
 			break out of while loop and will not print anything*/
 			if (check_rdr_pipes(str[flags.i], &flags))
