@@ -39,10 +39,10 @@ TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 
 int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 {
-	if (!ft_strcmp(ft_strtolower(pa_tokens[i].cmd[0]), "echo")
-		|| !ft_strcmp(ft_strtolower(pa_tokens[i].cmd[0]), "echo\"\""))
+	if (!ft_strcmp(pa_tokens[i].cmd[0], "echo")
+		|| !ft_strcmp(pa_tokens[i].cmd[0], "echo\"\""))
 	{
-		echo(pa_tokens[i].cmd);
+		echo(pa_tokens[i].cmd, pa_tokens[i].cmd_splitted);
 		return (EXIT_SUCCESS);
 	}
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "export") == 0)
@@ -77,8 +77,8 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 
 int	is_inbuilt(char *cmd)
 {
-	if (!ft_strcmp(ft_strtolower(cmd), "echo")
-		|| !ft_strcmp(ft_strtolower(cmd), "echo\"\""))
+	if (!ft_strcmp(cmd, "echo")
+		|| !ft_strcmp(cmd, "echo\"\""))
 		return (1);
 	if (ft_strcmp(cmd, "export") == 0)
 		return (1);

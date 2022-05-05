@@ -67,6 +67,14 @@ void expander(t_pars_tokens *pa_tkns)
 	char	**full;
     dol = NULL;
 	m = 0;
+	pa_tkns[y].cmd_splitted[j] = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd) + 1));
+	while (pa_tkns[y].cmd[j] != NULL)
+	{
+		pa_tkns[y].cmd_splitted[j] = ft_strdup(pa_tkns[y].cmd[j]);
+		j++;
+	}
+	pa_tkns[y].cmd_splitted[j] = NULL;
+	j = 0;
 	full = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd) + 1));
     while (pa_tkns[y].cmd[j] != NULL)
     {

@@ -80,7 +80,7 @@ int				is_rdr_flag(char *str);
 void			ft_init(t_flags *flags);
 int				check_old_pwd(char **var);
 int				check_rdr_pipes(char *str, t_flags *flags);
-void 			echo(char **str);
+void 			echo(char **str, char **str_splitted);
  /*
  ** =============================================================================
  ** EXPORT

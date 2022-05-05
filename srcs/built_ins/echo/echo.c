@@ -67,7 +67,7 @@ char	*delimit_echo_qtes(char *str, t_flags *flags)
 	return (tmp);
 }
 
-static int	n_flag_cmp(char **str, t_flags *flags)
+static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 {
 	int		i;
 	int		j;
@@ -82,6 +82,17 @@ static int	n_flag_cmp(char **str, t_flags *flags)
 	while (str[i] != NULL)
 	{
 		tmp = delimit_echo_qtes(str[i], flags);
+		if (!ft_strstr(tmp, "-n"))
+		{
+			free(tmp);
+			j = i;
+			while (str[++j] != NULL)
+			{
+				tmp = delimit_echo_qtes(str[i], flags);
+				free(tmp);
+			}
+			break;
+		}
 		k = operations(tmp, flags, &i);
 		if (flags->trigger)
 			return (k);
@@ -91,7 +102,7 @@ static int	n_flag_cmp(char **str, t_flags *flags)
 	return (i);
 }
 
-void echo(char **str)
+void echo(char **str, char **str_splitted)
 {
 	t_flags	flags;
 
@@ -100,7 +111,7 @@ void echo(char **str)
 	if (str[flags.i])
 	{
 		/*First solve the problem with n flags before we print anything*/
-		flags.i = n_flag_cmp(str, &flags);
+		flags.i = n_flag_cmp(str, &flags, str_splitted);
 		while (str[flags.i] != NULL)
 		{
 			flags.print_flag = 0;
