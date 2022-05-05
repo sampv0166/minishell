@@ -16,10 +16,6 @@ cd should also work with env variables as an argument. For example cd $OLDPWD
 the directory and updates the values for pwd and old pwd in env*/
 static int	chge_dir(char *pwd, char *str)
 {
-	int		i;
-	char	s[1000];
-	char	*new;
-
 	ch_home();
 	chge_pwd(str);
 	chge_old_pwd(pwd);
@@ -46,7 +42,6 @@ int	cd(char **str)
 {
 	int		i;
 	char	*pwd;
-	char	s[1000];
 
 	i = 0;
 	/*Delimiting quotes*/
@@ -66,7 +61,9 @@ int	cd(char **str)
 	{
 		/*Error Message*/
 		free(pwd);
-		printf("cd: %s: No such file or directory\n", str[i]);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(str[i], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (1);
 	}
 	return (0);

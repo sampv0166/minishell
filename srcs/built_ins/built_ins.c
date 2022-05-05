@@ -37,12 +37,13 @@ TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 // 		ft_putchar_fd('\n', 1);
 // }
 
-int	execute_inbuilt(t_pars_tokens *pa_tokens , int i)
+int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 {
-	if (ft_strcmp(pa_tokens[i].cmd[0], "echo") == 0)
+	if (!ft_strcmp(ft_strtolower(pa_tokens[i].cmd[0]), "echo")
+		|| !ft_strcmp(ft_strtolower(pa_tokens[i].cmd[0]), "echo\"\""))
 	{
 		echo(pa_tokens[i].cmd);
-		return(EXIT_SUCCESS);
+		return (EXIT_SUCCESS);
 	}
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "export") == 0)
 		return (export(pa_tokens[i].cmd));
@@ -63,7 +64,7 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens , int i)
 int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 {
 	//(void)i;
-	int		exit_status;
+	// int		exit_status;
 	// int		saved_fds[2];
 	// if(i)
 	// 	i = 0;
@@ -76,7 +77,8 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 
 int	is_inbuilt(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0)
+	if (!ft_strcmp(ft_strtolower(cmd), "echo")
+		|| !ft_strcmp(ft_strtolower(cmd), "echo\"\""))
 		return (1);
 	if (ft_strcmp(cmd, "export") == 0)
 		return (1);
