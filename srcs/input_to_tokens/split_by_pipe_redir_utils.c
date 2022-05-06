@@ -49,8 +49,6 @@ void get_len_in_redirection(char **arr, int *i, int *j, int *size)
 
 void get_len_pipe(char **arr, int *i, int *j, int *size)
 {
-    // ft_putchar_fd('\n', 2);
-    // ft_putnbr_fd(*i , 2);
     if(arr[*i] && (arr[*i][*j] == '|'))
     {
 		if (*j > 0)

@@ -5,8 +5,6 @@ t_env_var env;
 static int get_input()
 {
 	char *input;
-
-	
 	while (1)
 	{
 		// ft_putstr_fd("\n", 2);
