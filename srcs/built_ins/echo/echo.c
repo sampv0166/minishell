@@ -4,29 +4,7 @@ extern t_env_var	env;
 
 static void	print(char *str, t_flags *flags)
 {
-	int	i;
-	int	trig;
-
-	i = 0;
-	trig = 0;
-	while (str[i])
-	{
-		if (ft_isqt(str[i]) && !trig)
-		{
-			flags->qte = str[i];
-			trig = 1;
-		}
-		else if (ft_isqt(str[i]) == flags->qte && trig)
-			trig = 0;
-		else if (!ft_isqt(str[i]) || ft_isqt(str[i]) != flags->qte)
-			ft_putchar_fd(str[i], 1);
-		// else if (str[i] == *qte)
-		// {
-		// 	if (i > 0 && str[i + 1] != '\0')
-		// 		ft_putchar_fd(str[i], 1);
-		// }
-		++i;
-	}
+	ft_putstr_fd(str, 1);
 }
 
 /*Work with n -flags complications
@@ -81,18 +59,25 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 	tmp = NULL;
 	while (str[i] != NULL)
 	{
-		tmp = delimit_echo_qtes(str[i], flags);
-		if (!ft_strstr(tmp, "-n"))
+		if (!ft_strstr(str[i], "-n"))
 		{
-			free(tmp);
 			j = i;
-			while (str[++j] != NULL)
+			while (str[j] != NULL)
 			{
-				tmp = delimit_echo_qtes(str[i], flags);
-				free(tmp);
+				if (check_qte_str(str_splitted[j]))
+				{
+					tmp = delimit_echo_qtes(str[j], flags);
+					free(str[j]);
+					str[j] = ft_strdup(tmp);
+					free(tmp);
+				}
+				j++;
 			}
-			break;
+			return (i);
 		}
+		tmp = delimit_echo_qtes(str[i], flags);
+		free(str[i]);
+		str[i] = ft_strdup(tmp);
 		k = operations(tmp, flags, &i);
 		if (flags->trigger)
 			return (k);
@@ -118,8 +103,8 @@ void echo(char **str, char **str_splitted)
 			flags.qte = 0;
 			/*Checking for double or single quotes, First reason is to not print them, Second if there is a double
 			quote or No quote and there is a $ in a str it should fetch the value of the env variable*/
-			if (str[flags.i][0] == 39 || str[flags.i][0] == 34)
-				flags.qte = str[flags.i][0];
+			// if (str[flags.i][0] == 39 || str[flags.i][0] == 34)
+			// 	flags.qte = str[flags.i][0];
 			/*This  condition checks if I'm encountered with pipes or any redirections. If I do it will
 			break out of while loop and will not print anything*/
 			if (check_rdr_pipes(str[flags.i], &flags))
