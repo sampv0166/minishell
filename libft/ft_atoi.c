@@ -44,9 +44,9 @@ static long int	ft_atoi_atoi(char *str, int sign, int *index)
 				return (nbr);
 		}
 	}
-	ft_putstr_fd("exit: ", 1);
-	ft_putstr_fd(str, 1);
-	ft_putendl_fd(": numeric argument requred", 1);
+	// ft_putstr_fd("exit: ", 1);
+	// ft_putstr_fd(str, 1);
+	// ft_putendl_fd(": numeric argument requred", 1);
 	// if (i >= 19)
 	// 	return (255);
 	return (255);

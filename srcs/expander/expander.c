@@ -12,7 +12,6 @@ char	*getting_tild(void)
 	pwd = ft_strdup(getcwd(s, 1000));
 	ch_tild();
 	ret = ft_strdup(getcwd(s, 1000));
-	// ft_putendl_fd(ret, 1);
 	ch_home();
 	chdir(pwd);
 	free(pwd);
@@ -67,13 +66,13 @@ void expander(t_pars_tokens *pa_tkns)
 	char	**full;
     dol = NULL;
 	m = 0;
-	pa_tkns[y].cmd_splitted = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd) + 1));
+	pa_tkns[y].cmd_cpy = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd) + 1));
 	while (pa_tkns[y].cmd[j] != NULL)
 	{
-		pa_tkns[y].cmd_splitted[j] = ft_strdup(pa_tkns[y].cmd[j]);
+		pa_tkns[y].cmd_cpy[j] = ft_strdup(pa_tkns[y].cmd[j]);
 		j++;
 	}
-	pa_tkns[y].cmd_splitted[j] = NULL;
+	pa_tkns[y].cmd_cpy[j] = NULL;
 	j = 0;
 	full = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd) + 1));
     while (pa_tkns[y].cmd[j] != NULL)

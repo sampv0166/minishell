@@ -42,21 +42,25 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 	if (!ft_strcmp(pa_tokens[i].cmd[0], "echo")
 		|| !ft_strcmp(pa_tokens[i].cmd[0], "echo\"\""))
 	{
-		echo(pa_tokens[i].cmd, pa_tokens[i].cmd_splitted);
+		echo(pa_tokens[i].cmd, pa_tokens[i].cmd_cpy);
 		return (EXIT_SUCCESS);
 	}
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "export") == 0)
 		return (export(pa_tokens[i].cmd));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "env") == 0)
 		return (env_var());
-	else if (ft_strcmp(pa_tokens[i].cmd[0], "cd") == 0)
+	else if ((ft_strcmp(pa_tokens[i].cmd[0], "cd") == 0)
+		&& (pa_tokens[i].pipe == 2 || pa_tokens[i].pipe == 0))
 		return (cd(pa_tokens[i].cmd));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "unset") == 0)
 		return (unset(pa_tokens[i].cmd));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "pwd") == 0)
 		return (pwd(pa_tokens[i].cmd, env.env_var));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "exit") == 0)
-		return (ft_exit(pa_tokens[i].cmd));
+	{
+		env.stat_code = ft_exit(pa_tokens[i].cmd);
+		return (env.stat_code);
+	}
 	return (EXIT_FAILURE);
 }
 

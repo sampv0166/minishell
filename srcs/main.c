@@ -14,7 +14,7 @@ static int get_input()
 		// ft_putnbr_fd(env.stat_code, 2);
 		// ft_putstr_fd("\n", 2);
 		// c = 11;
-		input = readline("");
+		input = readline("MS SHELL=====>");
 		if (input == NULL)
 		{
 			free_env();

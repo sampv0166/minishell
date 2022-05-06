@@ -132,6 +132,7 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         pa_tkns[i].cmd = NULL;
         pa_tkns[i].cmd_full = NULL;
         pa_tkns[i].cmd_splitted = NULL;
+		pa_tkns[i].cmd_cpy = NULL;
         pa_tkns[i].pipe = 0;
 
         pa_tkns[i].is_in = 0;

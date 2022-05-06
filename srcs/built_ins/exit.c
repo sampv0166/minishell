@@ -14,7 +14,7 @@ static int	check_args(char *str, int i, unsigned char *c)
 	if (i > 1)
 	{
 		*c = 1;
-		ft_putendl_fd("exit: too many arguments", 1);
+		// ft_putendl_fd("exit: too many arguments", 1);
 		env.trigger = 0;
 		return (1);
 	}
@@ -27,25 +27,29 @@ unsigned char	ft_exit(char **str)
 	unsigned char	c;
 	int				i;
 
-	i = 0;
+	i = 1;
 	c = env.stat_code;
 	env.trigger = 1;
-	while (str[++i] != NULL)
+	while (str[i] != NULL)
 	{
 		delimit_qtes(str[i]);
 		if (i > 1 || is_sign(str[i][0]) || ft_isdigit(str[i][0]))
 		{
 			if (check_args(str[i], i, &c))
+			{
+				c = 1;
 				break ;
+			}
 		}
 		else if (ft_isalpha(str[i][0]) || ft_isqt(str[i][0]))
 		{
-			ft_putstr_fd("exit: ", 1);
-			ft_putstr_fd(str[i], 1);
-			ft_putendl_fd(": numeric argument requred", 1);
+			// ft_putstr_fd("exit: ", 1);
+			// ft_putstr_fd(str[i], 1);
+			// ft_putendl_fd(": numeric argument requred", 1);
 			c = 255;
 			break ;
 		}
+		i++;
 	}
 	return (c);
 }
