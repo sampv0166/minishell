@@ -54,7 +54,7 @@ CC = gcc -ggdb -g
 # R_FLAG = -lreadline 
 CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-${NAME}:
+${NAME}:${OBJS}
 		@echo "${WHITE}Have patience. This will take some moment!"
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./

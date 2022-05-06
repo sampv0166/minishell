@@ -38,6 +38,8 @@ static int	exit_close_fds(int fd1, int fd2, int exit_status)
 	return (exit_status);
 }
 
+
+
 int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tkns)
 {
     int		end[2];
@@ -50,6 +52,7 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
     if (pipe(end) == -1)
 		return (ft_perror(EXIT_FAILURE, "pipe error"));    
 	heredoc = cmd_split[pa_info->i + 1];
+	delimit_qtes(heredoc);
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
     while (true)
