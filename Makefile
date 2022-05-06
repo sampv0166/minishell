@@ -17,7 +17,6 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_isqte.c \
 		srcs/utils/ft_delimit_qtes.c \
 		srcs/utils/length_2d.c \
-		srcs/utils/ft_str_tolower.c \
 		srcs/utils/ft_strcmp.c \
 		srcs/utils/ft_strstr.c \
 		srcs/utils/last_char.c \

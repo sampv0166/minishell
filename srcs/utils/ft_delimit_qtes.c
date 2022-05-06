@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-static int	check_qte_str(char *str)
+int	check_qte_str(char *str)
 {
 	int	i;
 

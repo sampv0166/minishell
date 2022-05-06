@@ -53,9 +53,9 @@ void	ft_putstr_2d(char **str);
 int		length_2d(char **str);
 int		last_char(char *str);
 int		ft_isqt(char c);
+int		check_qte_str(char *str);
 int		ft_isenv(char c);
 int		ft_strcmp(char *s1, char *s2);
-char	*ft_strtolower(char *str);
 char	*ft_strstr(char *str, char *to_find);
 t_pars_tokens *parser (char **tokens);
 void 	ch_home(void);
@@ -80,7 +80,7 @@ int				is_rdr_flag(char *str);
 void			ft_init(t_flags *flags);
 int				check_old_pwd(char **var);
 int				check_rdr_pipes(char *str, t_flags *flags);
-void 			echo(char **str);
+void 			echo(char **str, char **str_splitted);
  /*
  ** =============================================================================
  ** EXPORT

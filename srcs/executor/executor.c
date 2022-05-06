@@ -181,8 +181,11 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
 
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
+    // pa_tokens[i].cmd[1] = NULL;
+    // free(abs_path);
+    // abs_path = ft_strdup("/bin/");
+    // abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-    ft_putchar_fd('s', 2);
 	return (env.stat_code);
     //exit(0);
 }
@@ -294,6 +297,22 @@ void replace_quote (t_pars_tokens *pa_tkns, int i)
     }
 }
 
+int ft_eco_check(char *str)
+{
+    int i;
+
+    i = 0;
+    if (ft_strlen(str) == 4 || ft_strlen(str) == 6)
+    {
+        if (str[0] == 'e' || str[0] == 'E')
+            if (str[1] == 'c' || str[1] == 'C')
+                if (str[2] == 'h' || str[2] == 'H')
+                    if (str[3] == 'o' || str[3] == 'O')
+                        return (1);
+    }
+    return (0);
+}
+
 void close_fds(t_pars_tokens *pa_tokens, int i)
 {
     if (pa_tokens[i].pipe == 1)
@@ -330,7 +349,10 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
             return (handle_inbuilt_redir(pa_tokens, i));
     }
     if(pa_tokens[i].cmd)
-        abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+    {
+        if (!ft_eco_check(pa_tokens[i].cmd[0]))
+            abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+    }
     if(abs_cmd_path == NULL)
     {
         if(pa_tokens[i].cmd[0])
@@ -349,7 +371,8 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         replace_quote(pa_tokens, i);
     else
     {
-        ft_putstr_fd("::command not found\n", 2);
+        // ft_putstr_fd("::command not found\n", 2);
+        env.stat_code = 127;
         return(127);
     }
     pid = fork();

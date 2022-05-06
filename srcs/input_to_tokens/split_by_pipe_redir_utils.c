@@ -51,8 +51,11 @@ void get_len_pipe(char **arr, int *i, int *j, int *size)
 {
     if(arr[*i] && arr[*i][*j] == '|')
     {
-        if (arr[*i] && arr[*i][*j] && (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0')) 
-            (*size)++;
+		if (*j > 0)
+		{
+	        if (arr[*i] && arr[*i][*j] && (arr[*i][(*j) - 1] != ' ' && arr[*i][(*j) - 1] != '\0')) 
+	            (*size)++;
+		}
         while(arr[*i][*j] == '|')
         {
             if(arr[*i] && arr[*i][*j] && arr[*i][(*j) + 1] != '|')
@@ -77,6 +80,7 @@ int get_len(char **arr)
     int size;
     int i;
     int j;
+
     size = 0;
     i = 0;
     j = 0;
@@ -85,9 +89,9 @@ int get_len(char **arr)
         j = 0;
         while (arr[i] && arr[i][j])
         {
-            get_len_out_redirection(arr, &i, &j,&size);
+            get_len_out_redirection(arr, &i, &j, &size);
             get_len_in_redirection(arr, &i, &j, &size);   
-            get_len_pipe(arr, &i, &j,&size);   
+            get_len_pipe(arr, &i, &j, &size);   
             j++;
         }
         size++;
