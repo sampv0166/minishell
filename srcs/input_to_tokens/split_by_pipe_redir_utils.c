@@ -49,7 +49,9 @@ void get_len_in_redirection(char **arr, int *i, int *j, int *size)
 
 void get_len_pipe(char **arr, int *i, int *j, int *size)
 {
-    if(arr[*i] && arr[*i][*j] == '|')
+    // ft_putchar_fd('\n', 2);
+    // ft_putnbr_fd(*i , 2);
+    if(arr[*i] && (arr[*i][*j] == '|'))
     {
 		if (*j > 0)
 		{
@@ -87,7 +89,7 @@ int get_len(char **arr)
     while (arr[i])
     {
         j = 0;
-        while (arr[i] && arr[i][j])
+        while (arr[i] && (arr[i][j]))
         {
             get_len_out_redirection(arr, &i, &j, &size);
             get_len_in_redirection(arr, &i, &j, &size);   
@@ -96,6 +98,10 @@ int get_len(char **arr)
         }
         size++;
         i++;
+        // ft_putchar_fd('\n', 2);
+        // ft_putnbr_fd(i, 2);
+        // ft_putchar_fd('\n', 2);
+        // ft_putstr_fd(arr[i], 2);
     }
     return (size);
 }
