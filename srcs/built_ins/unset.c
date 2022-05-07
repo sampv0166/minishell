@@ -31,31 +31,20 @@ static void	elimination(char *str)
 static char	*get_unset_env(char *str)
 {
 	int		i;
-	int		j;
 	char	*tmp;
 
-	tmp = NULL;
 	i = 0;
-	j = 0;
-	tmp = ft_strdup(str);
+	tmp = NULL;
 	delimit_qtes(str);
 	if (ft_isdigit(str[i]))
-	{
-		free(tmp);
 		return (NULL);
-	}
 	while (str[i])
 	{
 		if (str[i] == '=')
-		{
-			free(tmp);
-			return(NULL);
-		}
-		tmp[j] = str[i];
-		j++;
+			return (NULL);
 		i++;
 	}
-	tmp[j] = '\0';
+	tmp = ft_strdup(str);
 	return (tmp);
 }
 
@@ -66,12 +55,12 @@ static int	parse_unset(char *str)
 
 	tmp = NULL;
 	j = 0;
-	if (!is_rdr(str))
+	if (!is_rdr(str) || ft_strcmp(str, "|"))
 	{
 		tmp = get_unset_env(str);
 		if (tmp == NULL)
 		{
-			ft_putstr_fd("Not a valid identifier\n", 2);
+			// ft_putstr_fd("Not a valid identifier\n", 2);
 			return (1);
 		}
 		j = 0;
@@ -94,7 +83,7 @@ int	unset(char **str)
 	while (str[i] != NULL)
 	{
 		env.stat_code = parse_unset(str[i]);
-		if (env.pa_tkns->is_out || env.pa_tkns->pipe || env.pa_tkns->is_in || env.pa_tkns->is_out_appnd || env.pa_tkns->here_doc)
+		if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
 			break ;
 		if (!env.stat_code)
 			elimination(str[i]);

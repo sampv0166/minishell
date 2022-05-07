@@ -55,15 +55,15 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "unset") == 0)
 		return (unset(pa_tokens[i].cmd));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "pwd") == 0)
-		return (pwd(pa_tokens[i].cmd, env.env_var));
-	else if (ft_strcmp(pa_tokens[i].cmd[0], "exit") == 0)
+		return (pwd(pa_tokens[i].cmd));
+	else if ((ft_strcmp(pa_tokens[i].cmd[0], "exit") == 0)
+		&& (pa_tokens[i].pipe == 2 || pa_tokens[i].pipe == 0))
 	{
 		env.stat_code = ft_exit(pa_tokens[i].cmd);
 		return (env.stat_code);
 	}
 	return (EXIT_FAILURE);
 }
-
 
 int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 {

@@ -30,6 +30,9 @@ SRCS = 	srcs/main.c \
 		srcs/built_ins/export/export_sort_utils1.c \
 		srcs/built_ins/export/export_sort_utils2.c \
 		srcs/built_ins/export/export_sort_utils3.c \
+		srcs/built_ins/export/exp_replace_env.c \
+		srcs/built_ins/export/export_utils.c \
+		srcs/built_ins/export/export_op.c \
 		srcs/built_ins/export/export.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \

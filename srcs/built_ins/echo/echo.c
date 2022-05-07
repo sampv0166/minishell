@@ -9,13 +9,11 @@ Examples: -n -n -n -n,  n_flag is false
 static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 {
 	int		i;
-	int		j;
 	int		k;
 	char	*tmp;
 
 	i = 1;
 	k = 0;
-	j = 0;
 	flags->qte = 0;
 	tmp = NULL;
 	if (get_2d_arr_len2(str) == get_2d_arr_len2(str_splitted))
@@ -23,7 +21,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 		while (str[i] != NULL)
 		{
 			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
-				break;
+				break ;
 			else
 			{
 				if (check_qte_str(str_splitted[i]))
@@ -37,7 +35,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 		while (str[i] != NULL)
 		{
 			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
-				break;
+				break ;
 			else
 			{
 				if (check_qte_str(str[i]))
@@ -47,19 +45,22 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 		}
 	}
 	i = 1;
-	while (str[i] != NULL)
+	if (str[i][0] == '-')
 	{
-		tmp = ft_strdup(str[i]);
-		k = operations(tmp, flags, &i);
-		if (flags->trigger)
-			return (k);
-		free(tmp);
-		i++;
+		while (str[i] != NULL)
+		{
+			tmp = ft_strdup(str[i]);
+			k = operations(tmp, flags, &i);
+			if (flags->trigger)
+				return (k);
+			free(tmp);
+			i++;
+		}
 	}
 	return (i);
 }
 
-void echo(char **str, char **str_splitted)
+void	echo(char **str, char **str_splitted)
 {
 	t_flags	flags;
 
