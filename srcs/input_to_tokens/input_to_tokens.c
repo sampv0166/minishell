@@ -270,7 +270,7 @@ int input_to_tokens(char *input)
     expander(pa_tkns);
     
     // TO PRINT THE STRUCTURE
-    // print_strcut(pa_tkns);
+    print_strcut(pa_tkns);
     // exit(0);
     executor (pa_tkns);
 	if (env.trigger)

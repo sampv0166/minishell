@@ -62,7 +62,7 @@ int free_everything(t_pars_tokens *tokens)
     while(env.count != 1 && i < env.count)
     {
         ft_free_str_array(&env.pa_tkns[i].cmd);
-        ft_free_str_array(&env.pa_tkns[i].cmd_splitted);
+        // ft_free_str_array(&env.pa_tkns[i].cmd_splitted);
         free_me(&env.pa_tkns[i].cmd_full);
         i++;
     }
