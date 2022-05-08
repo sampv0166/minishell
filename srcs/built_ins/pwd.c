@@ -2,7 +2,7 @@
 
 extern t_env_var	env;
 
-int	pwd(char **str, char **env)
+int	pwd(char **str)
 {
 	int		i;
 	char	*s;

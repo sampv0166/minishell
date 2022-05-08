@@ -88,6 +88,13 @@ void 			echo(char **str, char **str_splitted);
  */
 char			**declare_s(char **str);
 void			exp_one_arg(void);
+char			**new_env(char *str);
+void			export_new_env(char *var, char *tmp);
+int				op_not(char c);
+char			*fetch_var(char *var, int *i);
+int				export_error(char *value, char *var);
+void			replace_env(int g_env, char *var);
+int				exp_op(char *var, char *value, int g_env);
 int				export(char **str);
  /*
  ** =============================================================================
@@ -104,7 +111,7 @@ int				cd(char **str);
  ** PWD
  ** =============================================================================
  */
-int				pwd(char **str, char **env);
+int				pwd(char **str);
  /*
  ** =============================================================================
  ** ENV

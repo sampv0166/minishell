@@ -6,11 +6,34 @@
 /*   By: makhtar <makhtar@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 14:48:02 by apila-va          #+#    #+#             */
-/*   Updated: 2022/04/21 11:25:42 by makhtar          ###   ########.fr       */
+/*   Updated: 2022/05/07 13:19:51 by makhtar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+static void	print_atoi(char *str)
+{
+	(void)str;
+	// ft_putstr_fd("exit: ", 2);
+	// ft_putstr_fd(str, 2);
+	// ft_putendl_fd(": numeric argument requred", 2);
+}
+
+static int	check_limit(int i, int sign, char *str)
+{
+	if (i == 19 && sign > 0)
+	{
+		if (ft_strncmp(str, "9223372036854775808", 19) < 0)
+			return (1);
+	}
+	else if (sign < 0 && (i == 20))
+	{
+		if (ft_strncmp(str, "-9223372036854775809", 20) < 0)
+			return (1);
+	}
+	return (0);
+}
 
 static long int	ft_atoi_atoi(char *str, int sign, int *index)
 {
@@ -33,23 +56,11 @@ static long int	ft_atoi_atoi(char *str, int sign, int *index)
 			if (i < 19)
 				return (nbr);
 		}
-		if (i == 19 && sign > 0)
-		{
-			if (ft_strncmp(str, "9223372036854775808", 19) < 0)
-				return (nbr);
-		}
-		else if (sign < 0 && (i == 20))
-		{
-			if (ft_strncmp(str, "-9223372036854775809", 20) < 0)
-				return (nbr);
-		}
+		if (check_limit(i, sign, str))
+			return (nbr);
 	}
-	ft_putstr_fd("exit: ", 1);
-	ft_putstr_fd(str, 1);
-	ft_putendl_fd(": numeric argument requred", 1);
-	// if (i >= 19)
-	// 	return (255);
-	return (255);
+	print_atoi(str);
+	return (2);
 }
 
 long int	ft_atoi(const char *str)

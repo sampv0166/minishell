@@ -118,13 +118,11 @@ static char	**final_output(char **var, char **final, int len)
 
 char	**declare_s(char **str)
 {
-	int		i;
 	char	**res;
 	char	**value;
 	char	**var;
 	char	**final;
 
-	i = 0;
 	var = fetch_env_var(str);
 	value = fetch_env_values(str);
 	final = vals_qtes(value, length_2d(str));

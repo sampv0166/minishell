@@ -21,7 +21,14 @@ void print_strcut(t_pars_tokens *pa_tkns)
         j = 0;
         while (pa_tkns[y].cmd_splitted[j])
         {
-            printf ("%s ",pa_tkns[y].cmd_splitted[j]);
+            printf ("%d: %s ", j, pa_tkns[y].cmd_splitted[j]);
+            j++;
+        }
+		printf("\n-------------cmd_cpy---------------------------\n");
+        j = 0;
+        while (pa_tkns[y].cmd_cpy[j])
+        {
+            printf ("%d: %s ", j, pa_tkns[y].cmd_cpy[j]);
             j++;
         }
         printf("\n-------------cmd_full---------------------------\n");
@@ -243,10 +250,10 @@ int input_to_tokens(char *input)
         }
     }
     pa_tkns = parser(tokens);
-    //print_strcut(pa_tkns);
+   // print_strcut(pa_tkns);
     free_split_info(&si, &si2, tokens);
     // print_2d_array(pa_tkns[0].cmd_splitted);
-    //expander(pa_tkns);
+    expander(pa_tkns);
     executor (pa_tkns);
     free_everything(pa_tkns);
 	return (EXIT_SUCCESS);

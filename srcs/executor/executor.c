@@ -17,9 +17,9 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     pa_tokens[i].fd_out = fd[1];  
     env.fd_in = fd[0];
     env.fd_out = fd[1];
-    if(env.fd_pipe_in_open != 0 && pa_tokens[i].pipe == 1)
+    if(env.fd_pipe_in_open != 0)
         close(env.fd_pipe_in_open);
-    if(env.fd_pipe_out_open != 0 && pa_tokens[i].pipe ==1)
+    if(env.fd_pipe_out_open != 0)
         close(env.fd_pipe_out_open);    
     env.fd_pipe_in_open = fd[0];
     env.fd_pipe_out_open= fd[1];
@@ -113,10 +113,12 @@ char *get_abs_cmd(char *cmd)
         return (ft_strdup(cmd));
     }
     init(&path_split);
+    // ft_putstr_2d(path_split);
     i = 0;
     while (path_split[i])
     {
-        abs_cmd_path = get_abs_cmd_path(&abs_cmd_path,path_split[i], cmd);
+        abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
+        // ft_putendl_fd(abs_cmd_path, 2);
         dup = ft_strdup(abs_cmd_path);
         if (abs_cmd_path == NULL)
             return (NULL);
@@ -131,6 +133,8 @@ char *get_abs_cmd(char *cmd)
         {
             free_me(&dup);
             free_me(&abs_cmd_path);
+            // if (i == 2)
+            //     break ;
         }
         i++;
     }
@@ -735,9 +739,10 @@ int executor(t_pars_tokens *pa_tkns)
         {
             close (env.open_fd_out);          
         }
-        if(pa_tkns[i].pipe == 1)
+        if(pa_tkns[i].pipe)
         {
             close(env.fd_pipe_out_open);
+            close(env.fd_pipe_in_open);
         }
         i++;
     }
