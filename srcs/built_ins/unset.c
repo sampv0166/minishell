@@ -31,34 +31,38 @@ static void	elimination(char *str)
 static char	*get_unset_env(char *str)
 {
 	int		i;
-	int		j;
 	char	*tmp;
 
-	tmp = NULL;
 	i = 0;
-	j = 0;
-	tmp = ft_strdup(str);
+	tmp = NULL;
 	delimit_qtes(str);
-	while (str[i] != '=' && str[i] != '\0')
+	if (ft_isdigit(str[i]))
+		return (NULL);
+	while (str[i])
 	{
-		tmp[j] = str[i];
-		j++;
+		if (str[i] == '=')
+			return (NULL);
 		i++;
 	}
-	tmp[j] = '\0';
+	tmp = ft_strdup(str);
 	return (tmp);
 }
 
-static void	parse_unset(char *str)
+static int	parse_unset(char *str)
 {
 	char	*tmp;
 	int		j;
 
 	tmp = NULL;
 	j = 0;
-	if (!is_rdr(str))
+	if (!is_rdr(str) || ft_strcmp(str, "|"))
 	{
 		tmp = get_unset_env(str);
+		if (tmp == NULL)
+		{
+			// ft_putstr_fd("Not a valid identifier\n", 2);
+			return (1);
+		}
 		j = 0;
 		while (tmp[j])
 		{
@@ -68,6 +72,7 @@ static void	parse_unset(char *str)
 		str[j] = '\0';
 		free(tmp);
 	}
+	return (0);
 }
 
 int	unset(char **str)
@@ -77,11 +82,12 @@ int	unset(char **str)
 	i = 1;
 	while (str[i] != NULL)
 	{
-		parse_unset(str[i]);
-		if (env.pa_tkns->is_out || env.pa_tkns->pipe || env.pa_tkns->is_in || env.pa_tkns->is_out_appnd || env.pa_tkns->here_doc)
+		env.stat_code = parse_unset(str[i]);
+		if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
 			break ;
-		elimination(str[i]);
+		if (!env.stat_code)
+			elimination(str[i]);
 		i++;
 	}
-	return (0);
+	return (env.stat_code);
 }

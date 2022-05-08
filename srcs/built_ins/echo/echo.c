@@ -2,92 +2,65 @@
 
 extern t_env_var	env;
 
-static void	print(char *str, t_flags *flags)
-{
-	ft_putstr_fd(str, 1);
-}
-
 /*Work with n -flags complications
 Examples: -n -n -n -n,  n_flag is false
 -nnnnnnnnnnnnnnn, n_flag is true*/
 
-char	*delimit_echo_qtes(char *str, t_flags *flags)
-{
-	char	*tmp;
-	int		k;
-	int		j;
-
-	tmp = NULL;
-	j = 0;
-	k = 0;
-	while (str[k])
-	{
-		if (ft_isqt(str[k]))
-		{
-			flags->qte = str[k];
-			break;
-		}
-		k++;
-	}
-	k = 0;
-	j = 0;
-	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	while (str[j])
-	{
-		if (str[j] != flags->qte)
-		{
-			tmp[k] = str[j];
-			k++;
-		}
-		j++;
-	}
-	tmp[k] = '\0';
-	return (tmp);
-}
-
 static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 {
 	int		i;
-	int		j;
 	int		k;
 	char	*tmp;
 
 	i = 1;
 	k = 0;
-	j = 0;
 	flags->qte = 0;
 	tmp = NULL;
-	while (str[i] != NULL)
+	if (get_2d_arr_len2(str) == get_2d_arr_len2(str_splitted))
 	{
-		if (!ft_strstr(str[i], "-n"))
+		while (str[i] != NULL)
 		{
-			j = i;
-			while (str[j] != NULL)
+			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
+				break ;
+			else
 			{
-				if (check_qte_str(str_splitted[j]))
-				{
-					tmp = delimit_echo_qtes(str[j], flags);
-					free(str[j]);
-					str[j] = ft_strdup(tmp);
-					free(tmp);
-				}
-				j++;
+				if (check_qte_str(str_splitted[i]))
+					delimit_qtes(str[i]);
 			}
-			return (i);
+			i++;
 		}
-		tmp = delimit_echo_qtes(str[i], flags);
-		free(str[i]);
-		str[i] = ft_strdup(tmp);
-		k = operations(tmp, flags, &i);
-		if (flags->trigger)
-			return (k);
-		free(tmp);
-		i++;
+	}
+	else
+	{
+		while (str[i] != NULL)
+		{
+			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
+				break ;
+			else
+			{
+				if (check_qte_str(str[i]))
+					delimit_qtes(str[i]);
+			}
+			i++;
+		}
+	}
+	i = 1;
+	if (str[i][0] == '-')
+	{
+		while (str[i] != NULL)
+		{
+			tmp = ft_strdup(str[i]);
+			k = operations(tmp, flags, &i);
+			if (flags->trigger)
+				return (k);
+			free(tmp);
+			i++;
+		}
 	}
 	return (i);
 }
 
-void echo(char **str, char **str_splitted)
+void	echo(char **str, char **str_splitted)
 {
 	t_flags	flags;
 
@@ -111,7 +84,7 @@ void echo(char **str, char **str_splitted)
 				break ;
 			/*The print_flag to check if Im not encountered with any pipe or redirections*/
 			if (!flags.print_flag)
-				print(str[flags.i], &flags);
+				ft_putstr_fd(str[flags.i], 1);
 			flags.i++;
 			/*If first index of 2d array is finished in printing and the second index needs printing, then there should be a
 			space between both the strings in display*/

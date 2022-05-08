@@ -73,6 +73,7 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     pa_info->arr[pa_info->len] = NULL;
     pa_info->arr1[pa_info->len] = NULL;
     pa_tkns[pa_info->j].cmd_splitted = pa_info->arr;
+	pa_tkns[pa_info->j].cmd_cpy = pa_info->arr;
     pa_tkns[pa_info->j].cmd =  pa_info->arr1;
     pa_tkns[pa_info->j].cmd_full =  pa_info->str;
     

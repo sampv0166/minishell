@@ -83,9 +83,7 @@ int	chge_tilde(char *pwd)
 {
 	char	s[1000];
 	char	*new;
-	int		i;
 
-	i = 0;
 	ch_tild();
 	new = ft_strdup(getcwd(s, 1000));
 	chge_pwd(new);
@@ -100,9 +98,7 @@ int	chge_c_dir(char *pwd)
 {
 	char	*new;
 	char	s[1000];
-	int		i;
 
-	i = 0;
 	new = ft_strdup(getcwd(s, 1000));
 	chge_pwd(new);
 	chge_old_pwd(pwd);
