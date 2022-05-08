@@ -60,10 +60,11 @@ void init_parser_info(t_parser_info *pa_info, char **tokens)
 }
 
 void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)
-{        
+{  
     pa_info->len = get_count(tokens, pa_info->i);
-    pa_info->arr = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what
-    pa_info->arr1 = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what  
+    pa_info->arr = ft_calloc(sizeof(char *), ((pa_info->len) + 1));
+    //pa_info->arr = malloc (sizeof (char *) *  ((pa_info->len) + 1)); // check_what
+    pa_info->arr1 = ft_calloc(sizeof(char *), ((pa_info->len) + 1)); // check_what  
     pa_info->str = ((char *)0);
     pa_info->len = 0;
 }
@@ -74,8 +75,7 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     pa_info->arr1[pa_info->len] = NULL;
     pa_tkns[pa_info->j].cmd_splitted = pa_info->arr;
     pa_tkns[pa_info->j].cmd =  pa_info->arr1;
-    pa_tkns[pa_info->j].cmd_full =  pa_info->str;
-    
+    pa_tkns[pa_info->j].cmd_full = pa_info->str;
     // pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
     // pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
     // pa_tkns[pa_info->j].is_in = 0;

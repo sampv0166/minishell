@@ -21,8 +21,6 @@ void free_split_info(t_split *split_info, t_split *split_infoo, char **tokens)
 {
     ft_free_str_array(&split_info->arr);
     ft_free_str_array(&tokens);
-    free( (void *) split_info);
-    free( (void *) split_infoo);
 }
 
 void free_me (char **ptr)
@@ -43,14 +41,11 @@ void free_2d_array(char **arr)
    free(arr); 
 }
 
-
-
-
 int free_env()
 {
     ft_free_str_array(&env.env_var);
-    if (env.pwd)
-        free_me (&env.pwd); 
+    // if (env.pwd)
+    //     free_me (&env.pwd); 
     return (0);         
 }
 
@@ -65,6 +60,13 @@ int free_everything(t_pars_tokens *tokens)
         ft_free_str_array(&env.pa_tkns[i].cmd_splitted);
         free_me(&env.pa_tkns[i].cmd_full);
         i++;
+    }
+    if (env.count == 1)
+    {
+        ft_free_str_array(&env.pa_tkns[i].cmd);
+        ft_free_str_array(&env.pa_tkns[i].cmd_splitted);
+        free_me(&env.pa_tkns[i].cmd_full);
+        i++;   
     }
     free(env.pa_tkns);
     return (0);

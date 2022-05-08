@@ -106,7 +106,6 @@ int init_env_vars(char **envp)
     env.env_var = save_env(envp);
     if(env.env_var != NULL)
     {
-    //   env.stat_code = 0;
       env.trigger = 0;
       return (EXIT_SUCCESS);
     }

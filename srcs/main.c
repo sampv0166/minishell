@@ -12,9 +12,10 @@ static int get_input()
 		// ft_putnbr_fd(env.stat_code, 2);
 		// ft_putstr_fd("\n", 2);
 		// c = 11;
-		input = readline("");
+		input = readline(">");
 		if (input == NULL)
 		{
+			//free_everything(env.pa_tkns);
 			free_env();
 			return (0);
 		}
@@ -25,7 +26,7 @@ static int get_input()
 		input_to_tokens(input);
 		if (env.trigger)
 		{
-			// ft_putnbr_fd(env.stat_code, 1);
+			// ft_putnbr_fd(env.st`at_code, 1);
 			// ft_putchar_fd('\n', 1);
 			// printf("%d\n", env.stat_code);
 			exit(env.stat_code);

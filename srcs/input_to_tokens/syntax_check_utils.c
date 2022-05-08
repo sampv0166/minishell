@@ -36,7 +36,12 @@ bool is_token_redir(char *str)
 
 bool is_token_pipe(char *str)
 {
-
+    // if(ft_strlen (str) == 1)
+    // {
+    //     if(*(str + 1) == '|')
+    //         return (false);    
+    //     }
+    // }   
     if(ft_strlen (str) == 1)
     {
         if(ft_strchr(str, '|'))
@@ -46,7 +51,7 @@ bool is_token_pipe(char *str)
     {
         if(*str == '|')
             return (false);
-    }
+    } 
     return (true);
 }
 
@@ -72,8 +77,9 @@ bool is_token_syntax_valid (char **tokens)
 {
     int i;
     i = 0;
-
-    while (tokens[i] != NULL)
+    if(get_2d_arr_len2(tokens) == 1 && tokens[i] && tokens[i][0] == '|')
+        return (false);
+    while (tokens && tokens[i] != NULL)
     { 
         if (!token_contains_quote(tokens[i]) && !(is_inbuilt(tokens[0])))
         {
@@ -82,8 +88,18 @@ bool is_token_syntax_valid (char **tokens)
                 if(is_token_redir(tokens[i]))
                     return (false);
                 if(!is_token_pipe(tokens[i]))
-                    return (false);    
+                {
+                    return (false);        
+                }
             }
+            if(tokens[i] && tokens[i][0] == '|' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
+            {
+                return (false);        
+            }
+            if(tokens[i] && tokens[i][0] == '|' && i == 0)
+            {
+                return (false);        
+            }    
             if(!is_special_charater_correct(tokens[i]))
                 return (false);
         }

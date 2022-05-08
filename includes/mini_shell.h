@@ -138,7 +138,7 @@ int get_2d_arr_len(char **arr);
 int get_2d_arr_len2(char **arr);
 void expander();
 
-void find_input_file_names(t_pars_tokens *pa_tkns, int i);
+char **find_input_file_names(t_pars_tokens *pa_tkns, int i);
 /*
 ** =============================================================================
 ** Signals
@@ -153,6 +153,6 @@ void	handle_signals(void);
 */
 
 void free_split_info(t_split *split_info, t_split *split_infoo, char **tokens);
-int free_everything();
+int free_everything(t_pars_tokens *pa_tkns);
 int	is_inbuilt(char *cmd);
 #endif
