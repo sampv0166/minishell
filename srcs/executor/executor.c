@@ -17,10 +17,10 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     pa_tokens[i].fd_out = fd[1];  
     env.fd_in = fd[0];
     env.fd_out = fd[1];
-    if(env.fd_pipe_in_open != 0)
-        close(env.fd_pipe_in_open);
-    if(env.fd_pipe_out_open != 0)
-        close(env.fd_pipe_out_open);    
+    // if(env.fd_pipe_in_open != 0)
+    //     close(env.fd_pipe_in_open);
+    // if(env.fd_pipe_out_open != 0)
+    //     close(env.fd_pipe_out_open);    
     env.fd_pipe_in_open = fd[0];
     env.fd_pipe_out_open= fd[1];
     // ft_putnbr_fd(env.fd_in, 2);
@@ -245,6 +245,7 @@ int  handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int 
     {
         while (cmd_split[i])
         {
+            
             if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
             {
                 if(fd != 0)
@@ -288,7 +289,7 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
     if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
     {
         if(pa_tokens[i].is_in == 0 && pa_tokens[i].here_doc == 0)
-            if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
+            if (handle_output_redirections(pa_tokens[i].cmd, pa_tokens,i) == EXIT_FAILURE)
                 return (EXIT_FAILURE);
     }   
     if(pa_tokens[i].pipe == 1)
@@ -370,6 +371,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     }
     if(pa_tokens[i].cmd)
     {
+        //ft_putstr_fd(pa_tokens[i].cmd[0], 2);
         abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
     }
     if(abs_cmd_path == NULL)
@@ -386,6 +388,9 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
 			return(127);  
         }
     }
+    // ft_putchar_fd('\n', 2);
+    // ft_putstr_fd(abs_cmd_path, 2);
+    // ft_putnbr_fd(i, 2);
     if(abs_cmd_path)
     {
         if (access(abs_cmd_path, X_OK) == 0)
@@ -732,18 +737,35 @@ int executor(t_pars_tokens *pa_tkns)
         
         dup2(env.fd_in, 0);
         close(env.fd_in);
+        if(pa_tkns[i].pipe == 3)
+        {
+            close(env.fd_pipe_in_open);
+        }
+        if(pa_tkns[i].pipe == 1)
+        {
+            close(env.fd_pipe_in_open);
+        }
+
+        
         execute_cmd(pa_tkns, i);
+
+
         if(pa_tkns[i].is_in)
             close (env.open_fd_in);
         if(pa_tkns[i].is_out)
         {
             close (env.open_fd_out);          
         }
-        if(pa_tkns[i].pipe)
+        if(pa_tkns[i].pipe == 1)
+        {
+            close(env.fd_pipe_in_open);
+            close(env.fd_pipe_out_open);
+        }
+        if(pa_tkns[i].pipe == 2)
         {
             close(env.fd_pipe_out_open);
-            close(env.fd_pipe_in_open);
         }
+
         i++;
     }
     if(env.open_heredoc_fdin != 0)

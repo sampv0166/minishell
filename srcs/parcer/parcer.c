@@ -566,47 +566,48 @@ void    parse_rdr_out(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 t_pars_tokens *parser (char **tokens)
 {
     t_pars_tokens *pa_tkns;
-    t_parser_info *pa_info;
+    t_parser_info pa_info;
 
-    pa_info = malloc (sizeof (t_parser_info));
-    init_parser_info(pa_info, tokens);
-    pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info->pipes_count));
-    init_pa_tkns(pa_tkns, pa_info);
-    while (pa_info->j < pa_info->pipes_count)
+    //pa_info = malloc (sizeof (t_parser_info));
+    init_parser_info(&pa_info, tokens);
+    pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info.pipes_count));
+    init_pa_tkns(pa_tkns, &pa_info);
+    while (pa_info.j < pa_info.pipes_count)
     {
-        pa_tkns[pa_info->j].fd_in = 0;
-        pa_tkns[pa_info->j].fd_out = 0;
-        pa_tkns[pa_info->j].is_in = 0;
-        pa_tkns[pa_info->j].is_out = 0;
-        pa_tkns[pa_info->j].is_out_appnd = 0;
-        pa_tkns[pa_info->j].pipe = 0;
-        pa_tkns[pa_info->j].here_doc = 0;
-        allocate_cmd_memmory(pa_info, tokens);
-        while(tokens[pa_info->i])
+        pa_tkns[pa_info.j].fd_in = 0;
+        pa_tkns[pa_info.j].fd_out = 0;
+        pa_tkns[pa_info.j].is_in = 0;
+        pa_tkns[pa_info.j].is_out = 0;
+        pa_tkns[pa_info.j].is_out_appnd = 0;
+        pa_tkns[pa_info.j].pipe = 0;
+        pa_tkns[pa_info.j].here_doc = 0;
+        allocate_cmd_memmory(&pa_info, tokens);
+        while(tokens[pa_info.i])
         {
-            if (pa_info->i > 0 && tokens[pa_info->i - 1] && tokens[pa_info->i - 1][0] == '|')
-                pa_info->str = ft_strjoin(pa_info->str, tokens[pa_info->i - 1]);
-            if(tokens[pa_info->i][0] == '|')
+            if (pa_info.i > 0 && tokens[pa_info.i - 1] && tokens[pa_info.i - 1][0] == '|')
+                pa_info.str = ft_strjoin(pa_info.str, tokens[pa_info.i - 1]);
+            if(tokens[pa_info.i][0] == '|')
             {
-                deal_with_pipes(pa_tkns, pa_info, tokens);
+                deal_with_pipes(pa_tkns, &pa_info, tokens);
                 break ;
             }
-            set_redirection_type(pa_tkns, pa_info, tokens); 
-            create_cmds(pa_info, tokens);
+            set_redirection_type(pa_tkns, &pa_info, tokens); 
+            create_cmds(&pa_info, tokens);
         }
-        set_pa_tokens(pa_tkns, pa_info);
-        pa_info->j++;
+        set_pa_tokens(pa_tkns, &pa_info);
+        pa_info.j++;
     }
-    set_pipe_type(pa_tkns, pa_info);
-	pa_info->i = 0;
+    set_pipe_type(pa_tkns, &pa_info);
+	pa_info.i = 0;
 
 	char **f;
-    while (pa_info->i < env.count)
+    while (pa_info.i < env.count)
     {
-        f = find_input_file_names(pa_tkns, pa_info->i);
-		ft_free_str_array(&pa_tkns[pa_info->i].cmd);
-		pa_tkns[pa_info->i].cmd = f;
-		pa_info->i++;
+		
+        f = find_input_file_names(pa_tkns, pa_info.i);
+		ft_free_str_array(&pa_tkns[pa_info.i].cmd);
+		pa_tkns[pa_info.i].cmd = f;
+		pa_info.i++;
     }
 	
     return (pa_tkns);    

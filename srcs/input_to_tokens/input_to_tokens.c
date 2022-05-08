@@ -86,7 +86,7 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
     char **tokens;
     init_split_info(split_info);    
     tokens = (char **)ft_calloc(sizeof (char *), (get_len(arr) + 1));
-    ft_putnbr_fd(get_len(arr) + 1, 2);
+
     if (!tokens)
         return (NULL);
     while (arr[split_info->i])
@@ -96,7 +96,6 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
         split_by_redirection(arr, tokens, split_info);
         split_info->i++;
     }
-    ft_putnbr_fd(split_info->k, 2);
     tokens[split_info->k] = NULL;
     return (tokens);
 }
@@ -211,6 +210,7 @@ int join_pipes(char ***tokens)
         ft_free_str_array(&s1.arr);
         ft_free_str_array(tokens);
         ft_putstr_fd("Invalid Syntax\n", 2);
+        env.stat_code = 258;
         return(258);
     }
     return (EXIT_SUCCESS);
@@ -237,6 +237,7 @@ int input_to_tokens(char *input)
         ft_free_str_array(&si.arr);
         ft_free_str_array(&tokens);
         ft_putstr_fd("Invalid Syntax\n", 2);
+        env.stat_code = 258;
         return(258);
     }
     d_len = get_2d_arr_len(tokens);
@@ -250,10 +251,12 @@ int input_to_tokens(char *input)
         }
     }
     pa_tkns = parser(tokens);
-   // print_strcut(pa_tkns);
+
     free_split_info(&si, &si2, tokens);
     // print_2d_array(pa_tkns[0].cmd_splitted);
     expander(pa_tkns);
+    //  print_strcut(pa_tkns);
+    //  exit(0);
     executor (pa_tkns);
     free_everything(pa_tkns);
 	return (EXIT_SUCCESS);
