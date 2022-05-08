@@ -105,12 +105,10 @@ char *get_abs_cmd(char *cmd)
         return (ft_strdup(cmd));
     }
     init(&path_split);
-    // ft_putstr_2d(path_split);
     i = 0;
     while (path_split[i])
     {
         abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
-        // ft_putendl_fd(abs_cmd_path, 2);
         dup = ft_strdup(abs_cmd_path);
         if (abs_cmd_path == NULL)
             return (NULL);
@@ -125,8 +123,8 @@ char *get_abs_cmd(char *cmd)
         {
             free_me(&dup);
             free_me(&abs_cmd_path);
-            if (i == 2)
-                break ;
+            // if (i == 2)
+            //     break ;
         }
         i++;
     }
@@ -352,11 +350,10 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         if(is_inbuilt(pa_tokens[i].cmd[0]))
             return (handle_inbuilt_redir(pa_tokens, i));
     }
-    if(pa_tokens[i].cmd)
+    if(pa_tokens[i].cmd && (env.env_var[get_env("PATH")] != NULL))
     {
         if (!ft_eco_check(pa_tokens[i].cmd[0]))
             abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
-        // ft_putendl_fd(abs_cmd_path, 2);
     }
     if(abs_cmd_path == NULL)
     {

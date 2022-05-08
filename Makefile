@@ -13,6 +13,7 @@ SRCS = 	srcs/main.c \
 		srcs/executor/executor.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
+		srcs/utils/ft_2d_str_cpy.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_isqte.c \
 		srcs/utils/ft_delimit_qtes.c \

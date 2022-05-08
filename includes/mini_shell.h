@@ -43,12 +43,21 @@ typedef struct	s_flags
 	int	trigger;
 }				t_flags;
 
+typedef struct	s_expand
+{
+	int		k;
+	int		trig;
+	int		i;
+	int		qte;
+}				t_expand;
+
 /*
 ** =============================================================================
 ** String Functions
 ** =============================================================================
 */
 
+char	**ft_2d_str_cpy(char **str);
 void	ft_putstr_2d(char **str);
 int		length_2d(char **str);
 int		last_char(char *str);
@@ -130,7 +139,7 @@ int				unset(char **str);
  ** EXIT
  ** =============================================================================
  */
-unsigned char 	ft_exit(char **str);
+unsigned char 	ft_exit(char **str, int pipe);
 int     		is_inbuilt(char *cmd);
 int     		ft_perror(int exit_status, char *msg);
 int	    		handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
@@ -141,9 +150,9 @@ void 			print_2d_array(char **arr);
 void 			free_me (char **ptr);
 void 			free_2d_array(char **arr);
 void			ft_free_str_array(char ***arr);
-int get_2d_arr_len(char **arr);
-int get_2d_arr_len2(char **arr);
-void expander();
+int 		get_2d_arr_len(char **arr);
+int 		get_2d_arr_len2(char **arr);
+void 		expander(t_pars_tokens *pa_tkns);
 
 void find_input_file_names(t_pars_tokens *pa_tkns, int i);
 /*
