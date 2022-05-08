@@ -79,6 +79,7 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
     char **tokens;
     init_split_info(split_info);    
     tokens = (char **)ft_calloc(sizeof (char *), (get_len(arr) + 1));
+    ft_putnbr_fd(get_len(arr) + 1, 2);
     if (!tokens)
         return (NULL);
     while (arr[split_info->i])
@@ -88,6 +89,7 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
         split_by_redirection(arr, tokens, split_info);
         split_info->i++;
     }
+    ft_putnbr_fd(split_info->k, 2);
     tokens[split_info->k] = NULL;
     return (tokens);
 }

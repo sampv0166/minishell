@@ -1,0 +1,55 @@
+cat << '$USER' > tmp1
+
+cat << $USER > tmp1
+
+cat << $AAAAAAAA > tmp1
+
+cat << "hello'ksdcksd'ckdsc'""""""'"kjbsdckj'"fddvdf"vdfvdfv'bsdc > tmp1
+
+cat << "b$" > tmp1
+
+echo YOOOOOOOOOOOOOOoo
+| |
+||
+|||
+ |
+ |
+|||||||||||
+
+|D||
+<>|<>|<>|<>|<|<>><|><|><>|<|>
+> | <>|<|<>
+> | <
+> |
+echo | smdccsdcds
+| echo hello
+
+
+
+
+
+| cat <
+| cat < tester.sh
+echo | echo | $USER<
+>$USER
+> $USER
+
+<<
+
+echo > |
+ls | ls >
+echo > <
+echo $?
+echo << >
+
+
+cat tests/test_pipe | grep arcu | cat -e
+echo $?
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat
+echo $?
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
+echo $?
+rm tmp1 tmp2 tmp3 tmp4 tmp5
+exit
+
+

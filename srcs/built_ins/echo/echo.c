@@ -121,5 +121,7 @@ void echo(char **str, char **str_splitted)
 	}
 	/*If n_flag is true, it will not print a new line otherwise it will print*/
 	if (!flags.newl_flag)
+	{
 		ft_putchar_fd('\n', 1);
+	}
 }

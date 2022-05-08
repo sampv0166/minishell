@@ -17,9 +17,9 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     pa_tokens[i].fd_out = fd[1];  
     env.fd_in = fd[0];
     env.fd_out = fd[1];
-    if(env.fd_pipe_in_open != 0)
+    if(env.fd_pipe_in_open != 0 && pa_tokens[i].pipe == 1)
         close(env.fd_pipe_in_open);
-    if(env.fd_pipe_out_open != 0)
+    if(env.fd_pipe_out_open != 0 && pa_tokens[i].pipe ==1)
         close(env.fd_pipe_out_open);    
     env.fd_pipe_in_open = fd[0];
     env.fd_pipe_out_open= fd[1];
@@ -241,7 +241,6 @@ int  handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int 
     {
         while (cmd_split[i])
         {
-            ft_putstr_fd(cmd_split[i], 2);
             if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' && ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
             {
                 if(fd != 0)
@@ -739,11 +738,6 @@ int executor(t_pars_tokens *pa_tkns)
         if(pa_tkns[i].pipe == 1)
         {
             close(env.fd_pipe_out_open);
-            // ft_putstr_fd("\nfd out = ", 2);
-            // ft_putnbr_fd(env.fd_pipe_out_open, 2);
-            //   ft_putstr_fd("\nfd in = ", 2);
-            // ft_putnbr_fd(env.fd_pipe_in_open, 2);
-            //        ft_putstr_fd("\n", 2); 
         }
         i++;
     }

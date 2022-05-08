@@ -29,7 +29,9 @@ bool is_token_redir(char *str)
     if(ft_strlen (str) == 1)
     {
         if(ft_strnstr(str, "<", 1) || ft_strnstr(str, ">", 1))
+        {
             return (true);
+        }
     }
     return (false);
 }
@@ -78,10 +80,10 @@ bool is_token_syntax_valid (char **tokens)
     int i;
     i = 0;
     if(get_2d_arr_len2(tokens) == 1 && tokens[i] && tokens[i][0] == '|')
-        return (false);
+        return (false);  
     while (tokens && tokens[i] != NULL)
     { 
-        if (!token_contains_quote(tokens[i]) && !(is_inbuilt(tokens[0])))
+        if (!token_contains_quote(tokens[i]) && !(is_inbuilt(tokens[i])))
         {
             if(tokens[i] && tokens[i + 1] == NULL)
             {
@@ -93,6 +95,10 @@ bool is_token_syntax_valid (char **tokens)
                 }
             }
             if(tokens[i] && tokens[i][0] == '|' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
+            {
+                return (false);        
+            }
+            if(tokens[i] && tokens[i][0] == '>' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
             {
                 return (false);        
             }
