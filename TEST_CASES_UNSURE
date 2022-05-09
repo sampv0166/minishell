@@ -1,0 +1,9 @@
+..
+echo \>
+
+cat | cat | cat | ls
+
+cat Makefile | grep pr | head -n 5 | hello
+
+
+> out1 cat out3 | wc -l

@@ -1,0 +1,110 @@
+clearSAMAD
+
+* showing a propmpt
+* add_history
+* split the input (input == "echo "print some">hi")
+    
+    OUTPUT
+    -------
+    echo
+    "print some"
+    >hi
+
+* split the input again by pipe and redirections (input =   echo, "print some", 
+                                                    >hi, NULL )
+    
+    OUTPUT
+    ------
+    echo
+    "print some"
+    >
+    hi   
+
+* pass the splitted array to the parser function to create the structure
+    
+    char **cmd;         //       "ls" "-la" NULL
+    char *cmd_full;     //       "ls la |"
+    char **cmd_splitted;//       "ls" "-la" "|" NULL
+    int  pipe;          //       pipe_type (1, 2, 3)
+
+    int  is_in;         //       if there is a input redirection
+    int  is_out;        //       if there is a ouput redirection
+    int is_out_appnd;   //       if there is a output append redirection
+
+    int  fd_in;         //      file descriptor number for fd in
+    int  fd_out;        //       file descriptor for fdout
+    int  here_doc;      //       file descriptor for fd append
+    
+    int pipe_read_end;  //       fd for pipe read end
+    int pipe_write_end; //       fd for pipe write end
+
+*
+
+MUAZZAM
+
+1. Show a prompt
+
+2. Add a add history function for all the updated commands in program
+
+3. then we split the commands into 2 d array so that we can handle double 
+    quotes or single quotes
+
+4.  3. In the parser function we calculate number of pipes to calculate the 
+    number of structure. Say if there are only 2 pipes , we allocate structure 
+    for 2 +1 last structure will be set to NULL  
+
+5.  FOR EACH STRUCTURE, WE SET ALL FDS AND PIPES TYPES AND FLAGS FOR ALL TYPES OF 
+    REDIRECTIONS TO ZERO before we proceed to parse for redirections and pipes
+
+6.  Now for the frst parse, we get a command in 2 d array for example:
+    cmd =  "ls" "-la", NULL    
+
+7. Now for the frst parse, we get a command in 2 d array for example:
+    **cmd =  "ls" "-la", NULL
+    *cmd_full = "ls la |"
+    **cmd_splitted = "ls" "-la" "|" NULL
+    first thing we check for is if there is any pipe, if there is we check if it is in
+    the beginning and at the end of the function  
+
+8. if it is only at the end we trigger a flag in the structure called write_end and give
+    a pipe type  of 1 to indicate a signal for sending the pipe output. 
+    Also we check if there is any redirection if there is any redirection 
+    for >, we trigger a flag for redirection input and create an fd for the 
+    file name with the macro stdout_filename vice versa for all the redirection 
+    tyes just the difference for the file openings and the specific permissions 
+
+9. for the execution part we check the path for the execution like where ls command is
+    based in terminal, after lcoating the path, we gave a string value which is located
+    at the path, and we send a function which can handle pipes     
+
+10 .in a way we got the output of file in a pipe. After closing the the fd which was
+    recently opened, we increment the index of the structure
+    which leads us to the next  commands
+    | wc -l > hi 
+
+11.           
+
+
+
+
+while (i < env.count)
+    {
+        if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+        {
+            if (!check_for_input_files(pa_tkns, i))
+            {
+                find_input_fd(pa_tkns, i);
+                find_input_file_names(pa_tkns, i);
+                env.fd_in = dup(env.fd_in);
+            }
+            else
+               find_input_file_names(pa_tkns, i);
+        }
+        else
+            env.fd_in = dup(env.fd_in);
+     
+        dup2(env.fd_in, 0);
+        close(env.fd_in);;
+        execute_cmd(pa_tkns, i);
+        i++;
+    }
