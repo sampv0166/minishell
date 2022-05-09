@@ -1,9 +1,14 @@
-$USER
+$test
+0)
 42-minishell_bash_tester_2022
 7
+a
+aaa
 a.out
 authors
 check
+d
+dsfsdf
 en.subject.pdf
 fiel1
 file
@@ -18,6 +23,7 @@ Makefile
 minishell
 minishell.dSYM
 ou5
+out
 out1
 out2
 out3
@@ -27,17 +33,19 @@ out6
 out7
 psudocode
 à•£q2V
+sfsfsdf
 some test cases
 srcs
+student42abudhabi
+test1
 test.c
 TEST_CASES_KO
 TEST_CASES_OK
 TEST_CASES_OK_BUT_MEMLEAKS
 TEST_CASES_UNSURE
+testscases_tester
 tmp1
-tmp1C
 tmp2
-tmp3
 trace
 trial.c
 valgrind_filter.supp

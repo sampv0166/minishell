@@ -254,7 +254,9 @@ int input_to_tokens(char *input)
 
     free_split_info(&si, &si2, tokens);
     // print_2d_array(pa_tkns[0].cmd_splitted);
+    
     expander(pa_tkns);
+    
     //  print_strcut(pa_tkns);
     //  exit(0);
     executor (pa_tkns);

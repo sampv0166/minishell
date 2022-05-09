@@ -1,0 +1,238 @@
+cat << '$USER' > tmp1
+
+cat << $USER > tmp1
+
+cat << $AAAAAAAA > tmp1
+
+cat << "hello'ksdcksd'ckdsc'""""""'"kjbsdckj'"fddvdf"vdfvdfv'bsdc > tmp1
+
+cat << "b$" > tmp1
+
+echo YOOOOOOOOOOOOOOoo
+| |
+||
+|||
+ |
+ |
+|||||||||||
+
+|D||
+<>|<>|<>|<>|<|<>><|><|><>|<|>
+> | <>|<|<>
+> | <
+> |
+echo | smdccsdcds
+| echo hello
+
+
+
+
+
+| cat <
+| cat < tester.sh
+echo | echo | $USER<
+>$USER
+> $USER
+
+<<
+
+echo > |
+ls | ls >
+echo > <
+echo $?
+echo << >
+
+
+cat tests/test_pipe | grep arcu | cat -e
+echo $?
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat
+echo $?
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
+echo $?
+rm tmp1 tmp2 tmp3 tmp4 tmp5
+exit
+
+
+""
+
+< tmp1 | > tmp1
+
+< $SAMEYEE > tmp1
+
+echo $?
+echo hello > tmp1
+echo $?
+cat < tmp1 | cat < tmp2
+
+cat < tester.sh | cat < bla | echo hello > tmp2
+
+chmod 000 tmp2
+
+cat tester.sh >> tmp1 > tmp2 > tmp3 | cat tester.sh > tmp1 > tmp3
+
+
+echo "THANKS TO https://github.com/thallard/minishell_tester, tu geres bro !"
+env | grep "SHLVL"
+echo oui | cat -e
+echo oui | echo non | echo something | grep oui
+echo oui | echo non | echo something | grep non
+echo oui | echo non | echo something | grep something
+cd .. | echo "something"
+cd .. | echo "something"
+cd / | echo "something"
+cd .. | pwd
+ifconfig | grep ":"
+ifconfig | grep nothing
+whoami | grep $USER
+cat tmp1
+whoami | grep $USER > tmp1
+cat tmp1
+whoami | cat -e | cat -e > tmp1
+cat tmp1
+whoami | grep "$USER'c'" > tmp1
+cat tmp1
+whoami | grep "$USER''" > tmp1
+cat tmp1
+export TEST=123 | cat -e | cat -e
+unset TEST | cat -e
+echo test | cat -e | cat -e | cat -e
+whereis ls | cat -e | cat -e > tmp2
+cat tmp2
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e
+ls  | grep "."
+whereis grep > tmp1
+whereis grep > tmp2
+cat tmp1
+cat tmp2
+ls  > tmp1
+ls  < tmp1
+cat tmp1
+unset PATH
+ls | ls | ls
+rm tmp1 tmp2 tmp3 tmp4 tmp5
+echo -------------------exit-------------------
+echo bla | exit
+echo $?
+echo bla | exit khbsdk
+echo $?
+cat < notexist | exit 42
+echo $?
+exit 42 | cat < notexist
+echo $?
+exit tamere | exit
+echo $?
+exit | exit  1| exit 200
+echo $?
+exit
+
+cat tests/test_pipe | grep arcu | cat -e
+echo $?
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat
+echo $?
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
+echo $?
+rm tmp1 tmp2 tmp3 tmp4 tmp5
+exit
+
+echo jhjbsdc >> tmp1
+
+echo kjnsdc sdc sddc > tmp1 knsdc sdc  sdcsdc > tmp1
+
+cat < tester.sh < jnsdc ssdjcnnj > tmp2
+
+cat < tester.sh > tmp2
+
+cat<tester.sh<jnsdc ssdjcnnj>tmp2
+
+ls >tmp1 > tmp1 >>tmp1
+
+ls >tmp1 > tmp1
+
+ls >tmp1 >> tmp1 >>tmp1
+
+ls >tmp1 > tmp1 <tmp1
+
+ls >tmp1 >> tmp1 >>tmp1 | cat
+
+echo hello > tmp1
+
+echo hhell >> tmp1
+
+echo hell > tmp1
+
+echo hello >> tmp1 | echo bla
+
+echo hello >> tmp1 | echobla
+
+echobla | echo hello >> tmp1
+
+
+
+
+BASIC SHELL TESTS
+-------------------------------------
+command not found
+""
+$
+$LESS$VAR
+ls | exit
+sleep 5 | exit
+ctrl-\
+ctrl-C
+l^Ds
+-------------------------------------
+WITH ABSOLUTE PATH
+-------------------
+/bin/ls
+
+PIPE AND REDIRECTION TESTS
+----------------------------------
+ls -la
+ls -la | wc -l
+ls -la | wc -l > hi
+ls -la > hi 
+ls -la | grep "117" > hi
+ls >> hi
+ls -la | wc -l | wc -l >> hi
+cat Makefile | grep s | head -n 5 
+>file
+ls -la | wc -l >> hi | cat >> 7 > j
+wc -l < filename
+cat Makefile | grep pr | head -n 5 | cd file_not_exit
+<a cat <b <c
+>a cat <b >>c 
+out1 ls >out2 >>out3 >out4
+> test | echo blabla; rm test
+cat -e > test1 < test2
+cat < out11
+echo 2 > out1 >> out2
+echo test > file test1
+not_cmd > newfile
+
+SYNTAX ERROR TEST
+----------------------------
+>>
+>
+|
+ls -la ||||||
+ls -la >>> d
+ls>
+ls>>>
+
+ECHO TESTS CASES
+--------------------------
+echo "\s" ; echo "\\s"
+echo "12\""
+echo bonjour \; ls
+echo '"abc"'
+echo "'abc'"
+echo "" bonjour
+echo[TAB]a
+echo\ a
+echo "bip | bip ; coyotte > < \" "
+echo $USER$var\$USER$USER\$USERtest$USER
+
+I/O MIX REDIRECTION
+--------------------------- 
+ls -la >> out1 > out4 out5 > out4
+ls << f | ls > hi 

@@ -113,12 +113,10 @@ char *get_abs_cmd(char *cmd)
         return (ft_strdup(cmd));
     }
     init(&path_split);
-    // ft_putstr_2d(path_split);
     i = 0;
     while (path_split[i])
     {
         abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
-        // ft_putendl_fd(abs_cmd_path, 2);
         dup = ft_strdup(abs_cmd_path);
         if (abs_cmd_path == NULL)
             return (NULL);
@@ -198,7 +196,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     // abs_path = ft_strdup("/bin/");
     // abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-	return (env.stat_code);
+    return (env.stat_code);
     //exit(0);
 }
 
@@ -289,10 +287,10 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
     if(pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
     {
         if(pa_tokens[i].is_in == 0 && pa_tokens[i].here_doc == 0)
-            if (handle_output_redirections(pa_tokens[i].cmd, pa_tokens,i) == EXIT_FAILURE)
+            if (handle_output_redirections(pa_tokens[i].cmd_splitted, pa_tokens,i) == EXIT_FAILURE)
                 return (EXIT_FAILURE);
     }   
-    if(pa_tokens[i].pipe == 1)
+    else if(pa_tokens[i].pipe == 1)
     {
         env.fd_out = dup(env.tmp_out);
     }
@@ -367,9 +365,11 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if(pa_tokens[i].cmd[0])
     {
         if(is_inbuilt(pa_tokens[i].cmd[0]))
+        {
             return (handle_inbuilt_redir(pa_tokens, i));
+        }
     }
-    if(pa_tokens[i].cmd)
+    if(pa_tokens[i].cmd && (env.env_var[get_env("PATH")] != NULL))
     {
         //ft_putstr_fd(pa_tokens[i].cmd[0], 2);
         abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
@@ -384,8 +384,8 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         else
         {
             // printf (":::command not found\n");
-            env.stat_code = 127;
-			return(127);  
+            env.stat_code = 0;
+			return(0);  
         }
     }
     // ft_putchar_fd('\n', 2);
@@ -394,7 +394,10 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     if(abs_cmd_path)
     {
         if (access(abs_cmd_path, X_OK) == 0)
+        {
+            print_2d_array(pa_tokens[i].cmd);
             replace_quote(pa_tokens, i);
+        }
     }
     else
     {
@@ -407,18 +410,18 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         exit(0);
     if (pid == 0)
         exec_child(pa_tokens, abs_cmd_path, i);
-    waitpid(pid, 0, 0);
+    waitpid(pid, &env.stat_code, 0);
     free_me(&abs_cmd_path);
     //close_fds(pa_tokens, i);
-	return (EXIT_SUCCESS);
+    env.stat_code =  WEXITSTATUS(env.stat_code);
+	return (env.stat_code);
 }
 
 int check_for_input_files(t_pars_tokens *pa_tkns, int i)
 {
     int j;
     j = 0;
-    char *abs_path;
-   // print_2d_array(pa_tkns[i].cmd_splitted);
+   
     while(pa_tkns[i].cmd_splitted[j])
     {
         if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
@@ -435,7 +438,7 @@ int check_for_input_files(t_pars_tokens *pa_tkns, int i)
             break ;
         }
     }
-    while(pa_tkns[i].cmd_splitted[j])
+    while(pa_tkns[i].cmd_splitted && pa_tkns[i].cmd_splitted[j])
     {
         if(pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<' || pa_tkns[i].cmd_splitted[j][0] == '>')
         {
@@ -723,7 +726,10 @@ int executor(t_pars_tokens *pa_tkns)
         if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
         {
             if (open_files_fd(pa_tkns[i].cmd_splitted, pa_tkns, i) == EXIT_FAILURE)
-                return (EXIT_FAILURE);   
+            {
+                i++;
+                continue;  
+            }   
             if (!check_for_input_files(pa_tkns, i))
             {
                 find_input_fd(pa_tkns, i);
@@ -748,7 +754,6 @@ int executor(t_pars_tokens *pa_tkns)
 
         
         execute_cmd(pa_tkns, i);
-
 
         if(pa_tkns[i].is_in)
             close (env.open_fd_in);

@@ -40,7 +40,7 @@ static void	ft_exit_init(int *i, unsigned char *c)
 	*c = env.stat_code;
 }
 
-unsigned char	ft_exit(char **str)
+unsigned char	ft_exit(char **str, int pipe)
 {
 	unsigned char	c;
 	int				i;
@@ -69,11 +69,10 @@ unsigned char	ft_exit(char **str)
 		i++;
 	}
 	env.stat_code = c;
-	if (env.trigger)
+	if (env.trigger && pipe == 0)
 	{
-		// ft_putnbr_fd(env.stat_code, 2);
-		// ft_putchar_fd('\n', 1);
-		// printf("%d\n", env.stat_code);
+		ft_putnbr_fd(env.stat_code, 2);
+		ft_putchar_fd('\n', 2);
 		exit(env.stat_code);
 		// printf("check\n");
 	}

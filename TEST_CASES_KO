@@ -22,5 +22,25 @@ ECHO TESTS_KO
 EXIT TESTS_KO
 -------------------
 
-exit "'42'"
-exit '42'"42"42
+int free_everything(t_pars_tokens *tokens)
+/* when working with pipes for built-ins , it gives malloc breakout
+I guess it frees the variables two times in a row, needs fixing*/
+/* Below are the test cases which gives malloc breakout */
+echo bla | exit khbsdk
+exit | exit  1| exit 200
+exit tamere | exit
+echo bla | exit khbsdk
+echo bla | exit
+
+echo poil | cat -e	poil$
+exit code for this command is 1 not 127
+this is the result when executing this command
+cat: illegal option --
+usage: cat [-benstuv] [file ...]
+
+
+If Path doesn't exist and when try to execute ls, it segfaults, needs fixing
+
+
+exit 42 | cat < notexist
+is not responding properly, please check, again malloc brekout if we comment ft_free_everything
