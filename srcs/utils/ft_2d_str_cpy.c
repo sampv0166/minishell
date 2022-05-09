@@ -6,7 +6,10 @@ char	**ft_2d_str_cpy(char **str)
 	int		i;
 	int		len;
 
-	len = get_len(str);
+	len = get_2d_arr_len2(str);
+	// print_2d_array(str);
+	// printf("%d\n", len);
+	// exit(0);
 	cpy = (char **)malloc(sizeof(char *) * (len + 1));
 	i = 0;
 	while (str[i] != NULL)
