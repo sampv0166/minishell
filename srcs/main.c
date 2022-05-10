@@ -23,7 +23,6 @@ static int get_input()
 			free(input);
 			exit(env.stat_code);
 		}
-		free(input);
 	}
 	return (0);
 }

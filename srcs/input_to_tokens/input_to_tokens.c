@@ -146,6 +146,8 @@ char **split_by_quotes(char *str, t_split *split_info)
 		else if (str[split_info->i] && str[split_info->i] != ' ')
 		{
             create_string_between_quotes(str, split_info);
+            if(split_info->brk_flg == 0)
+                break;
 		}
     }
     split_info->arr[split_info->array_index] = NULL;
@@ -284,6 +286,8 @@ int input_to_tokens(char *input)
     expander(pa_tkns);
     //EXECUTOR
     executor(pa_tkns);
+    free_everything(pa_tkns);
+    return (0);
 }
 void print_2d_array(char **arr)
 {

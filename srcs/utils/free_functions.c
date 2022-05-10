@@ -56,26 +56,24 @@ int free_everything(t_pars_tokens *tokens)
     i = 0;
     while(env.count != 1 && i < env.count)
     {
-        free_2d_array(tokens[i].cmd);
-        free_2d_array(tokens[i].cmd_cpy);
-        free_2d_array(tokens[i].cmd_splitted);
-        // free_2d_array(env.pa_tkns[i].cmd);
+        ft_free_str_array(&tokens[i].cmd);
+        ft_free_str_array(&tokens[i].cmd_cpy);
+       ft_free_str_array(&tokens[i].cmd_splitted);
         // free_2d_array(env.pa_tkns[i].cmd_cpy);
         // free_2d_array(env.pa_tkns[i].cmd_splitted);
-        free_me(&env.pa_tkns[i].cmd_full);
+        free_me(&tokens[i].cmd_full);
         i++;
     }
     if (env.count == 1)
     {
-        free_2d_array(tokens[i].cmd);
-        free_2d_array(tokens[i].cmd_cpy);
-        free_2d_array(tokens[i].cmd_splitted);
-        // free_2d_array(env.pa_tkns[i].cmd);
-        // free_2d_array(env.pa_tkns[i].cmd_splitted);
-        free_me(&env.pa_tkns[i].cmd_full);
+        ft_free_str_array(&tokens[i].cmd);
+        ft_free_str_array(&tokens[i].cmd_cpy);
+       ft_free_str_array(&tokens[i].cmd_splitted);
+        free_me(&tokens[i].cmd_full);
         i++;   
     }
-    free(env.pa_tkns);
+    //free(tokens);
+    free(tokens);
     // free(tokens);
     return (0);
 }
