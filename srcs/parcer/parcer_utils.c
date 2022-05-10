@@ -11,6 +11,9 @@ int get_pipe_len(char **tokens)
 
     i = 0;
     len = 0;
+    //  exit(0);
+    //  ft_putstr_fd(tokens[i], 2); 
+   
     while (tokens[i])
     {
        

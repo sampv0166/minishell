@@ -137,11 +137,9 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         pa_tkns[i].fd_in = 0;
         pa_tkns[i].fd_out = 0;
         pa_tkns[i].here_doc = 0;
-
-        i++;
-    }
-    env.pa_info = pa_info;
-    env.pa_tkns = pa_tkns;
+        pa_tkns[i].fd_out = 0;
+        pa_tkns[i].here_doc = 0;
+	}
 }
 
 int	cmd_w_flags(char *str)
