@@ -2,8 +2,6 @@
 
 extern t_env_var env;
 
-
-
 int get_pipe_len(char **tokens)
 {
     int i;
@@ -22,7 +20,6 @@ int get_pipe_len(char **tokens)
         i++;
          
     }
-   
     return (len);
 }
 

@@ -182,7 +182,6 @@ char **split_to_tokens(char *input)
 {
     t_split si;
     t_split si2;
-
     split_by_quotes(input, &si);
     if(!si.arr)
         return(NULL);  
@@ -245,7 +244,6 @@ char **tokens_split(char *input)
 {
     char **tokens;
     char **toks;
-    
     tokens = split_to_tokens(input);
     if (!tokens || !is_token_syntax_valid(tokens))
     {
@@ -266,6 +264,7 @@ char **tokens_split(char *input)
             exit(0);
         }
     }
+  
     return (tokens);    
 }
 

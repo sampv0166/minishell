@@ -138,7 +138,8 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
         pa_tkns[i].fd_out = 0;
         pa_tkns[i].here_doc = 0;
         pa_tkns[i].fd_out = 0;
-        pa_tkns[i].here_doc = 0;
+    	pa_tkns[i].here_doc = 0;
+		i++;
 	}
 }
 
@@ -596,6 +597,7 @@ void parse_commands(char **tokens, t_parser_info *pa_info, t_pars_tokens *pa_tkn
 		set_redirection_type(pa_tkns, pa_info, tokens); 
 		create_cmds(pa_info, tokens);
 	}
+	
 }
 
 t_pars_tokens *parser (char **tokens)

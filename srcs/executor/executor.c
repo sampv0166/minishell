@@ -16,16 +16,9 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     pa_tokens[i].fd_in = fd[0];
     pa_tokens[i].fd_out = fd[1];  
     env.fd_in = fd[0];
-    env.fd_out = fd[1];
-    // if(env.fd_pipe_in_open != 0)
-    //     close(env.fd_pipe_in_open);
-    // if(env.fd_pipe_out_open != 0)
-    //     close(env.fd_pipe_out_open);    
+    env.fd_out = fd[1]; 
     env.fd_pipe_in_open = fd[0];
     env.fd_pipe_out_open= fd[1];
-    // ft_putnbr_fd(env.fd_in, 2);
-    // ft_putchar_fd('o', 2);
-    //  ft_putnbr_fd(env.fd_out, 2);
 	return (0);
 }
 
@@ -131,8 +124,6 @@ char *get_abs_cmd(char *cmd)
         {
             free_me(&dup);
             free_me(&abs_cmd_path);
-            // if (i == 2)
-            //     break ;
         }
         i++;
     }
@@ -767,7 +758,7 @@ int open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 
 void init_and_dup_fd(int *i)
 {
-    i = 0;
+    *i = 0;
     env.tmp_in = dup(0);
     env.tmp_out = dup(1);
     env.fd_in = 0;
@@ -818,7 +809,6 @@ int handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
 {
     if (open_files_fd(pa_tkns[i].cmd_splitted, pa_tkns, i) == EXIT_FAILURE)
     {
-        i++;
         return (1);  
     }   
     if (!check_for_input_files(pa_tkns, i))
@@ -838,7 +828,10 @@ int executor(t_pars_tokens *pa_tkns)
         if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
         {
             if (handle_in_and_here_doc(pa_tkns, i))
+            {
+                i++;    
                 continue;
+            }
         }
         else
             env.fd_in = dup(env.fd_in);
