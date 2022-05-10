@@ -83,22 +83,41 @@ void split_by_redirection(char **arr, char **tokens, t_split *split_info)
 
 char **split_by_pipe_redir(char **arr, t_split *split_info)
 {
-    char **tokens;
     init_split_info(split_info);    
-    tokens = (char **)ft_calloc(sizeof (char *), (get_len(arr) + 1));
+    split_info->arr = (char **)ft_calloc(sizeof (char *), (get_len(arr) + 1));
 
-    if (!tokens)
+    if (!split_info->arr)
         return (NULL);
     while (arr[split_info->i])
     {
         split_info->j = 0;
         split_info->len = 0;
-        split_by_redirection(arr, tokens, split_info);
+        split_by_redirection(arr, split_info->arr, split_info);
         split_info->i++;
     }
-    tokens[split_info->k] = NULL;
-    return (tokens);
+    split_info->arr[split_info->k] = NULL;
+    return (split_info->arr);
 }
+
+void create_string_between_quotes(char *str, t_split *split_info)
+{
+    if(str[split_info->i] && str[split_info->i] == '\"')
+        create_string_in_between_dbl_quotes(str ,split_info);
+    else if(str[split_info->i] && (str[split_info->i] == '\''))
+        create_string_in_between_sngl_quotes(str ,split_info);
+    else
+    {
+        inrement_i_len(split_info);
+        if(str[split_info->i] == 0)
+        {
+            split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+            split_info->len = 0; 
+            split_info->i++;
+            split_info->brk_flg = 0; 
+        }
+    }
+}
+
 /*
     ! why this function ?  
     we cant use our normal split function to create tokens because , if we have a space
@@ -110,7 +129,7 @@ char **split_by_pipe_redir(char **arr, t_split *split_info)
     str = ["echo", ""hello world"",">file|wc -l"]  
 */
 
-char **split_to_tokens(char *str, t_split *split_info)
+char **split_by_quotes(char *str, t_split *split_info)
 {
     init_split_info(split_info);
     split_info->arr = (char **)ft_calloc(sizeof (char *), (get_arr_len(str) + 1));
@@ -126,21 +145,7 @@ char **split_to_tokens(char *str, t_split *split_info)
 		}
 		else if (str[split_info->i] && str[split_info->i] != ' ')
 		{
-            if(str[split_info->i] && str[split_info->i] == '\"')
-                create_string_in_between_dbl_quotes(str ,split_info);
-            else if(str[split_info->i] && (str[split_info->i] == '\''))
-                create_string_in_between_sngl_quotes(str ,split_info);
-            else
-            {
-				inrement_i_len(split_info);
-                if(str[split_info->i] == 0)
-				{
-					split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
-					split_info->len = 0; 
-					split_info->i++;
-                    break ;  
-				}
-            }
+            create_string_between_quotes(str, split_info);
 		}
     }
     split_info->arr[split_info->array_index] = NULL;
@@ -173,95 +178,113 @@ char **join_toks(char **tok1, char **tok2)
     return (new_toks);
 }
 
+char **split_to_tokens(char *input)
+{
+    t_split si;
+    t_split si2;
 
-int join_pipes(char ***tokens)
+    split_by_quotes(input, &si);
+    if(!si.arr)
+        return(NULL);  
+    split_by_pipe_redir(si.arr, &si2);
+    if(!si2.arr)
+        return(NULL);
+    ft_free_str_array(&si.arr);
+    return (si2.arr);
+}
+
+
+char *join_pipes()
 {
     char *in;
     char *buf;
-    t_split s1;
-    t_split s2;
-
     char **toks;
+
     in = NULL;
     buf = NULL;
     while(1)
     {
         buf = readline(">");
-        in = ft_strjoin(in, buf);
-        if(in[ft_strlen(in) - 1] == '|')
+        if (buf == NULL)
         {
-            if(in && in[0] == '|')
-                break ;
-            continue;
+            free_me(&in);
+            return (NULL);
         }
-        else
-            break;    
+        in = ft_strjoin(in, buf);
+        if(ft_strlen(in) > 0)
+        {
+            if(in[ft_strlen(in) - 1] == '|')
+            {
+                if(in && in[0] == '|')
+                    break ;
+                continue;
+            }
+            else
+                break;  
+        }
     }
-    toks = split_to_tokens(in, &s1);
-    if(!toks)
-        return(EXIT_FAILURE);
-    toks = split_by_pipe_redir(toks, &s2);
-    if(!toks) 
-        return(EXIT_FAILURE);
-    free_me(&in);    
+    return (in);
+}
+
+char **get_command_for_pipe(char **toks, char ***tokens, char *input)
+{
+    toks = split_to_tokens(input);
     *tokens = join_toks(*tokens, toks);
+    free_me(&input);
     if (!is_token_syntax_valid(*tokens))
-    {
-        ft_free_str_array(&s1.arr);
+    { 
         ft_free_str_array(tokens);
+        ft_free_str_array(&toks);
+        free_me(&input);
+        return (NULL);
+    }
+    return (*tokens);
+}
+
+char **tokens_split(char *input)
+{
+    char **tokens;
+    char **toks;
+    
+    tokens = split_to_tokens(input);
+    if (!tokens || !is_token_syntax_valid(tokens))
+    {
         ft_putstr_fd("Invalid Syntax\n", 2);
         env.stat_code = 258;
-        return(258);
+        ft_free_str_array(&tokens);
+        return (NULL);
+    }      
+    if(tokens[get_2d_arr_len(tokens)][0] == '|')
+    {
+        input = join_pipes();
+        if(input)
+            get_command_for_pipe(toks, &tokens, input);
+        else
+        {
+            ft_free_str_array(&tokens);
+            free_env();
+            exit(0);
+        }
     }
-    return (EXIT_SUCCESS);
+    return (tokens);    
 }
 
 int input_to_tokens(char *input)
 {
     t_pars_tokens *pa_tkns;
     char    **tokens;
-    int     d_len;
-    int     ret;
 
-    ret = 0;
-    t_split si;
-    t_split si2;
-    tokens = split_to_tokens(input, &si);
-    if(!tokens) 
-        return(EXIT_FAILURE);  
-    tokens = split_by_pipe_redir(tokens, &si2);
+    // TOKEN SPLIT
+    tokens = tokens_split(input);
     if(!tokens)
-        return(EXIT_FAILURE);
-    if (!is_token_syntax_valid(tokens))
-    {
-        ft_free_str_array(&si.arr);
-        ft_free_str_array(&tokens);
-        ft_putstr_fd("Invalid Syntax\n", 2);
-        env.stat_code = 258;
-        return(258);
-    }
-    d_len = get_2d_arr_len(tokens);
-    if(tokens[d_len][0] == '|')
-    {
-        ret = join_pipes(&tokens);
-        if(ret)
-        {
-            free_split_info(&si, &si2, tokens);
-            return (ret);
-        }
-    }
-    pa_tkns = parser(tokens);
-
-    free_split_info(&si, &si2, tokens);
-    // print_2d_array(pa_tkns[0].cmd_splitted);
-    
+        return (EXIT_FAILURE);
+    // PARCER
+    pa_tkns  = parser(tokens);
+    ft_free_str_array(&tokens);
+    // EXPANDER
     expander(pa_tkns);
-    
-    //  print_strcut(pa_tkns);
-    //  exit(0);
-    executor (pa_tkns);
-    free_everything(pa_tkns);
-	return (EXIT_SUCCESS);
+    //EXECUTOR
+    executor(pa_tkns);
 }
 void print_2d_array(char **arr)
 {

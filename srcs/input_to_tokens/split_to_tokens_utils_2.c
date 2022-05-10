@@ -36,29 +36,29 @@ int    skip_and_increment_len_sngl_qts(char *str, int *i, int *len)
           (*i)++;   
 		if(str[*i] == '\'')
 			(*i)++;
-		while (str[*i])
-		{
-			if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
-				break;
-			else if (str[*i] == '\'')
-			{
-				(*i)++;
-				while(str[*i] && str[*i] != '\'')
-					(*i)++;
-				if(str[*i] == '\'')
-					(*i)++;
-			}
-			else if (str[*i] == '\"')
-			{
-				(*i)++;
-				while(str[*i] && str[*i] != '\"')
-					(*i)++;
-				if(str[*i] == '\"')
-					(*i)++;
-			}
-			else
-				(*i)++;
-		}
+		// while (str[*i])
+		// {
+		// 	if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
+		// 		break;
+		// 	else if (str[*i] == '\'')
+		// 	{
+		// 		(*i)++;
+		// 		while(str[*i] && str[*i] != '\'')
+		// 			(*i)++;
+		// 		if(str[*i] == '\'')
+		// 			(*i)++;
+		// 	}
+		// 	else if (str[*i] == '\"')
+		// 	{
+		// 		(*i)++;
+		// 		while(str[*i] && str[*i] != '\"')
+		// 			(*i)++;
+		// 		if(str[*i] == '\"')
+		// 			(*i)++;
+		// 	}
+		// 	else
+		// 		(*i)++;
+		// }
 		(*len)++;
     }
     else
@@ -87,29 +87,29 @@ int    skip_and_increment_len_dbl_qts(char *str, int *i, int *len)
           (*i)++;   
 		if(str[*i] == '\"')
 			(*i)++;
-		while (str[*i])
-		{
-			if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
-				break;
-			else if (str[*i] == '\'')
-			{
-				(*i)++;
-				while(str[*i] && str[*i] != '\'')
-					(*i)++;
-				if(str[*i] == '\'')
-					(*i)++;
-			}
-			else if (str[*i] == '\"')
-			{
-				(*i)++;
-				while(str[*i] && str[*i] != '\"')
-					(*i)++;
-				if(str[*i] == '\"')
-					(*i)++;
-			}
-			else
-				(*i)++;	
-		}
+		// while (str[*i])
+		// {
+		// 	if (str[*i] == ' ' || str[*i] == '>' || str[*i] == '<' || str[*i] == '|')
+		// 		break;
+		// 	else if (str[*i] == '\'')
+		// 	{
+		// 		(*i)++;
+		// 		while(str[*i] && str[*i] != '\'')
+		// 			(*i)++;
+		// 		if(str[*i] == '\'')
+		// 			(*i)++;
+		// 	}
+		// 	else if (str[*i] == '\"')
+		// 	{
+		// 		(*i)++;
+		// 		while(str[*i] && str[*i] != '\"')
+		// 			(*i)++;
+		// 		if(str[*i] == '\"')
+		// 			(*i)++;
+		// 	}
+		// 	else
+		// 		(*i)++;	
+		// }
 		(*len)++;
     }
     else

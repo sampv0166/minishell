@@ -11,9 +11,6 @@ int get_pipe_len(char **tokens)
 
     i = 0;
     len = 0;
-    //  exit(0);
-    //  ft_putstr_fd(tokens[i], 2); 
-   
     while (tokens[i])
     {
        
@@ -42,7 +39,6 @@ int get_count(char **tkns , int j)
     }
     return (i);
 }
-
 
 void init_parser_info(t_parser_info *pa_info, char **tokens)
 {
@@ -77,12 +73,6 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 	pa_tkns[pa_info->j].cmd_cpy = pa_info->arr;
     pa_tkns[pa_info->j].cmd =  pa_info->arr1;
     pa_tkns[pa_info->j].cmd_full = pa_info->str;
-    // pa_tkns[pa_info->j].fd_in = STDIN_FILENO;
-    // pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
-    // pa_tkns[pa_info->j].is_in = 0;
-    // pa_tkns[pa_info->j].is_out = 0;
-    // pa_tkns[pa_info->j].is_out_appnd = 0;
-    // pa_tkns[pa_info->j].pipe = 0;
 }
 
 int	is_rdr(char *str)

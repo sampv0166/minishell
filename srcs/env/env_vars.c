@@ -76,30 +76,25 @@ char *get_env_value (char *var)
 
   i = 0;
   val = NULL; 
-
   while (env.env_var[i] != NULL)
   {
     	if (ft_strcmp(var, env.env_var[i]) == -61)
 		  {
 			  val = ft_strchr(env.env_var[i++], '=') + 1;                 
 			  if (ft_strlen(val) == 0)
-        {
 				    val = ft_calloc(1, sizeof (char));
-        }
 			  else
-        {
 				    val = ft_strdup(val);
-        }
 			  break ;
 		  }
       i++;
   }
   return (val);
 }
+
 /*
   This function is used to intialize and save env variables
 */
-
 int init_env_vars(char **envp)
 {
     env.envp = envp;
