@@ -189,13 +189,64 @@ void handle_pipe_type_2_3(t_pars_tokens *pa_tokens, int i)
     }
 }
 
+void    placing_vals_SHLVL(char *str)
+{
+    int i;
+    char    *tmp;
+
+    i = get_env("SHLVL");
+    tmp = NULL;
+    if (env.env_var[i] == NULL)
+    {
+        tmp = ft_strdup("SHLVL=");
+        tmp = ft_strjoin(tmp, str);
+        env.env_var = new_env(tmp);
+        free(tmp);
+    }
+    else
+    {
+        free(env.env_var[i]);
+        env.env_var[i] = ft_strdup("SHLVL=");
+        env.env_var[i] = ft_strjoin(env.env_var[i], str);
+    }
+    free(str);
+}
+
+void    increment_s_vals(void)
+{
+    int     i;
+    char    *tmp;
+    char    *str;
+
+    str = NULL;
+    tmp = ft_strdup("$");
+    tmp = ft_strjoin(tmp, "SHLVL");
+    i = get_env("SHLVL");
+    if (env.env_var[i] == NULL)
+        str = ft_strdup("0");
+    else
+        str = get_env_dollar(tmp);
+    free(tmp);
+    i = ft_atoi(str);
+    i++;
+    free(str);
+    str = ft_itoa(i);
+    placing_vals_SHLVL(str);
+}
+
 int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
     // pa_tokens[i].cmd[1] = NULL;
     // free(abs_path);
     // abs_path = ft_strdup("/bin/");
     // abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
+    if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
+        increment_s_vals();
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
+    if (env.stat_code)
+    {
+        ft_putendl_fd("2", 2);
+    }
     return (env.stat_code);
     //exit(0);
 }
@@ -395,7 +446,6 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     {
         if (access(abs_cmd_path, X_OK) == 0)
         {
-            print_2d_array(pa_tokens[i].cmd);
             replace_quote(pa_tokens, i);
         }
     }
