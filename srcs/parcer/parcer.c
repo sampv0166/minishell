@@ -42,7 +42,7 @@ int read_line(char *buf, char *join, int end1, char *heredoc)
 {
     while (true)
 	{
-		buf = readline("");
+		buf = readline("> ");
 		if (buf == NULL)
 			return (exit_close_fds(end1, -1, EXIT_SUCCESS));
 		if (ft_strcmp(buf, heredoc) == 0)
@@ -601,6 +601,8 @@ t_pars_tokens *parser (char **tokens)
 {
     t_pars_tokens *pa_tkns;
     t_parser_info pa_info;
+    int i;
+    pid_t   pid;
 
     init_parser_info(&pa_info, tokens);
     pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info.pipes_count));

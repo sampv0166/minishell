@@ -44,6 +44,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 			i++;
 		}
 	}
+	flags->end = i;
 	i = 1;
 	if (str[i][0] == '-')
 	{
@@ -70,7 +71,7 @@ void	echo(char **str, char **str_splitted)
 	{
 		/*First solve the problem with n flags before we print anything*/
 		flags.i = n_flag_cmp(str, &flags, str_splitted);
-		while (str[flags.i] != NULL)
+		while (str[flags.i] != NULL && flags.i < flags.end)
 		{
 			flags.print_flag = 0;
 			flags.qte = 0;
@@ -80,8 +81,8 @@ void	echo(char **str, char **str_splitted)
 			// 	flags.qte = str[flags.i][0];
 			/*This  condition checks if I'm encountered with pipes or any redirections. If I do it will
 			break out of while loop and will not print anything*/
-			if (check_rdr_pipes(str[flags.i], &flags))
-				break ;
+			// if (check_rdr_pipes(str[flags.i], &flags))
+			// 	break ;
 			/*The print_flag to check if Im not encountered with any pipe or redirections*/
 			if (!flags.print_flag)
 				ft_putstr_fd(str[flags.i], 1);

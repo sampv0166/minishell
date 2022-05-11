@@ -62,6 +62,7 @@ void	ft_init(t_flags *flags)
 	flags->newl_flag = 0;
 	flags->qte = 0;
 	flags->trigger = 0;
+	flags->end = 0;
 }
 
 int	check_rdr_pipes(char *str, t_flags *flags)

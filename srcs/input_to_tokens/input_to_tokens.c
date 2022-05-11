@@ -205,7 +205,7 @@ char *join_pipes()
     buf = NULL;
     while(1)
     {
-        buf = readline(">");
+        buf = readline("");
         if (buf == NULL)
         {
             free_me(&in);
@@ -263,7 +263,7 @@ char **tokens_split(char *input)
         {
             ft_free_str_array(&tokens);
             free_env();
-            exit(0);
+            // exit(0);
         }
     }
   
@@ -285,9 +285,9 @@ int input_to_tokens(char *input)
     // EXPANDER
     expander(pa_tkns);
     //EXECUTOR
-    executor(pa_tkns);
+	executor(pa_tkns);
     free_everything(pa_tkns);
-    return (0);
+	return (0);
 }
 void print_2d_array(char **arr)
 {

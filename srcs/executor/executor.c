@@ -236,7 +236,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
     if (env.stat_code)
     {
-        ft_putendl_fd("2", 2);
+        // ft_putendl_fd("2", 2);
     }
     return (env.stat_code);
     //exit(0);
@@ -447,6 +447,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         return(127);
     }
     pid = fork();
+    env.s_pid = pid;
     if (pid < 0)
         exit(0);
     if (pid == 0)

@@ -41,6 +41,7 @@ typedef struct	s_flags
 	int	i;
 	int	qte;
 	int	trigger;
+	int	end;
 }				t_flags;
 
 typedef struct	s_expand
