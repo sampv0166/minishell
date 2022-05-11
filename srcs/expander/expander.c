@@ -269,7 +269,7 @@ void	expander(t_pars_tokens *pa_tkns)
 	int 	y;
 	char	**full;
 	char	**full_splitted;
-	char 	**cmd_sp;
+	// char 	**cmd_sp;
 	//! SHORTEN THIS CODE!
 
 	y = 0;
@@ -281,7 +281,7 @@ void	expander(t_pars_tokens *pa_tkns)
     	pa_tkns[y].cmd_splitted = ft_2d_str_cpy(full_splitted);
     	free_2d_array(full_splitted);
 		full = get_2d_exp(y, pa_tkns, 0);
-		ft_free_str_array(&pa_tkns[y].cmd);
+		free_2d_array(pa_tkns[y].cmd);
 	    pa_tkns[y].cmd = ft_2d_str_cpy(full);
 		free_2d_array(full);
 		y++;
