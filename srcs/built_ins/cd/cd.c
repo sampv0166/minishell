@@ -63,7 +63,7 @@ int	cd(char **str)
 		free(pwd);
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(str[i], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd(": No such file for directory\n", 2);
 		return (1);
 	}
 	return (0);

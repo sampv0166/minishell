@@ -8,7 +8,7 @@ static int get_input()
 	while (1)
 	{
 		env.s_pid = 0;
-		input = readline("==>");
+		input = readline("");
 		if (input == NULL)
 		{
 			free_env();

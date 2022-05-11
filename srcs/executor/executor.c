@@ -800,12 +800,12 @@ void close_fds(t_pars_tokens *pa_tkns, int i, int f)
     if(pa_tkns[i].is_in)
         close (env.open_fd_in);
     if(pa_tkns[i].is_out)
-        close (env.open_fd_out);
-    // if(pa_tkns[i].pipe == 3)
-    //     close(env.fd_pipe_in_open);             
+        close (env.open_fd_out);          
     if(pa_tkns[i].pipe == 1)
+    {
         close(env.fd_pipe_in_open);
         close(env.fd_pipe_out_open);
+    }
     if(pa_tkns[i].pipe == 2)
         close(env.fd_pipe_out_open);    
 }
@@ -850,10 +850,6 @@ int executor(t_pars_tokens *pa_tkns)
         close_fds(pa_tkns, i, 0);
         execute_cmd(pa_tkns, i, &path);
         close_fds(pa_tkns, i, 1);
-
-        // ft_putstr_fd(path, 2);
-        // ft_putstr_fd("\n", 2);
-
         pid[i] = fork();
         //ft_putnbr_fd(pid[i], 2);
         // ft_putchar_fd('\n', 2);
@@ -869,13 +865,18 @@ int executor(t_pars_tokens *pa_tkns)
             //    ft_putnbr_fd(i, 2);
             //      ft_putstr_fd("\n", 2);
                 exec_child(pa_tkns, path, i);
-                
             }
             else
             {
                 close(env.tmp_in);
                 close(env.tmp_out);
                 close(env.fd_pipe_in_open);
+                if (i == env.count - 1)
+                {
+                    free_everything(pa_tkns);
+                    free_env();
+                    free(pid);
+                }
                 exit(0);
             }
         }
@@ -888,9 +889,7 @@ int executor(t_pars_tokens *pa_tkns)
     i = 0;  
     while (i < env.count)
     {
-        // ft_putnbr_fd(pid[i], 2);
-        // ft_putchar_fd('\n', 2);
-        waitpid(pid[i], &env.stat_code, 0);
+        waitpid(pid[i],0, 0);
         i++;
     }
     i = 0;
@@ -901,7 +900,7 @@ int executor(t_pars_tokens *pa_tkns)
     //     free ((void ) pid[i]);
     // }
     restore_fds();
- 
+
     // i = 0;
     // while (i < env.count)
     // {
