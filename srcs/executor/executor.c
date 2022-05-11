@@ -234,10 +234,10 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
         increment_s_vals();
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-    if (env.stat_code)
-    {
-        ft_putendl_fd("2", 2);
-    }
+    // if (env.stat_code)
+    // {
+    //     ft_putendl_fd("2", 2);
+    // }
     return (env.stat_code);
     //exit(0);
 }
@@ -392,10 +392,9 @@ int ft_eco_check(char *str)
 //         close(pa_tokens[i].fd_out);
 // }
 
-int execute_cmd(t_pars_tokens *pa_tokens, int i)
+int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
 {
     char *abs_cmd_path;
-    pid_t pid;
     abs_cmd_path = NULL;
     if (is_redir(pa_tokens, i))
     {
@@ -415,6 +414,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
     {
         //ft_putstr_fd(pa_tokens[i].cmd[0], 2);
         abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+        *path = abs_cmd_path;
     }
     if(abs_cmd_path == NULL)
     {
@@ -446,15 +446,10 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i)
         env.stat_code = 127;
         return(127);
     }
-    pid = fork();
-    if (pid < 0)
-        exit(0);
-    if (pid == 0)
-        exec_child(pa_tokens, abs_cmd_path, i);
-    waitpid(pid, &env.stat_code, 0);
-    free_me(&abs_cmd_path);
-    //close_fds(pa_tokens, i);
-    env.stat_code =  WEXITSTATUS(env.stat_code);
+
+    
+    // //close_fds(pa_tokens, i);
+    // env.stat_code =  WEXITSTATUS(env.stat_code);
 	return (env.stat_code);
 }
 
@@ -822,14 +817,19 @@ int handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
 int executor(t_pars_tokens *pa_tkns)
 {
     int i;
+    pid_t *pid;
+    char *path;
+    pid = malloc(sizeof(pid_t) * env.count);
     init_and_dup_fd(&i);
     while (i < env.count)
     {
+       
+        path = NULL;
         if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
         {
             if (handle_in_and_here_doc(pa_tkns, i))
             {
-                i++;    
+                i++;
                 continue;
             }
         }
@@ -838,10 +838,59 @@ int executor(t_pars_tokens *pa_tkns)
         dup2(env.fd_in, 0);
         close(env.fd_in);
         close_fds(pa_tkns, i, 0);
-        execute_cmd(pa_tkns, i);
+        execute_cmd(pa_tkns, i, &path);
         close_fds(pa_tkns, i, 1);
+        // ft_putstr_fd(path, 2);
+        // ft_putstr_fd("\n", 2);
+
+        pid[i] = fork();
+        //ft_putnbr_fd(pid[i], 2);
+        // ft_putchar_fd('\n', 2);
+        if (pid[i] < 0)
+            exit(0);
+        if (pid[i] == 0)
+        {
+            //ft_putnbr_fd(pid[i], 2);
+            // ft_putchar_fd('\n', 2);
+            if(!is_inbuilt(pa_tkns[i].cmd[0]))
+            {
+            //     ft_putstr_fd("\n", 2);
+            //    ft_putnbr_fd(i, 2);
+            //      ft_putstr_fd("\n", 2);
+                exec_child(pa_tkns, path, i);
+            }
+            else
+            {
+                close(env.tmp_in);
+                close(env.tmp_out);  
+                exit(0);
+            }
+        }
+        free_me(&path);
         i++;
     }
+
+  
+    //ft_putnbr_fd(pid[i], 1);
+	//display prompt again
+    
+    i = 0;  
+    while (i < env.count)
+    {
+        // ft_putnbr_fd(pid[i], 2);
+        // ft_putchar_fd('\n', 2);
+        wait(0);
+        i++;
+    }
+    
     restore_fds();
+ 
+    // i = 0;
+    // while (i < env.count)
+    // {
+    //     wait(0);
+    //     i++;
+    // }
+
     return (0);
 }
