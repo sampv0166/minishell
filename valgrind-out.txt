@@ -1,149 +1,232 @@
-==684244== Memcheck, a memory error detector
-==684244== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==684244== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
-==684244== Command: ./minishell clear
-==684244== Parent PID: 665347
-==684244== 
-==684269== 
-==684269== FILE DESCRIPTORS: 20 open (3 std) at exit.
-==684269== Open file descriptor 103: /snap/code/96/usr/share/code/v8_context_snapshot.bin
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 49: /snap/code/96/usr/share/code/resources/app/node_modules.asar
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 45: /usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.2mMzxU (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 43: /snap/code/96/usr/share/code/resources/app/node_modules.asar
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.bKkN2v (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.sQerH7 (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.NKoVnJ (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.iExu4k (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open AF_UNIX socket 38: <unknown>
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 34: /tmp/.org.chromium.Chromium.4pxWry (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 33: /proc/664744/status
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 32: /proc/664744/statm
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.LKU8KW (deleted)
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open AF_UNIX socket 27: <unknown>
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 20: /snap/code/96/usr/share/code/v8_context_snapshot.bin
-==684269==    <inherited from parent>
-==684269== 
-==684269== Open file descriptor 3: /home/abdu/Desktop/minisel/second/valgrind-out.txt
-==684269==    <inherited from parent>
-==684269== 
-==684269== 
-==684269== HEAP SUMMARY:
-==684269==     in use at exit: 212,554 bytes in 315 blocks
-==684269==   total heap usage: 613 allocs, 298 frees, 234,532 bytes allocated
-==684269== 
-==684269== LEAK SUMMARY:
-==684269==    definitely lost: 0 bytes in 0 blocks
-==684269==    indirectly lost: 0 bytes in 0 blocks
-==684269==      possibly lost: 0 bytes in 0 blocks
-==684269==    still reachable: 4,879 bytes in 89 blocks
-==684269==         suppressed: 207,675 bytes in 226 blocks
-==684269== Reachable blocks (those to which a pointer was found) are not shown.
-==684269== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==684269== 
-==684269== For lists of detected and suppressed errors, rerun with: -s
-==684269== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==684244== 
-==684244== FILE DESCRIPTORS: 20 open (3 std) at exit.
-==684244== Open file descriptor 103: /snap/code/96/usr/share/code/v8_context_snapshot.bin
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 49: /snap/code/96/usr/share/code/resources/app/node_modules.asar
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 45: /usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.2mMzxU (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 43: /snap/code/96/usr/share/code/resources/app/node_modules.asar
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.bKkN2v (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.sQerH7 (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.NKoVnJ (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.iExu4k (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open AF_UNIX socket 38: <unknown>
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 34: /tmp/.org.chromium.Chromium.4pxWry (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 33: /proc/664744/status
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 32: /proc/664744/statm
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.LKU8KW (deleted)
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open AF_UNIX socket 27: <unknown>
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 20: /snap/code/96/usr/share/code/v8_context_snapshot.bin
-==684244==    <inherited from parent>
-==684244== 
-==684244== Open file descriptor 3: /home/abdu/Desktop/minisel/second/valgrind-out.txt
-==684244==    <inherited from parent>
-==684244== 
-==684244== 
-==684244== HEAP SUMMARY:
-==684244==     in use at exit: 207,683 bytes in 227 blocks
-==684244==   total heap usage: 616 allocs, 389 frees, 234,548 bytes allocated
-==684244== 
-==684244== 8 bytes in 1 blocks are definitely lost in loss record 5 of 68
-==684244==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==684244==    by 0x10D3BF: executor (executor.c:822)
-==684244==    by 0x10E5A0: input_to_tokens (input_to_tokens.c:288)
-==684244==    by 0x109512: get_input (main.c:21)
-==684244==    by 0x10957D: main (main.c:38)
-==684244== 
-==684244== LEAK SUMMARY:
-==684244==    definitely lost: 8 bytes in 1 blocks
-==684244==    indirectly lost: 0 bytes in 0 blocks
-==684244==      possibly lost: 0 bytes in 0 blocks
-==684244==    still reachable: 0 bytes in 0 blocks
-==684244==         suppressed: 207,675 bytes in 226 blocks
-==684244== 
-==684244== For lists of detected and suppressed errors, rerun with: -s
-==684244== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+==694057== Memcheck, a memory error detector
+==694057== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==694057== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==694057== Command: ./minishell clear
+==694057== Parent PID: 665347
+==694057== 
+==694101== 
+==694101== FILE DESCRIPTORS: 20 open (3 std) at exit.
+==694101== Open file descriptor 103: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 49: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 45: /usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.2mMzxU (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 43: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.bKkN2v (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.sQerH7 (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.NKoVnJ (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.iExu4k (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open AF_UNIX socket 38: <unknown>
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 34: /tmp/.org.chromium.Chromium.4pxWry (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 33: /proc/664744/status
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 32: /proc/664744/statm
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.LKU8KW (deleted)
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open AF_UNIX socket 27: <unknown>
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 20: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694101==    <inherited from parent>
+==694101== 
+==694101== Open file descriptor 3: /home/abdu/Desktop/minisel/second/valgrind-out.txt
+==694101==    <inherited from parent>
+==694101== 
+==694101== 
+==694101== HEAP SUMMARY:
+==694101==     in use at exit: 213,334 bytes in 354 blocks
+==694101==   total heap usage: 1,300 allocs, 946 frees, 246,713 bytes allocated
+==694101== 
+==694101== 30 bytes in 2 blocks are definitely lost in loss record 24 of 86
+==694101==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==694101==    by 0x10D3C3: executor (executor.c:827)
+==694101==    by 0x10E5D3: input_to_tokens (input_to_tokens.c:288)
+==694101==    by 0x109512: get_input (main.c:21)
+==694101==    by 0x10957D: main (main.c:38)
+==694101== 
+==694101== LEAK SUMMARY:
+==694101==    definitely lost: 30 bytes in 2 blocks
+==694101==    indirectly lost: 0 bytes in 0 blocks
+==694101==      possibly lost: 0 bytes in 0 blocks
+==694101==    still reachable: 5,408 bytes in 116 blocks
+==694101==         suppressed: 207,896 bytes in 236 blocks
+==694101== Reachable blocks (those to which a pointer was found) are not shown.
+==694101== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==694101== 
+==694101== For lists of detected and suppressed errors, rerun with: -s
+==694101== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+==694131== 
+==694131== FILE DESCRIPTORS: 20 open (3 std) at exit.
+==694131== Open file descriptor 103: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 49: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 45: /usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.2mMzxU (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 43: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.bKkN2v (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.sQerH7 (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.NKoVnJ (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.iExu4k (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open AF_UNIX socket 38: <unknown>
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 34: /tmp/.org.chromium.Chromium.4pxWry (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 33: /proc/664744/status
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 32: /proc/664744/statm
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.LKU8KW (deleted)
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open AF_UNIX socket 27: <unknown>
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 20: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694131==    <inherited from parent>
+==694131== 
+==694131== Open file descriptor 3: /home/abdu/Desktop/minisel/second/valgrind-out.txt
+==694131==    <inherited from parent>
+==694131== 
+==694131== 
+==694131== HEAP SUMMARY:
+==694131==     in use at exit: 213,667 bytes in 369 blocks
+==694131==   total heap usage: 1,655 allocs, 1,286 frees, 253,087 bytes allocated
+==694131== 
+==694131== 51 bytes in 3 blocks are definitely lost in loss record 29 of 86
+==694131==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==694131==    by 0x10D3C3: executor (executor.c:827)
+==694131==    by 0x10E5D3: input_to_tokens (input_to_tokens.c:288)
+==694131==    by 0x109512: get_input (main.c:21)
+==694131==    by 0x10957D: main (main.c:38)
+==694131== 
+==694131== LEAK SUMMARY:
+==694131==    definitely lost: 51 bytes in 3 blocks
+==694131==    indirectly lost: 0 bytes in 0 blocks
+==694131==      possibly lost: 0 bytes in 0 blocks
+==694131==    still reachable: 5,605 bytes in 126 blocks
+==694131==         suppressed: 208,011 bytes in 240 blocks
+==694131== Reachable blocks (those to which a pointer was found) are not shown.
+==694131== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==694131== 
+==694131== For lists of detected and suppressed errors, rerun with: -s
+==694131== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+==694057== 
+==694057== FILE DESCRIPTORS: 20 open (3 std) at exit.
+==694057== Open file descriptor 103: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 49: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 45: /usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.2mMzxU (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 43: /snap/code/96/usr/share/code/resources/app/node_modules.asar
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.bKkN2v (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.sQerH7 (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.NKoVnJ (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.iExu4k (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open AF_UNIX socket 38: <unknown>
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 34: /tmp/.org.chromium.Chromium.4pxWry (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 33: /proc/664744/status
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 32: /proc/664744/statm
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.LKU8KW (deleted)
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open AF_UNIX socket 27: <unknown>
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 20: /snap/code/96/usr/share/code/v8_context_snapshot.bin
+==694057==    <inherited from parent>
+==694057== 
+==694057== Open file descriptor 3: /home/abdu/Desktop/minisel/second/valgrind-out.txt
+==694057==    <inherited from parent>
+==694057== 
+==694057== 
+==694057== HEAP SUMMARY:
+==694057==     in use at exit: 208,062 bytes in 242 blocks
+==694057==   total heap usage: 1,685 allocs, 1,443 frees, 253,789 bytes allocated
+==694057== 
+==694057== 76 bytes in 4 blocks are definitely lost in loss record 21 of 71
+==694057==    at 0x4843839: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==694057==    by 0x10D3C3: executor (executor.c:827)
+==694057==    by 0x10E5D3: input_to_tokens (input_to_tokens.c:288)
+==694057==    by 0x109512: get_input (main.c:21)
+==694057==    by 0x10957D: main (main.c:38)
+==694057== 
+==694057== LEAK SUMMARY:
+==694057==    definitely lost: 76 bytes in 4 blocks
+==694057==    indirectly lost: 0 bytes in 0 blocks
+==694057==      possibly lost: 0 bytes in 0 blocks
+==694057==    still reachable: 0 bytes in 0 blocks
+==694057==         suppressed: 207,986 bytes in 238 blocks
+==694057== 
+==694057== For lists of detected and suppressed errors, rerun with: -s
+==694057== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)

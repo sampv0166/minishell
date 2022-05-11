@@ -14,11 +14,14 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     int fd[2];
     pipe(fd);
     pa_tokens[i].fd_in = fd[0];
-    pa_tokens[i].fd_out = fd[1];  
+    pa_tokens[i].fd_out = fd[1]; 
+    // ft_putnbr_fd(fd[0], 2) ;
+    // ft_putnbr_fd(fd[1], 2) ;
     env.fd_in = fd[0];
     env.fd_out = fd[1]; 
     env.fd_pipe_in_open = fd[0];
     env.fd_pipe_out_open= fd[1];
+
 	return (0);
 }
 
@@ -786,13 +789,15 @@ void close_fds(t_pars_tokens *pa_tkns, int i, int f)
         if(pa_tkns[i].pipe == 3)
             close(env.fd_pipe_in_open);
         if(pa_tkns[i].pipe == 1)
-            close(env.fd_pipe_in_open);
+            close(env.fd_pipe_in_open);       
         return ;
     }
     if(pa_tkns[i].is_in)
         close (env.open_fd_in);
     if(pa_tkns[i].is_out)
-        close (env.open_fd_out);          
+        close (env.open_fd_out);
+    // if(pa_tkns[i].pipe == 3)
+    //     close(env.fd_pipe_in_open);             
     if(pa_tkns[i].pipe == 1)
         close(env.fd_pipe_in_open);
         close(env.fd_pipe_out_open);
@@ -819,7 +824,7 @@ int executor(t_pars_tokens *pa_tkns)
     int i;
     pid_t *pid;
     char *path;
-    pid = malloc(sizeof(pid_t) * env.count);
+    pid = malloc(sizeof(pid_t) * env.count + 1);
     init_and_dup_fd(&i);
     while (i < env.count)
     {
@@ -840,6 +845,7 @@ int executor(t_pars_tokens *pa_tkns)
         close_fds(pa_tkns, i, 0);
         execute_cmd(pa_tkns, i, &path);
         close_fds(pa_tkns, i, 1);
+
         // ft_putstr_fd(path, 2);
         // ft_putstr_fd("\n", 2);
 
@@ -858,20 +864,20 @@ int executor(t_pars_tokens *pa_tkns)
             //    ft_putnbr_fd(i, 2);
             //      ft_putstr_fd("\n", 2);
                 exec_child(pa_tkns, path, i);
+                
             }
             else
             {
                 close(env.tmp_in);
-                close(env.tmp_out);  
+                close(env.tmp_out);
+                close(env.fd_pipe_in_open);
                 exit(0);
             }
         }
         free_me(&path);
         i++;
-    }
-
-  
-    //ft_putnbr_fd(pid[i], 1);
+    }   
+   // ft_putnbr_fd(env.fd_pipe_in_open, 1);
 	//display prompt again
     
     i = 0;  
@@ -879,7 +885,8 @@ int executor(t_pars_tokens *pa_tkns)
     {
         // ft_putnbr_fd(pid[i], 2);
         // ft_putchar_fd('\n', 2);
-        wait(0);
+
+        waitpid(pid[i], &env.stat_code, 0);
         i++;
     }
     
