@@ -14,9 +14,7 @@ int handle_pipes(t_pars_tokens *pa_tokens, int i)
     int fd[2];
     pipe(fd);
     pa_tokens[i].fd_in = fd[0];
-    pa_tokens[i].fd_out = fd[1]; 
-    // ft_putnbr_fd(fd[0], 2) ;
-    // ft_putnbr_fd(fd[1], 2) ;
+    pa_tokens[i].fd_out = fd[1];  
     env.fd_in = fd[0];
     env.fd_out = fd[1]; 
     env.fd_pipe_in_open = fd[0];
@@ -440,7 +438,14 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
     {
         if (access(abs_cmd_path, X_OK) == 0)
         {
-            replace_quote(pa_tokens, i);
+            int f;
+            f = 0;
+
+            while (pa_tokens[i].cmd[f])
+            {
+                delimit_qtes(pa_tokens[i].cmd[f]);
+                f++;
+            }
         }
     }
     else
@@ -824,7 +829,7 @@ int executor(t_pars_tokens *pa_tkns)
     int i;
     pid_t *pid;
     char *path;
-    pid = malloc(sizeof(pid_t) * env.count + 1);
+    pid = malloc(sizeof(pid_t) * env.count);
     init_and_dup_fd(&i);
     while (i < env.count)
     {
@@ -885,11 +890,16 @@ int executor(t_pars_tokens *pa_tkns)
     {
         // ft_putnbr_fd(pid[i], 2);
         // ft_putchar_fd('\n', 2);
-
         waitpid(pid[i], &env.stat_code, 0);
         i++;
     }
-    
+    i = 0;
+
+    free(pid);
+    // while (i < env.count)
+    // {
+    //     free ((void ) pid[i]);
+    // }
     restore_fds();
  
     // i = 0;
