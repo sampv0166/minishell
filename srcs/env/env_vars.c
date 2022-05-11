@@ -102,6 +102,7 @@ int init_env_vars(char **envp)
     if(env.env_var != NULL)
     {
       env.trigger = 0;
+      env.s_pid = 0;
       return (EXIT_SUCCESS);
     }
     env.stat_code = 1;

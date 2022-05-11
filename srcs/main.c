@@ -7,7 +7,8 @@ static int get_input()
 	char *input;
 	while (1)
 	{
-		input = readline("\rMS SHELL======>$");
+		env.s_pid = 0;
+		input = readline("==>");
 		if (input == NULL)
 		{
 			free_env();

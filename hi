@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 sfdsfhi
 42-minishell_bash_tester_2022
 authors
@@ -26,3 +27,6 @@ trial.c
 valgrind_filter.supp
 valgrind-out.txt
 workspace.code-workspace
+=======
+blah
+>>>>>>> 745ca8cddf0db7f8f080624a059cea042f00cd2f

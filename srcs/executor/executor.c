@@ -234,10 +234,10 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
         increment_s_vals();
     env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-    // if (env.stat_code)
-    // {
-    //     ft_putendl_fd("2", 2);
-    // }
+    if (env.stat_code)
+    {
+        // ft_putendl_fd("2", 2);
+    }
     return (env.stat_code);
     //exit(0);
 }
