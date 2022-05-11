@@ -38,7 +38,7 @@ static int	exit_close_fds(int fd1, int fd2, int exit_status)
 	return (exit_status);
 }
 
-int read_line(char *buf, char *join, int end1, char *heredoc)
+int read_line(char *buf, char **join, int end1, char *heredoc)
 {
     while (true)
 	{
@@ -49,8 +49,8 @@ int read_line(char *buf, char *join, int end1, char *heredoc)
 			break ;
         else if(buf)
         {
-            join = ft_strjoin(join, buf);    
-            join = ft_strjoin(join, "\n");
+            *join = ft_strjoin(*join, buf);    
+            *join = ft_strjoin(*join, "\n");
         }
 		free(buf);
 	}
@@ -72,10 +72,11 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 	delimit_qtes(heredoc);
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
-	if(read_line(buf, join, end[1],heredoc))
+	if(read_line(buf, &join, end[1],heredoc))
 		return (EXIT_FAILURE);
 	write(end[1],join, ft_strlen(join));
     close(end[1]);
+    ft_putstr_fd("GONNA FREE", 2);
 	free_me(&join);
     pa_tkns[pa_info->j].here_doc_fd = end[0];
     env.fd_in = end[0];
