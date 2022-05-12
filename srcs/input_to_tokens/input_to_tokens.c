@@ -285,8 +285,8 @@ int input_to_tokens(char *input)
     // EXPANDER
     expander(pa_tkns);
     //EXECUTOR
-    //print_strcut(pa_tkns);
-    //exit(0);
+    // print_strcut(pa_tkns);
+    // exit(0);
 	executor(pa_tkns);
     free_everything(pa_tkns);
 	return (0);
