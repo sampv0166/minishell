@@ -87,7 +87,6 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 	}
 	write(end[1],join, ft_strlen(join));
     close(end[1]);
-    // ft_putstr_fd("GONNA FREE", 2);
 	free_me(&join);
     pa_tkns[pa_info->j].here_doc_fd = end[0];
     env.fd_in = end[0];

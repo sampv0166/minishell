@@ -10,6 +10,7 @@ static int get_input()
 		env.s_pid = 0;
 		env.here_doc = 0;
 		input = readline("MS SHELL ====> ");
+
 		if (input == NULL)
 		{
 			free_env();

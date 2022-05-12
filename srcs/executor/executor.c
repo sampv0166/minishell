@@ -231,7 +231,7 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     // pa_tokens[i].cmd[1] = NULL;
     // free(abs_path);
     // abs_path = ft_strdup("/bin/");
-    // abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
+    //abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
         increment_s_vals();
     if(execve(abs_path, pa_tokens[i].cmd, env.env_var) == -1)
@@ -852,9 +852,11 @@ int executor(t_pars_tokens *pa_tkns)
         }
         else
             env.fd_in = dup(env.fd_in);
+
         dup2(env.fd_in, 0);
         close(env.fd_in);
         close_fds(pa_tkns, i, 0);
+       
         execute_cmd(pa_tkns, i, &path);
         close_fds(pa_tkns, i, 1);
         pid[i] = fork();
@@ -872,10 +874,10 @@ int executor(t_pars_tokens *pa_tkns)
             //     ft_putstr_fd("\n", 2);
             //    ft_putnbr_fd(i, 2);
             //      ft_putstr_fd("\n", 2);
-                // close(env.tmp_in);
-                // close(env.tmp_out);
-                // close(env.fd_pipe_in_open);
-				exec_child(pa_tkns, path, i);
+                close(env.tmp_in);
+                close(env.tmp_out);
+                close(env.fd_pipe_in_open);
+                exec_child(pa_tkns, path, i);
             }
             else
             {
@@ -890,6 +892,7 @@ int executor(t_pars_tokens *pa_tkns)
                 }
                 exit(0);
             }
+            
         }
         free_me(&path);
         i++;
@@ -900,7 +903,7 @@ int executor(t_pars_tokens *pa_tkns)
     i = 0;  
     while (i < env.count)
     {
-        waitpid(pid[i],0, 0);
+        wait(0);
         i++;
     }
     i = 0;
