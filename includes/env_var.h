@@ -53,6 +53,7 @@ typedef struct s_env_var
     int fd_pipe_out_open;
     int fd_pipe_in_open;
     int s_pid;
+	int	here_doc;
 }            t_env_var;
 
 /*

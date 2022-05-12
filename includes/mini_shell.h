@@ -42,6 +42,7 @@ typedef struct	s_flags
 	int	qte;
 	int	trigger;
 	int	end;
+	int	rdr_pip_index;
 }				t_flags;
 
 typedef struct	s_expand
@@ -153,6 +154,7 @@ void 			free_2d_array(char **arr);
 void			ft_free_str_array(char ***arr);
 int 		get_2d_arr_len(char **arr);
 int 		get_2d_arr_len2(char **arr);
+char		*parse_str(char	*tmp);
 void 		expander(t_pars_tokens *pa_tkns);
 
 char **find_input_file_names(t_pars_tokens *pa_tkns, int i);

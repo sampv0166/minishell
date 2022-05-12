@@ -42,7 +42,7 @@ int read_line(char *buf, char **join, int end1, char *heredoc)
 {
     while (true)
 	{
-		buf = readline("> ");
+		buf = readline("");
 		if (buf == NULL)
 			return (exit_close_fds(end1, -1, EXIT_SUCCESS));
 		if (ft_strcmp(buf, heredoc) == 0)
@@ -60,20 +60,31 @@ int read_line(char *buf, char **join, int end1, char *heredoc)
 int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tkns)
 {
     int		end[2];
-    char *heredoc;
-    char *buf;
-    char *join;
+    char	 *heredoc;
+    char	 *buf;
+    char	*join;
+	char	*tmp;
 
     join = NULL;
+	tmp = NULL;
     heredoc = NULL;
     if (pipe(end) == -1)
 		return (ft_perror(EXIT_FAILURE, "pipe error"));    
 	heredoc = cmd_split[pa_info->i + 1];
+	env.here_doc = check_qte_str(heredoc);
 	delimit_qtes(heredoc);
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
 	if(read_line(buf, &join, end[1],heredoc))
 		return (EXIT_FAILURE);
+	if (!env.here_doc)
+	{
+		env.here_doc = 1;
+		tmp = parse_str(join);
+		free(join);
+		join = ft_strdup(tmp);
+		free(tmp);
+	}
 	write(end[1],join, ft_strlen(join));
     close(end[1]);
 	free_me(&join);

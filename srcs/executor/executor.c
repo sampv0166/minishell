@@ -234,10 +234,11 @@ int exec_child(t_pars_tokens *pa_tokens, char *abs_path, int i)
     //abs_path = ft_strjoin(abs_path, pa_tokens[i].cmd[0]);
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
         increment_s_vals();
-    env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
-    if (env.stat_code)
+    if(execve(abs_path, pa_tokens[i].cmd, env.env_var) == -1)
     {
-        // ft_putendl_fd("2", 2);
+        env.stat_code = 127;
+        ft_putstr_fd("::command not found\n", 2);
+        exit(127);
     }
     return (env.stat_code);
     //exit(0);
@@ -415,8 +416,15 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
     {
         //ft_putstr_fd(pa_tokens[i].cmd[0], 2);
         abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+        if (ft_eco_check(pa_tokens[i].cmd[0]))
+        {
+            free(abs_cmd_path);
+            abs_cmd_path = NULL;
+            env.stat_code = 127;
+        }
         *path = abs_cmd_path;
     }
+
     if(abs_cmd_path == NULL)
     {
         if(pa_tokens[i].cmd[0])
@@ -427,7 +435,7 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
         else
         {
             // printf (":::command not found\n");
-            env.stat_code = 0;
+            env.stat_code = 127;
 			return(0);  
         }
     }
@@ -440,7 +448,6 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
         {
             int f;
             f = 0;
-
             while (pa_tokens[i].cmd[f])
             {
                 delimit_qtes(pa_tokens[i].cmd[f]);
@@ -448,12 +455,12 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
             }
         }
     }
-    else
-    {
-        ft_putstr_fd("::command not found\n", 2);
-        env.stat_code = 127;
-        return(127);
-    }
+    // else
+    // {
+    //     ft_putstr_fd("::command not found\n", 2);
+    //     env.stat_code = 127;
+    //     return(127);
+    // }
 
     
     // //close_fds(pa_tokens, i);
@@ -853,6 +860,7 @@ int executor(t_pars_tokens *pa_tkns)
         execute_cmd(pa_tkns, i, &path);
         close_fds(pa_tkns, i, 1);
         pid[i] = fork();
+        env.s_pid = pid[i];
         //ft_putnbr_fd(pid[i], 2);
         // ft_putchar_fd('\n', 2);
         if (pid[i] < 0)
