@@ -50,15 +50,18 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 	if (signum == SIGINT)
 	{
 		if (env.s_pid)
+		{
 			printf("\b\b\n");
+			env.stat_code = 130;
+		}
 		else
 		{
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
+			env.stat_code = 1;
 		}
-		env.stat_code = 130;
 	}
 	else if (signum == SIGQUIT)
 	{

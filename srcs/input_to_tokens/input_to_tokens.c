@@ -249,7 +249,7 @@ char **tokens_split(char *input)
     tokens = split_to_tokens(input);
     if (!tokens || !is_token_syntax_valid(tokens))
     {
-        ft_putstr_fd("Invalid Syntax\n", 2);
+        // ft_putstr_fd("Invalid Syntax\n", 2);
         env.stat_code = 258;
         ft_free_str_array(&tokens);
         return (NULL);
