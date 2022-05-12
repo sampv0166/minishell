@@ -9,7 +9,7 @@ static int get_input()
 	{
 		env.s_pid = 0;
 		env.here_doc = 0;
-		input = readline("MS SHELL ====> ");
+		input = readline("");
 
 		if (input == NULL)
 		{

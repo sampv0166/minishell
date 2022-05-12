@@ -77,7 +77,7 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
 	if(read_line(buf, &join, end[1],heredoc))
 		return (EXIT_FAILURE);
-	if (!env.here_doc)
+	if (!env.here_doc && join)
 	{
 		env.here_doc = 1;
 		tmp = parse_str(join);
