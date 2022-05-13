@@ -9,11 +9,11 @@ static int get_input()
 	{
 		env.s_pid = 0;
 		env.here_doc = 0;
-		input = readline("==$");
-
+		input = readline("\r[=========]");
 		if (input == NULL)
 		{
 			free_env();
+			ft_putstr_fd("exiting", 2);
 			return (0);
 		}
 		if (ft_strlen(input) > 0)
@@ -23,10 +23,12 @@ static int get_input()
 		input_to_tokens(input);
 		if (env.trigger)
 		{
+			ft_putstr_fd("why am i here", 2);
 			free(input);
 			exit(env.stat_code);
 		}
 	}
+	
 	return (0);
 }
 

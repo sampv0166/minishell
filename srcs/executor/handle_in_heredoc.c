@@ -122,8 +122,6 @@ int handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
     }
     if (!check_for_input_files(pa_tkns, i))
     {
-
-        
         find_input_fd(pa_tkns, i);
         env.fd_in = dup(env.fd_in);     
     }

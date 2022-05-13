@@ -174,7 +174,7 @@ void close_fds(t_pars_tokens *pa_tkns, int i, int f);
 void wait_for_child_and_restore_fds_(pid_t *pid);
 
 char *get_abs_cmd(char *cmd);
-static int init(char ***path_splitted, int *i);
+int init(char ***path_splitted);
 char	*ft_strjoin2(char *saved_line, char *buffer);
 static char *get_abs_cmd_path(char **abs_cmd_path,char *path_splitted, char *cmd);
 
@@ -194,8 +194,6 @@ void increment_j(t_pars_tokens *pa_tkns, int i, int *j);
 int is_redir(t_pars_tokens *pa_tok, int i);
 int set_fds(char **cmd_split,  int *i, int *fd);
 
-
-
 void get_cmd_len (t_pars_tokens *pa_tkns,  int i, int *j, int *len);
 void get_file_len (t_pars_tokens *pa_tkns,  int i, int *j, int *len);
 void close_redir_fd(int *fd);
@@ -210,11 +208,15 @@ void init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info);
 void init_pa_tkns_info(t_pars_tokens *pa_tkns, t_parser_info *pa_info);
 void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info);
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens);
+
+
+void	handle_signals(void);
 /*
  ** =============================================================================
  ** EXPANDER
  ** =============================================================================
- */
+*/
+
 char	*get_tild(char *res, char *tmp, t_expand *flags);
 char	*parse_for_stat_exp(char *tmp, char *res, t_expand *flags);
 char	*get_dir(char *res, char *tmp, t_expand *flags);

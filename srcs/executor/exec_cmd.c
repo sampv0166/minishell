@@ -22,7 +22,7 @@ int access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
     {
         ft_putstr_fd("::command not found\n", 2);
         env.stat_code = 127;
-        return(127);
+        return(1);
     }
     return (0);
 }
@@ -103,11 +103,12 @@ int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
     }
     if(pa_tokens[i].cmd && (env.env_var[get_env("PATH")] != NULL))
     {
+   
         abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
         *path = abs_cmd_path;
     }
     if (access_cmnd(abs_cmd_path , pa_tokens, i))
         return (127);
     else
-        return (env.stat_code);
+        return (0);
 }

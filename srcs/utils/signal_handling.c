@@ -8,22 +8,22 @@ extern t_env_var env;
 
 //	display prompt again	rl_redisplay();
 
-// static void	handle_signal(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		env.stat_code = 130;
-// 		printf("\n");	
-//        	//move to a newline 
-// 		rl_on_new_line();
-// 		//clear readline buffer
-// 		rl_replace_line("", 0);
-// 		//display prompt again
-// 		rl_forced_update_display();
-// 		printf("\b\b");
-// 		// rl_redisplay();
-// 	}
-// }
+static void	handle_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		env.stat_code = 130;
+		printf("\n");	
+       	//move to a newline 
+		rl_on_new_line();
+		//clear readline buffer
+		rl_replace_line("", 0);
+		//display prompt again
+		//rl_forced_update_display();
+		//printf("\b\b");
+		rl_redisplay();
+	}
+}
 
 // static void	handle_signal1(int sig)
 // {
@@ -52,10 +52,12 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 		if (env.s_pid)
 		{
 			printf("\b\b\n");
+			ft_putstr_fd("settin 130", 2);
 			env.stat_code = 130;
 		}
 		else
 		{
+			ft_putstr_fd("settin 1", 2);
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
@@ -68,6 +70,7 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 		if (env.s_pid)
 		{
 			ft_putendl_fd("\b\bQuit", STDOUT_FILENO);
+			ft_putstr_fd("settin 131", 2);
 			env.stat_code = 131;
 		}
 		else
@@ -85,10 +88,9 @@ This function helps to handle signals such as CTRL + C and CONTRL + \
 
 // void	handle_signals(void)
 // {
-// 	signal(SIGQUIT,handle_signal1);
+// 	signal(SIGQUIT,handle_signal);
 // 	signal(SIGINT, handle_signal);
 // }
-
 
 void	handle_signals(void)
 {

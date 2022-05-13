@@ -2,6 +2,16 @@
 
 extern t_env_var env;
 
+void restore_fds()
+{
+    if(env.open_heredoc_fdin != 0)
+        close (env.open_heredoc_fdin);
+    dup2(env.tmp_in,0);
+    dup2(env.tmp_out, 1);
+    close(env.tmp_in);
+    close(env.tmp_out);  
+}
+
 
 void wait_for_child_and_restore_fds_(pid_t *pid)
 {
@@ -14,7 +24,6 @@ void wait_for_child_and_restore_fds_(pid_t *pid)
         wait(0);
         i++;
     }
-    free(pid);
     restore_fds();
 }
 
@@ -22,28 +31,17 @@ void init_and_dup_fd()
 {
     env.tmp_in = dup(0);
     env.tmp_out = dup(1);
-    env.fd_in = 0;
+    env.fd_in = env.tmp_in ;
     env.fd_out = env.tmp_out;
     env.fd_pipe_in_open = 0;
     env.fd_pipe_out_open = 0;
 }
-
 
 void init_redir_helper_fds()
 {
     env.open_fd_in = 0;
     env.open_fd_out = 0;
     env.open_heredoc_fdin = 0;
-}
-
-void restore_fds()
-{
-    if(env.open_heredoc_fdin != 0)
-        close (env.open_heredoc_fdin);
-    dup2(env.tmp_in,0);
-    dup2(env.tmp_out, 1);
-    close(env.tmp_in);
-    close(env.tmp_out);  
 }
 
 

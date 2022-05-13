@@ -5,11 +5,11 @@ extern t_env_var env;
 int call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
-        increment_s_vals();
+        increment_s_vals(); 
     if(execve(abs_path, pa_tokens[i].cmd, env.env_var) == -1)
     {
         env.stat_code = 127;
-        ft_putstr_fd("::command not found\n", 2);
+        ft_putstr_fd(":-:command not found\n", 2);
         exit(127);
     }
     return (env.stat_code);
@@ -20,13 +20,23 @@ void exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int *i)
 {
     if(!is_inbuilt(pa_tkns[*i].cmd[0]))
     {
-        if (pa_tkns[*i]. pipe != 0)
+        // close(env.tmp_in);
+        // close(env.tmp_out);
+        // ft_putstr_fd("h\n", 2);
+        // ft_putnbr_fd(pa_tkns[*i].pipe , 2);
+        if (pa_tkns[*i].pipe != 0)
             close(env.fd_pipe_in_open);
         call_execve(pa_tkns, path, *i);
     }
     else
     {
-        close(env.fd_pipe_in_open);
+        // close(env.tmp_in);
+        // close(env.tmp_out);
+        // ft_putstr_fd("h\n", 2);
+        ft_putnbr_fd(env.fd_pipe_in_open, 2);
+        if(env.fd_pipe_in_open != 0)
+            close(env.fd_pipe_in_open);
+
         if (*i == env.count - 1)
         {
             free_everything(pa_tkns);
@@ -77,11 +87,19 @@ void execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
         }
         close_fds(pa_tkns, i, 1);
         pid[i] = fork();
+        env.s_pid = pid[i];
         if (pid[i] < 0)
             exit(0);
         if (pid[i] == 0)
+        {
+            ft_putstr_fd("\nits here\n", 2);
             exec_child(pa_tkns, pid, path, &i);
+            // this was the mistake , i was not exiting from the forked child if the command is not inbuilt
+            exit (0);
+        }
         free_me(&path);
+        // free_everything(pa_tkns);
+        // exit(0);
         i++;
     }    
 }
