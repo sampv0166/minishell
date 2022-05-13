@@ -3,6 +3,14 @@
 
 extern t_env_var env;
 
+int	exit_close_fds(int fd1, int fd2, int exit_status)
+{
+	if (fd1 != -1)
+		close(fd1);
+	if (fd1 != -1)
+		close(fd2);
+	return (exit_status);
+}
 
 int	is_rdr(char *str)
 {
@@ -17,24 +25,6 @@ int	is_rdr(char *str)
 	return (0);
 }
 
-static int	exit_close_fds(int fd1, int fd2, int exit_status)
-{
-	if (fd1 != -1)
-		close(fd1);
-	if (fd1 != -1)
-		close(fd2);
-	return (exit_status);
-}
-
-
-int	cmd_w_flags(char *str)
-{
-	if (!ft_strcmp(str,"ls"))
-		return (1);
-	else if (!ft_strcmp(str,"wc"))
-		return (1);
-	return (0);
-}
 
 
 int read_line(char *buf, char **join, int end1, char *heredoc)
@@ -43,7 +33,7 @@ int read_line(char *buf, char **join, int end1, char *heredoc)
 	{
 		buf = readline("> ");
 		if (buf == NULL)
-			return (exit_close_fds(end1, -1, EXIT_SUCCESS));
+			return (EXIT_SUCCESS);
 		if (ft_strcmp(buf, heredoc) == 0)
 			break ;
         else if(buf)
@@ -53,7 +43,7 @@ int read_line(char *buf, char **join, int end1, char *heredoc)
         }
 		free(buf);
 	}
-	return (0);
+	return (1);
 }
 
 int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tkns)
@@ -71,11 +61,13 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 	delimit_qtes(heredoc);
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));    
-	if(read_line(buf, &join, end[1],heredoc))
+	if(!read_line(buf, &join, end[1],heredoc))
 		return (EXIT_FAILURE);
 	write(end[1],join, ft_strlen(join));
-    close(end[1]);
+   
+	close(end[1]);
 	free_me(&join);
+	 
     pa_tkns[pa_info->j].here_doc_fd = end[0];
     env.fd_in = end[0];
 }

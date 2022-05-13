@@ -6,7 +6,12 @@ int call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
     if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
         increment_s_vals();
-    env.stat_code = execve(abs_path, pa_tokens[i].cmd, env.env_var);
+    if(execve(abs_path, pa_tokens[i].cmd, env.env_var) == -1)
+    {
+        env.stat_code = 127;
+        ft_putstr_fd("::command not found\n", 2);
+        exit(127);
+    }
     return (env.stat_code);
 }
 

@@ -33,7 +33,6 @@ int check_for_input_files(t_pars_tokens *pa_tkns, int i)
 {
     int j;
     j = 0;
-    
     find_cmd (pa_tkns, i, &j);
     while(pa_tkns[i].cmd_splitted && pa_tkns[i].cmd_splitted[j])
     {
@@ -84,7 +83,6 @@ int open_fds(char **cmd_split, int i, int *fd_out, int *fd_in)
     return (0);
 }
 
-
 int open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 {
     int i;
@@ -119,12 +117,9 @@ int handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
     {
         return (1);  
     }
-  
     if (!check_for_input_files(pa_tkns, i))
     {
-       
         find_input_fd(pa_tkns, i);
-        
         env.fd_in = dup(env.fd_in);     
     }
        

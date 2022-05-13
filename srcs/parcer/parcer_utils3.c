@@ -70,6 +70,8 @@ void set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     }
 }
 
+
+
 void set_redirection_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info, char **tokens)
 {
     if(tokens[pa_info->i][0] == '>' && tokens[pa_info->i][1] == '>')

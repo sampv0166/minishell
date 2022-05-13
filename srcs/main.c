@@ -8,7 +8,9 @@ static int get_input()
 	while (1)
 	{
 		env.s_pid = 0;
-		input = readline("===$");
+		env.here_doc = 0;
+		input = readline("==$");
+
 		if (input == NULL)
 		{
 			free_env();

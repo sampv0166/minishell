@@ -20,7 +20,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 	{
 		while (str[i] != NULL)
 		{
-			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
+			if ((is_rdr(str[i]) && is_rdr(str_splitted[i])) || (!ft_strcmp(str[i], "|") && !ft_strcmp(str_splitted[i], "|")))
 				break ;
 			else
 			{
@@ -44,6 +44,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 			i++;
 		}
 	}
+	flags->rdr_pip_index = i;
 	flags->end = i;
 	i = 1;
 	if (str[i][0] == '-')
@@ -95,7 +96,5 @@ void	echo(char **str, char **str_splitted)
 	}
 	/*If n_flag is true, it will not print a new line otherwise it will print*/
 	if (!flags.newl_flag)
-	{
 		ft_putchar_fd('\n', 1);
-	}
 }

@@ -42,6 +42,7 @@ typedef struct	s_flags
 	int	qte;
 	int	trigger;
 	int	end;
+	int	rdr_pip_index;
 }				t_flags;
 
 typedef struct	s_expand
@@ -156,6 +157,7 @@ void 			free_2d_array(char **arr);
 void			ft_free_str_array(char ***arr);
 int 		get_2d_arr_len(char **arr);
 int 		get_2d_arr_len2(char **arr);
+char		*parse_str(char	*tmp);
 void 		expander(t_pars_tokens *pa_tkns);
 
 char **split_to_tokens(char *input);
@@ -200,7 +202,7 @@ void close_redir_fd(int *fd);
 
 
 int	is_rdr(char *str);
-static int	exit_close_fds(int fd1, int fd2, int exit_status);
+int	exit_close_fds(int fd1, int fd2, int exit_status);
 int	cmd_w_flags(char *str);
 int read_line(char *buf, char **join, int end1, char *heredoc);
 int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tkns);
