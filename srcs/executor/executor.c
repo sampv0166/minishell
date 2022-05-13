@@ -39,17 +39,21 @@ void exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int *i)
 
 int handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
 {
-    if (pa_tkns[*i].is_in || pa_tkns[*i].here_doc)
+    int k;
+
+    k = *i;
+    if (pa_tkns[k].is_in || pa_tkns[k].here_doc)
     {
-        if (handle_in_and_here_doc(pa_tkns, *i))
+        if (handle_in_and_here_doc(pa_tkns, k))
         {
-            
-            *i++;
+            k++;
+            *i = k;
             return (1);
         }
     }
     else
         env.fd_in = dup(env.fd_in);
+    *i = k;    
     return (0);    
 }
 
