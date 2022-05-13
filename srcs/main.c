@@ -7,6 +7,7 @@ static int get_input()
 	char *input;
 	while (1)
 	{
+		ft_putstr_fd("back here", 2);
 		env.s_pid = 0;
 		env.here_doc = 0;
 		input = readline("\r[=========]");
@@ -23,7 +24,6 @@ static int get_input()
 		input_to_tokens(input);
 		if (env.trigger)
 		{
-			ft_putstr_fd("why am i here", 2);
 			free(input);
 			exit(env.stat_code);
 		}

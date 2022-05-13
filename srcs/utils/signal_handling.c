@@ -52,12 +52,10 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 		if (env.s_pid)
 		{
 			printf("\b\b\n");
-			ft_putstr_fd("settin 130", 2);
 			env.stat_code = 130;
 		}
 		else
 		{
-			ft_putstr_fd("settin 1", 2);
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
@@ -70,7 +68,6 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 		if (env.s_pid)
 		{
 			ft_putendl_fd("\b\bQuit", STDOUT_FILENO);
-			ft_putstr_fd("settin 131", 2);
 			env.stat_code = 131;
 		}
 		else
@@ -81,6 +78,7 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 		}
 	}
 }
+
 /*
 ! why this funnction ? 
 This function helps to handle signals such as CTRL + C and CONTRL + \

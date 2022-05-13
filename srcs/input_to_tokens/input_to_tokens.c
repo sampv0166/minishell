@@ -118,6 +118,7 @@ int input_to_tokens(char *input)
     // print_strcut(pa_tkns);
    
 	executor(pa_tkns);
+   
     free_everything(pa_tkns);
 	return (0);
 }

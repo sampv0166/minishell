@@ -54,8 +54,9 @@ int free_env()
 int free_everything(t_pars_tokens *tokens)
 {
     int i;
-
     i = 0;
+
+    ft_putstr_fd("gggggggg", 2);
     while(env.count > 1 && i < env.count)
     {
 		ft_free_str_array(&tokens[i].cmd);
@@ -71,7 +72,7 @@ int free_everything(t_pars_tokens *tokens)
     {
 		free_2d_array(tokens[i].cmd);
         ft_free_str_array(&tokens[i].cmd_cpy);
-       ft_free_str_array(&tokens[i].cmd_splitted);
+        ft_free_str_array(&tokens[i].cmd_splitted);
         free_me(&tokens[i].cmd_full);
     }
     //free(tokens);

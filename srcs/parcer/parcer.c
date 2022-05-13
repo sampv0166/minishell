@@ -21,8 +21,6 @@ void create_cmds(t_parser_info *pa_info, char **tokens)
     pa_info->i++;
 }
 
-
-
 void parcer2(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
 	char **f;
