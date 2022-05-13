@@ -485,7 +485,8 @@ int check_for_input_files(t_pars_tokens *pa_tkns, int i)
             continue;
         else
         {
-            j++;
+            if (pa_tkns[i].cmd_splitted[j])
+                j++;
             break ;
         }
     }
@@ -874,15 +875,15 @@ int executor(t_pars_tokens *pa_tkns)
             //     ft_putstr_fd("\n", 2);
             //    ft_putnbr_fd(i, 2);
             //      ft_putstr_fd("\n", 2);
-                close(env.tmp_in);
-                close(env.tmp_out);
-                close(env.fd_pipe_in_open);
+                // close(env.tmp_in);
+                // close(env.tmp_out);
+                // close(env.fd_pipe_in_open);
                 exec_child(pa_tkns, path, i);
             }
             else
             {
-                close(env.tmp_in);
-                close(env.tmp_out);
+                // close(env.tmp_in);
+                // close(env.tmp_out);
                 close(env.fd_pipe_in_open);
                 if (i == env.count - 1)
                 {
@@ -897,7 +898,7 @@ int executor(t_pars_tokens *pa_tkns)
         free_me(&path);
         i++;
     }   
-   // ft_putnbr_fd(env.fd_pipe_in_open, 1);
+//    ft_putnbr_fd(env.fd_pipe_in_open, 1);
 	//display prompt again
     
     i = 0;  
