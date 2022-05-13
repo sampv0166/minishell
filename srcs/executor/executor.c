@@ -59,7 +59,7 @@ void execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
     
     i = 0;
     while (i < env.count)
-    { 
+    {
         path = NULL;
         if(handle_in_redirections(pa_tkns , &i))
             continue;

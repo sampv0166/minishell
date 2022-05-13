@@ -111,10 +111,11 @@ int input_to_tokens(char *input)
     // PARCER
     
     pa_tkns  = parser(tokens);
-  
+   
     ft_free_str_array(&tokens);
     // EXPANDER
     expander(pa_tkns);
+    
     //EXECUTOR
     // print_strcut(pa_tkns);
    

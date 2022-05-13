@@ -60,7 +60,7 @@ int  handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int 
         close(env.fd_out);    
     env.fd_out = fd;
     if(pa_tokens[tkn_idx].is_out)
-        env.open_fd_out = fd;
+        env.open_fd_out = fd;  
     return (EXIT_SUCCESS);
 }
 

@@ -11,26 +11,30 @@ int is_redir(t_pars_tokens *pa_tok, int i)
 
 int set_fds(char **cmd_split,  int *i, int *fd)
 {
-    while (cmd_split[*i])
+    int k;
+
+    k = *i;
+    while (cmd_split[k])
     {
-        if (cmd_split && cmd_split[*i] && (cmd_split[*i][0] == '>' && ft_strlen(cmd_split[*i]) == 1 && cmd_split[*i + 1]))
+        if (cmd_split && cmd_split[k] && (cmd_split[k][0] == '>' && ft_strlen(cmd_split[k]) == 1 && cmd_split[k + 1]))
         {
             if(*fd != 0)
                 close(*fd);
-            *fd = open(cmd_split[*i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+            *fd = open(cmd_split[k + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
             if (*fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file"));
         }
-        if (cmd_split[*i] && (cmd_split[*i][0] == '>' && cmd_split[*i][1] == '>' && ft_strlen(cmd_split[*i]) == 2 && cmd_split[*i + 1]))
+        if (cmd_split[k] && (cmd_split[k][0] == '>' && cmd_split[k][1] == '>' && ft_strlen(cmd_split[k]) == 2 && cmd_split[k + 1]))
         {
             if(*fd != 0)
                 close(*fd);
-            *fd = open(cmd_split[*i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
+            *fd = open(cmd_split[k + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
             if (*fd == -1)
                 return (ft_perror(EXIT_FAILURE, "error opening file")); 
         }
-        *i++;
+        k++;
     }
+    *i = k;
     return (0);
 }
 
