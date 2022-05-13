@@ -10,25 +10,42 @@ void close_redir_fd(int *fd)
 
 void find_cmd(t_pars_tokens *pa_tkns, int i,int *j)
 {
-    while(pa_tkns[i].cmd_splitted[*j])
+    int k;
+
+    k = *j;
+    while(pa_tkns[i].cmd_splitted[k])
     {
-        if(pa_tkns[i].cmd_splitted[*j] && pa_tkns[i].cmd_splitted[*j][0] == '<' || pa_tkns[i].cmd_splitted[*j][0] == '>')
+        if(pa_tkns[i].cmd_splitted[k] && pa_tkns[i].cmd_splitted[k][0] == '<' || pa_tkns[i].cmd_splitted[k][0] == '>')
         {
-            *j++;
-            if(pa_tkns[i].cmd_splitted[*j])
-                *j++;
+            k++;
+            if(pa_tkns[i].cmd_splitted[k])
+                k++;
         }
-        if(pa_tkns[i].cmd_splitted[*j] &&  (pa_tkns[i].cmd_splitted[*j][0] == '<' || pa_tkns[i].cmd_splitted[*j][0] == '>'))
+        if(pa_tkns[i].cmd_splitted[k] &&  (pa_tkns[i].cmd_splitted[k][0] == '<' || pa_tkns[i].cmd_splitted[k][0] == '>'))
             continue;
+        else
+        {
+            if (pa_tkns[i].cmd_splitted[k])
+            {
+                k++;
+            }
+            break ;
+        }       
     }
+    *j = k;
 }
 
 void increment_j(t_pars_tokens *pa_tkns, int i, int *j)
 {
-    if(pa_tkns[i].cmd_splitted[*j] && pa_tkns[i].cmd_splitted[*j][0] == '<' || pa_tkns[i].cmd_splitted[*j][0] == '>')
+    int k;
+
+    k = *j;
+
+    if(pa_tkns[i].cmd_splitted[k] && pa_tkns[i].cmd_splitted[k][0] == '<' || pa_tkns[i].cmd_splitted[k][0] == '>')
     {
-        *j++;
-        if(pa_tkns[i].cmd_splitted[*j])
-            *j++;
+        k++;
+        if(pa_tkns[i].cmd_splitted[k])
+            k++;
     }
+    *j = k;
 }

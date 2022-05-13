@@ -30,6 +30,7 @@ void exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int *i)
         if (*i == env.count - 1)
         {
             free_everything(pa_tkns);
+            free_env();
             free(pid);
         }
         exit (0);       
@@ -42,6 +43,7 @@ int handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
     {
         if (handle_in_and_here_doc(pa_tkns, *i))
         {
+            
             *i++;
             return (1);
         }

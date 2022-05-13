@@ -52,6 +52,7 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
     char *heredoc;
     char *buf;
     char *join;
+	char *tmp;
 
     join = NULL;
     heredoc = NULL;
@@ -64,7 +65,14 @@ int read_here_doc(char **cmd_split, t_parser_info *pa_info, t_pars_tokens *pa_tk
 	if(!read_line(buf, &join, end[1],heredoc))
 		return (EXIT_FAILURE);
 	write(end[1],join, ft_strlen(join));
-   
+   	if (!env.here_doc && join)
+	{
+		env.here_doc = 1;
+		tmp = parse_str(join);
+		free(join);
+		join = ft_strdup(tmp);
+		free(tmp);
+	}
 	close(end[1]);
 	free_me(&join);
 	 
