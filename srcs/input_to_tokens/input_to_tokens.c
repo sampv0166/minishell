@@ -120,6 +120,6 @@ int input_to_tokens(char *input)
 	executor(pa_tkns);
    
     free_everything(pa_tkns);
-	return (0);
+	return (env.stat_code);
 }
 

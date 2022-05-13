@@ -7,10 +7,9 @@ static int get_input()
 	char *input;
 	while (1)
 	{
-		ft_putstr_fd("back here", 2);
 		env.s_pid = 0;
 		env.here_doc = 0;
-		input = readline("\r[=========]");
+		input = readline("[=========]");
 		if (input == NULL)
 		{
 			free_env();
@@ -25,6 +24,7 @@ static int get_input()
 		if (env.trigger)
 		{
 			free(input);
+			free_env();
 			exit(env.stat_code);
 		}
 	}

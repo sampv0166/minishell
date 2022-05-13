@@ -16,12 +16,13 @@ void restore_fds()
 void wait_for_child_and_restore_fds_(pid_t *pid)
 {
     int i;
-
     i = 0;
+    int status;
 
+    status = 0;
     while (i < env.count)
     {
-        waitpid(pid[i],&env.stat_code, 0);
+        waitpid(pid[i],&status, 0);
         i++;
     }
     restore_fds();

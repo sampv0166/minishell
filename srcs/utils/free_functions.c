@@ -55,17 +55,12 @@ int free_everything(t_pars_tokens *tokens)
 {
     int i;
     i = 0;
-
-    ft_putstr_fd("gggggggg", 2);
     while(env.count > 1 && i < env.count)
     {
 		ft_free_str_array(&tokens[i].cmd);
         ft_free_str_array(&tokens[i].cmd_cpy);
 		ft_free_str_array(&tokens[i].cmd_splitted);
-        // free_2d_array(env.pa_tkns[i].cmd_cpy);
-        // free_2d_array(env.pa_tkns[i].cmd_splitted);
         free_me(&tokens[i].cmd_full);
-		// printf("%d\n", i);
         i++;
     }
     if (env.count == 1)
@@ -75,12 +70,9 @@ int free_everything(t_pars_tokens *tokens)
         ft_free_str_array(&tokens[i].cmd_splitted);
         free_me(&tokens[i].cmd_full);
     }
-    //free(tokens);
     free(tokens);
-    // free(tokens);
     return (0);
 }
-
 
 void print_2d_array(char **arr)
 {
