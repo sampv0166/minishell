@@ -28,14 +28,14 @@ void parcer2(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 	char **f;
 
 	set_pipe_type(pa_tkns, pa_info);
-	// pa_info->i = 0;	
-    // while (pa_info->i < env.count)
-    // {	
-    //     f = find_input_file_names(pa_tkns, pa_info->i);
-	// 	ft_free_str_array(&pa_tkns[pa_info->i].cmd);
-	// 	pa_tkns[pa_info->i].cmd = f;
-	// 	pa_info->i++;
-    // }
+	pa_info->i = 0;	
+    while (pa_info->i < env.count)
+    {	
+        f = find_input_file_names(pa_tkns, pa_info->i);
+		ft_free_str_array(&pa_tkns[pa_info->i].cmd);
+		pa_tkns[pa_info->i].cmd = f;
+		pa_info->i++;
+    }
 }
 
 void parse_commands(char **tokens, t_parser_info *pa_info, t_pars_tokens *pa_tkns)
