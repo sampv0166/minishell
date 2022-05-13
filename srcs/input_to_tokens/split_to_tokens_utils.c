@@ -58,8 +58,6 @@ int get_arr_len(char *str)
 			}
 		}
     }
-    // ft_putnbr_fd(len, 2);
-    // exit(0);
     return (len);
 }
 

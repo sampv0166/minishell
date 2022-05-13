@@ -1,4 +1,16 @@
 #include "../../includes/mini_shell.h"
+
+int read_buf(char **buf, char **in)
+{
+    *buf = readline("");
+    if (*buf == NULL)
+    {
+        free_me(in);
+        return (1);
+    }
+    return (0);
+}
+
 void get_len_out_redirection(char **arr, int *i, int *j, int *size)
 {
     if (arr[*i] && arr[*i][*j] == '>' && arr[*i][(*j) + 1] == '>')

@@ -1,10 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-int syntax_error()
-{
-    return(EXIT_SUCCESS);
-}
-
 bool token_contains_quote(char *str)
 {
     int i;
@@ -38,12 +33,7 @@ bool is_token_redir(char *str)
 
 bool is_token_pipe(char *str)
 {
-    // if(ft_strlen (str) == 1)
-    // {
-    //     if(*(str + 1) == '|')
-    //         return (false);    
-    //     }
-    // }   
+
     if(ft_strlen (str) == 1)
     {
         if(ft_strchr(str, '|'))
@@ -74,6 +64,16 @@ bool is_special_charater_correct(char *str)
     return (true);
 }
 
+int check_pipe_conditions(char **tokens, int i)
+{
+    if(tokens[i] && tokens[i][0] == '|' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
+        return (false);        
+    if(tokens[i] && tokens[i][0] == '>' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
+        return (false);        
+    if(tokens[i] && tokens[i][0] == '|' && i == 0)
+        return (false);
+    return (0);     
+}
 
 bool is_token_syntax_valid (char **tokens)
 {
@@ -90,22 +90,10 @@ bool is_token_syntax_valid (char **tokens)
                 if(is_token_redir(tokens[i]))
                     return (false);
                 if(!is_token_pipe(tokens[i]))
-                {
                     return (false);        
-                }
             }
-            if(tokens[i] && tokens[i][0] == '|' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
-            {
-                return (false);        
-            }
-            if(tokens[i] && tokens[i][0] == '>' &&  tokens[i + 1] && tokens[i + 1][0] == '|')
-            {
-                return (false);        
-            }
-            if(tokens[i] && tokens[i][0] == '|' && i == 0)
-            {
-                return (false);        
-            }    
+            if(check_pipe_conditions(tokens, i))
+                return (false);
             if(!is_special_charater_correct(tokens[i]))
                 return (false);
         }

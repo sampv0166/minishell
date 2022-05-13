@@ -1,4 +1,11 @@
 #include "../../includes/mini_shell.h"
+
+int syntax_error()
+{
+    return(EXIT_SUCCESS);
+}
+
+
 void create_out_redirection_character(char **arr, t_split *split_info, char **tokens)
 {
     int len;

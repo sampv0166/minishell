@@ -11,8 +11,21 @@ SRCS = 	srcs/main.c \
 		srcs/env/get_env.c \
 		srcs/env/env_vars.c \
 		srcs/executor/executor.c \
+		srcs/executor/executor_utils2.c \
+		srcs/executor/executor_utils.c \
+		srcs/executor/handle_in_heredoc.c \
+		srcs/executor/handle_in_heredoc_utils.c \
+		srcs/executor/get_path.c \
+		srcs/executor/exec_cmd.c \
+		srcs/executor/exec_cmd_utils.c \
+		srcs/executor/shl_vals.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/parcer/parcer.c \
+		srcs/parcer/parcer_utils2.c\
+		srcs/parcer/parcer_utils.c \
+		srcs/parcer/parcer_utils3.c \
+		srcs/parcer/find_filenames.c \
+		srcs/parcer/find_filename_utils.c \
 		srcs/utils/ft_2d_str_cpy.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_isqte.c \
@@ -45,8 +58,10 @@ SRCS = 	srcs/main.c \
 		srcs/input_to_tokens/split_to_tokens_utils.c \
 		srcs/input_to_tokens/split_to_tokens_utils_2.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
-		srcs/parcer/parcer_utils.c \
 		srcs/expander/expander.c \
+		srcs/expander/expander_utils.c \
+		srcs/expander/expander_utils2.c \
+		srcs/input_to_tokens/split_by_redir.c \
 		
 OBJS = ${SRCS:.c=.o}
 

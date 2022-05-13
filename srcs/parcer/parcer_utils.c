@@ -9,9 +9,6 @@ int get_pipe_len(char **tokens)
 
     i = 0;
     len = 0;
-    //  exit(0);
-    //  ft_putstr_fd(tokens[i], 2); 
-   
     while (tokens[i])
     {
        
@@ -75,15 +72,3 @@ void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
     pa_tkns[pa_info->j].cmd_full = pa_info->str;
 }
 
-int	is_rdr(char *str)
-{
-	if (!strcmp(str, ">"))
-		return (1);
-	else if (!strcmp(str, "<"))
-		return (1);
-	else if (!strcmp(str, "<<"))
-		return (1);
-	else if (!strcmp(str, ">>"))
-		return (1);
-	return (0);
-}
