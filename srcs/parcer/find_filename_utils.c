@@ -5,7 +5,9 @@ extern t_env_var env;
 void get_cmd_len(t_pars_tokens *pa_tkns,  int i, int *j, int *len)
 {
     int  k;
+    int l;
 
+    l = *len;
     k = *j;
     while(pa_tkns[i].cmd_splitted[k])
     {
@@ -19,33 +21,41 @@ void get_cmd_len(t_pars_tokens *pa_tkns,  int i, int *j, int *len)
             continue;
         else if(pa_tkns[i].cmd_splitted[k])
         {
-            *len++;
+            l++;
             k++;
         }
         else
             break;
     }
    *j = k; 
+   *len = l;
 }
 
 void get_file_len (t_pars_tokens *pa_tkns,  int i, int *j, int *len)
 {
-    while(pa_tkns[i].cmd_splitted[*j])
+    int  k;
+    int l;
+
+    l = *len;
+    k = *j;
+    while(pa_tkns[i].cmd_splitted[k])
     {
-        if(pa_tkns[i].cmd_splitted[*j] && pa_tkns[i].cmd_splitted[*j][0] == '<' || pa_tkns[i].cmd_splitted[*j][0] == '>')
+        if(pa_tkns[i].cmd_splitted[k] && pa_tkns[i].cmd_splitted[k][0] == '<' || pa_tkns[i].cmd_splitted[k][0] == '>')
         {
-            *j++;
-            if(pa_tkns[i].cmd_splitted[*j])
-                *j++;
+            k++;
+            if(pa_tkns[i].cmd_splitted[k])
+                k++;
         }
-        if(pa_tkns[i].cmd_splitted[*j] &&  pa_tkns[i].cmd_splitted[*j][0] == '<' || pa_tkns[i].cmd_splitted[*j][0] == '>')
+        if(pa_tkns[i].cmd_splitted[k] &&  pa_tkns[i].cmd_splitted[k][0] == '<' || pa_tkns[i].cmd_splitted[k][0] == '>')
             continue;
-        else if(pa_tkns[i].cmd_splitted[*j])
+        else if(pa_tkns[i].cmd_splitted[k])
         {
-            *j++;
-            *len++;
+            k++;
+            l++;
         }
         else
             break;
     }
+    *j = k; 
+   *len = l;
 }
