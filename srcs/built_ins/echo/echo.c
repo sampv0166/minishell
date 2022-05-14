@@ -16,34 +16,7 @@ static int	n_flag_cmp(char **str, t_flags *flags, char **str_splitted)
 	k = 0;
 	flags->qte = 0;
 	tmp = NULL;
-	if (get_2d_arr_len2(str) == get_2d_arr_len2(str_splitted))
-	{
-		while (str[i] != NULL)
-		{
-			if ((is_rdr(str[i]) && is_rdr(str_splitted[i])) || (!ft_strcmp(str[i], "|") && !ft_strcmp(str_splitted[i], "|")))
-				break ;
-			else
-			{
-				if (check_qte_str(str_splitted[i]))
-					delimit_qtes(str[i]);
-			}
-			i++;
-		}
-	}
-	else
-	{
-		while (str[i] != NULL)
-		{
-			if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
-				break ;
-			else
-			{
-				if (check_qte_str(str[i]))
-					delimit_qtes(str[i]);
-			}
-			i++;
-		}
-	}
+	i = parse_str_echo(str, str_splitted);
 	flags->rdr_pip_index = i;
 	flags->end = i;
 	i = 1;

@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
+extern t_env_var	env;
 
 int	access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 {
@@ -25,41 +25,41 @@ int	access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 	return (0);
 }
 
-int handle_inbuilt(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
+int	handle_inbuilt(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 {
-    if(abs_cmd_path == NULL)
-    {
-        if(pa_tokens[i].cmd[0])
-        {
-            if(is_inbuilt(pa_tokens[i].cmd[0]))
-                return (1);
-        }
-        else
-        {
-            env.stat_code = 0;
-			return(1);  
-        }
-    }
-    return (0);
+	if (abs_cmd_path == NULL)
+	{
+		if (pa_tokens[i].cmd[0])
+		{
+			if (is_inbuilt(pa_tokens[i].cmd[0]))
+				return (1);
+		}
+		else
+		{
+			env.stat_code = 0;
+			return (1);
+		}
+	}
+	return (0);
 }
 
-
-int  handle_output_redirections(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
+int	handle_output_redirections(char **cmd_split,
+	t_pars_tokens *pa_tokens, int tkn_idx)
 {
-    int i;
-    int fd;
+	int	i;
+	int	fd;
 
-    i = 0;
-    fd = 0;
-    if(!(pa_tokens[tkn_idx].is_in && pa_tokens[tkn_idx].here_doc))
-        set_fds(cmd_split, &i , &fd);
-    pa_tokens[tkn_idx].fd_out = fd;
-    if(pa_tokens[tkn_idx].pipe)
-        close(env.fd_out);    
-    env.fd_out = fd;
-    if(pa_tokens[tkn_idx].is_out)
-        env.open_fd_out = fd;  
-    return (EXIT_SUCCESS);
+	i = 0;
+	fd = 0;
+	if (!(pa_tokens[tkn_idx].is_in && pa_tokens[tkn_idx].here_doc))
+		set_fds(cmd_split, &i, &fd);
+	pa_tokens[tkn_idx].fd_out = fd;
+	if (pa_tokens[tkn_idx].pipe)
+		close(env.fd_out);
+	env.fd_out = fd;
+	if (pa_tokens[tkn_idx].is_out)
+		env.open_fd_out = fd;
+	return (EXIT_SUCCESS);
 }
 
 int	handle_redirections(t_pars_tokens *pa_tokens, int i)
@@ -72,7 +72,7 @@ int	handle_redirections(t_pars_tokens *pa_tokens, int i)
 	{
 		if (pa_tokens[i].is_in == 0 && pa_tokens[i].here_doc == 0)
 			if (handle_output_redirections(pa_tokens[i].cmd_splitted,
-				pa_tokens, i) == EXIT_FAILURE)
+					pa_tokens, i) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 	}
 	else if (pa_tokens[i].pipe == 1)

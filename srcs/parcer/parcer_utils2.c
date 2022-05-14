@@ -28,7 +28,7 @@ int	read_line(char *buf, char **join, int end1, char *heredoc)
 {
 	while (true)
 	{
-		buf = readline(">");
+		buf = readline("");
 		if (buf == NULL)
 			return (EXIT_SUCCESS);
 		if (ft_strcmp(buf, heredoc) == 0)

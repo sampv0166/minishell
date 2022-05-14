@@ -1,4 +1,4 @@
-#include "../../includes/mini_shell.h"
+#include "../../../includes/mini_shell.h"
 
 extern t_env_var	env;
 
@@ -37,11 +37,10 @@ static int	check_args(char *str, int i, unsigned char *c)
 	return (0);
 }
 
-static void	ft_exit_init(int *i, unsigned char *c)
+static void	exit_is_alpha(char **str, int *i, unsigned char *c)
 {
-	*i = 1;
-	*c = env.stat_code;
-	env.trigger = 1;
+	ft_exit_print(str[*i]);
+	*c = 2;
 }
 
 unsigned char	ft_exit(char **str, int pipe)
@@ -50,7 +49,6 @@ unsigned char	ft_exit(char **str, int pipe)
 	int				i;
 
 	ft_exit_init(&i, &c);
-	env.trigger = 0;
 	while (str[i] != NULL)
 	{
 		if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
@@ -66,27 +64,10 @@ unsigned char	ft_exit(char **str, int pipe)
 		}
 		else if (ft_isalpha(str[i][0]) || ft_isqt(str[i][0]))
 		{
-			ft_exit_print(str[i]);
-			c = 2;
+			exit_is_alpha(str, &i, &c);
 			break ;
 		}
 		i++;
 	}
-	env.stat_code = c;
-	if (env.trigger && pipe == 0)
-		env.trigger = 1;
-	else if (pipe != 0)
-		env.trigger = 0;
-	if (i == 1)
-	{
-		if (pipe)
-		{
-			ft_putendl_fd("trace", 2);
-			c = 0;
-			env.trigger = 0;
-		}
-		else
-			env.trigger = 1;
-	}
-	return (c);
+	return (set_exit_triggers(&c, pipe, &i, str));
 }

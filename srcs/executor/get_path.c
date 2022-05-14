@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
+extern t_env_var	env;
 
 char	*ft_strjoin2(char *saved_line, char *buffer)
 {
@@ -24,9 +24,9 @@ char	*ft_strjoin2(char *saved_line, char *buffer)
 	return (new_string);
 }
 
-int init(char ***path_splitted)
+int	init(char ***path_splitted)
 {
-	char *path;
+	char	*path;
 
 	path = get_env_value("PATH");
 	if (path == NULL)
@@ -52,11 +52,11 @@ static char	*get_abs_cmd_path(char **abs_cmd_path,
 
 void	free_path(char **dup, char **abs_path)
 {
-    free_me(dup);
-    free_me(abs_path);
+	free_me(dup);
+	free_me(abs_path);
 }
 
-char *get_abs_cmd(char *cmd)
+char	*get_abs_cmd(char *cmd)
 {
 	char	*abs_cmd_path;
 	char	**path_split;

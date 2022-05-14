@@ -85,6 +85,7 @@ void			free_all(char **str);
  ** =============================================================================
  */
 void			check_qtes(char *tmp, int j, int *i, t_flags *flags);
+int				parse_str_echo(char **str, char **str_splitted);
 int				operations(char *tmp, t_flags *flags, int *i);
 int				is_rdr_flag(char *str);
 void			ft_init(t_flags *flags);
@@ -143,6 +144,8 @@ int				unset(char **str);
 
  int read_buf(char **buf, char **in);
 
+void			ft_exit_init(int *i, unsigned char *c);
+unsigned char	set_exit_triggers(unsigned char *c, int pipe, int *i, char **str);
 unsigned char 	ft_exit(char **str, int pipe);
 int     		is_inbuilt(char *cmd);
 int     		ft_perror(int exit_status, char *msg);

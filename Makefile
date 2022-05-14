@@ -39,6 +39,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_putstr_2d.c \
 		srcs/built_ins/echo/echo_utils.c \
 		srcs/built_ins/echo/echo.c \
+		srcs/built_ins/echo/echo_2d_str.c \
 		srcs/built_ins/cd/cd_pwd_up.c \
 		srcs/built_ins/cd/cd_tild.c \
 		srcs/built_ins/cd/cd.c \
@@ -52,7 +53,8 @@ SRCS = 	srcs/main.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \
 		srcs/built_ins/unset.c \
-		srcs/built_ins/exit.c \
+		srcs/built_ins/exit/exit.c \
+		srcs/built_ins/exit/exit_utils.c \
 		srcs/utils/free_functions.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils2.c \
