@@ -58,19 +58,19 @@ typedef struct s_expand
 ** =============================================================================
 */
 
-char	**ft_2d_str_cpy(char **str);
-void	ft_putstr_2d(char **str);
-int		length_2d(char **str);
-int		last_char(char *str);
-int		ft_isqt(char c);
-int		check_qte_str(char *str);
-int		ft_isenv(char c);
-int		ft_strcmp(char *s1, char *s2);
-char	*ft_strstr(char *str, char *to_find);
-t_pars_tokens *parser (char **tokens);
-void 	ch_home(void);
-void	ch_tild(void);
-void	delimit_qtes(char *str);
+char			**ft_2d_str_cpy(char **str);
+void			ft_putstr_2d(char **str);
+int				length_2d(char **str);
+int				last_char(char *str);
+int				ft_isqt(char c);
+int				check_qte_str(char *str);
+int				ft_isenv(char c);
+int				ft_strcmp(char *s1, char *s2);
+char			*ft_strstr(char *str, char *to_find);
+t_pars_tokens	*parser(char **tokens);
+void			ch_home(void);
+void			ch_tild(void);
+void			delimit_qtes(char *str);
 
 /*
 ** =============================================================================
@@ -91,7 +91,7 @@ int				is_rdr_flag(char *str);
 void			ft_init(t_flags *flags);
 int				check_old_pwd(char **var);
 int				check_rdr_pipes(char *str, t_flags *flags);
-void 			echo(char **str, char **str_splitted);
+void			echo(char **str, char **str_splitted);
  /*
  ** =============================================================================
  ** EXPORT
@@ -142,13 +142,13 @@ int				unset(char **str);
  ** =============================================================================
  */
 
- int read_buf(char **buf, char **in);
-
+ int			read_buf(char **buf, char **in);
 void			ft_exit_init(int *i, unsigned char *c);
-unsigned char	set_exit_triggers(unsigned char *c, int pipe, int *i, char **str);
-unsigned char 	ft_exit(char **str, int pipe);
-int     		is_inbuilt(char *cmd);
-int     		ft_perror(int exit_status, char *msg);
+unsigned char	set_exit_triggers(unsigned char *c, int pipe,
+					int *i, char **str);
+unsigned char	ft_exit(char **str, int pipe);
+int				is_inbuilt(char *cmd);
+int				ft_perror(int exit_status, char *msg);
 int	    		handle_inbuilt_redir(t_pars_tokens *pa_toks,int i);
 bool 			token_contains_quote(char *str);
 

@@ -15,14 +15,26 @@ int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 	return (env.stat_code);
 }
 
+static void	end_process(t_pars_tokens *pa_tkns, pid_t *pid)
+{
+	close(env.tmp_in);
+	close(env.tmp_out);
+	if (env.fd_pipe_in_open != 0)
+		close(env.fd_pipe_in_open);
+	// if (k == env.count - 1)
+	// {
+	free_everything(pa_tkns);
+	free(pid);
+	// }
+}
+
 void	exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int i)
 {
 	int	k;
 
 	k = i;
 	if (!is_inbuilt(pa_tkns[k].cmd[0]) && path)
-	{ 
-
+	{
 		close(env.tmp_in);
 		close(env.tmp_out);
 		if (pa_tkns[k].pipe != 0)
@@ -36,17 +48,7 @@ void	exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int i)
 		}
 	}
 	else
-	{ 
-		close(env.tmp_in);
-		close(env.tmp_out);
-		if(env.fd_pipe_in_open != 0)
-			close(env.fd_pipe_in_open);
-		// if (k == env.count - 1)
-		// {
-			free_everything(pa_tkns);
-			free(pid);
-		// }
-	}
+		end_process(pa_tkns, pid);
 }
 
 int	handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
