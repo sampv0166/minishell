@@ -2,7 +2,6 @@
 
 extern t_env_var env;
 
-
 char	*ft_strjoin2(char *saved_line, char *buffer)
 {
 	char	*new_string;
@@ -27,16 +26,16 @@ char	*ft_strjoin2(char *saved_line, char *buffer)
 
 int init(char ***path_splitted)
 {
-    char *path;
-  
-    path = get_env_value("PATH");
-    if (path == NULL)
-        return (EXIT_FAILURE);       
-    *path_splitted = ft_split(path, ':');
-    free(path);
-    if (*path_splitted == NULL)
-        return (EXIT_FAILURE);
-    return (EXIT_SUCCESS);
+	char *path;
+
+	path = get_env_value("PATH");
+	if (path == NULL)
+		return (EXIT_FAILURE);       
+	*path_splitted = ft_split(path, ':');
+	free(path);
+	if (*path_splitted == NULL)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 static char *get_abs_cmd_path(char **abs_cmd_path,char *path_splitted, char *cmd)
@@ -59,30 +58,29 @@ void free_path(char **dup, char **abs_path)
 
 char *get_abs_cmd(char *cmd)
 {
-    char *abs_cmd_path;
-    char **path_split;
-    char *dup;
-    int i;
-   
-    i = 0;
-    if(!cmd)
-        return (cmd);
-    if (access(cmd, X_OK) == 0)
-        return (ft_strdup(cmd));
-    init(&path_split);
-    while (path_split[i])
-    {
-        abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
-        
-        dup = ft_strdup(abs_cmd_path);
-        if (abs_cmd_path == NULL)
-            return (NULL);
-        if (access(abs_cmd_path, X_OK) == 0)
-            return (set_path(&path_split, &abs_cmd_path, &dup));
-        else
-            free_path(&dup, &abs_cmd_path);
-        i++;
-    }
-    ft_free_split(path_split);
+	char	*abs_cmd_path;
+	char	**path_split;
+	char	*dup;
+	int		i;
+
+	i = 0;
+	if (!cmd)
+		return (cmd);
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	init(&path_split);
+	while (path_split[i])
+	{
+		abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
+		dup = ft_strdup(abs_cmd_path);
+		if (abs_cmd_path == NULL)
+			return (NULL);
+		if (access(abs_cmd_path, X_OK) == 0)
+			return (set_path(&path_split, &abs_cmd_path, &dup));
+		else
+			free_path(&dup, &abs_cmd_path);
+		i++;
+	}
+	ft_free_split(path_split);
 	return (NULL);
 }

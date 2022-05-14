@@ -29,6 +29,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_2d_str_cpy.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_isqte.c \
+		srcs/utils/check_cmd_qtes.c \
 		srcs/utils/ft_delimit_qtes.c \
 		srcs/utils/length_2d.c \
 		srcs/utils/ft_strcmp.c \

@@ -1,24 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-int	check_qte_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str != NULL)
-	{
-		while (str[i])
-		{
-			if (ft_isqt(str[i]))
-			{
-				return (ft_isqt(str[i]));
-			}
-			i++;
-		}
-	}
-	return (0);
-}
-
 // static void	cpy_str(char *str, int qte)
 // {
 // 	char	*tmp;
@@ -41,18 +22,69 @@ int	check_qte_str(char *str)
 // 	free(tmp);
 // }
 
+static void	qt_op(int *trig, char *str, int *qte, int *k)
+{
+	if (!(*trig))
+	{
+		*trig = 1;
+		*qte = str[*k];
+	}
+	else
+	{
+		*trig = 0;
+		*qte = 0;
+	}
+	(*k)++;
+}
+
+static void	replace_char(char *tmp, char *str, int *j, int *k)
+{
+	tmp[*j] = str[*k];
+	(*j)++;
+	(*k)++;
+}
+
+static void	take_qte(int *qte, char *str, int *k, int *trig)
+{
+	*qte = ft_isqt(str[*k]);
+	*trig = 1;
+	(*k)++;
+}
+
+static void	parse_str_qte(char *str, char *tmp, int *qte)
+{
+	int	k;
+	int	j;
+	int	trig;
+
+	k = 0;
+	trig = 0;
+	j = 0;
+	while (str[k])
+	{
+		if (ft_isqt(str[k]))
+		{
+			if (ft_isqt(str[k]) == *qte)
+				qt_op(&trig, str, qte, &k);
+			else if (!(*qte))
+				take_qte(qte, str, &k, &trig);
+			else
+				replace_char(tmp, str, &j, &k);
+		}
+		else
+			replace_char(tmp, str, &j, &k);
+	}
+	tmp[j] = '\0';
+}
+
 void	delimit_qtes(char *str)
 {
 	int		qte;
 	int		j;
-	int		k;
-	int		trig;
 	char	*tmp;
 
-	trig = 0;
 	tmp = NULL;
 	qte = check_qte_str(str);
-	k = 0;
 	j = 0;
 	if (str != NULL)
 	{
@@ -60,45 +92,7 @@ void	delimit_qtes(char *str)
 		{
 			qte = 0;
 			tmp = strdup(str);
-			while (str[k])
-			{
-				if (ft_isqt(str[k]))
-				{
-					if (ft_isqt(str[k]) == qte)
-					{
-						if (!trig)
-						{
-							trig = 1;
-							qte = str[k];
-						}
-						else
-						{
-							trig = 0;
-							qte = 0;
-						}
-						k++;
-					}
-					else if (!qte)
-					{
-						qte = ft_isqt(str[k]);
-						trig = 1;
-						k++;
-					}
-					else
-					{
-						tmp[j] = str[k];
-						j++;
-						k++;
-					}
-				}
-				else
-				{
-					tmp[j] = str[k];
-					j++;
-					k++;
-				}
-			}
-			tmp[j] = '\0';
+			parse_str_qte(str, tmp, &qte);
 			j = 0;
 			while (tmp[j])
 			{

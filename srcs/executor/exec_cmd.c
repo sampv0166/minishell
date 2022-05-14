@@ -80,28 +80,28 @@ int handle_redirections(t_pars_tokens *pa_tokens, int i)
 
 int execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
 {
-    char *abs_cmd_path;
-    abs_cmd_path = NULL;
-     
-    if (is_redir(pa_tokens, i))
-    {
-        if(handle_redirections(pa_tokens, i))
-            return (EXIT_FAILURE);
-    }
-    dup2(env.fd_out, 1);
-    close(env.fd_out);
-    if(pa_tokens[i].cmd[0])
-    {
-        if(is_inbuilt(pa_tokens[i].cmd[0]))
-            return (handle_inbuilt_redir(pa_tokens, i));
-    }
-    if(pa_tokens[i].cmd && (env.env_var[get_env("PATH")] != NULL))
-    {
-        abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
-        *path = abs_cmd_path;
-    }
-    if (access_cmnd(abs_cmd_path , pa_tokens, i))
-        return (127);
-    else
-        return (0);
+	char *abs_cmd_path;
+	abs_cmd_path = NULL;
+		
+	if (is_redir(pa_tokens, i))
+	{
+		if(handle_redirections(pa_tokens, i))
+			return (EXIT_FAILURE);
+	}
+	dup2(env.fd_out, 1);
+	close(env.fd_out);
+	if(pa_tokens[i].cmd[0])
+	{
+		if(is_inbuilt(pa_tokens[i].cmd[0]))
+			return (handle_inbuilt_redir(pa_tokens, i));
+	}
+	if(pa_tokens[i].cmd && (env.env_var[get_env("PATH")] != NULL))
+	{
+		abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);
+		*path = abs_cmd_path;
+	}
+	if (access_cmnd(abs_cmd_path , pa_tokens, i))
+		return (127);
+	else
+		return (0);
 }

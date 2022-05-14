@@ -1,5 +1,5 @@
 #ifndef MINI_SHELL_H
-#define MINI_SHELL_H
+# define MINI_SHELL_H
 # define STDERR			2
 
 /*
@@ -20,21 +20,20 @@
 ** =============================================================================
 */
 
-#include<unistd.h>
-#include<stdio.h>
-#include "../libft/libft.h"
-#include<sys/wait.h>
-#include<readline/readline.h>
-#include <readline/history.h>
+# include<unistd.h>
+# include<stdio.h>
+# include "../libft/libft.h"
+# include<sys/wait.h>
+# include<readline/readline.h>
+# include <readline/history.h>
 # include <stdbool.h>
-#include "./input_to_tokens.h"
-#include "./env_var.h"
-#include <signal.h>
-#include"executor.h"
-#include<fcntl.h>
+# include "./input_to_tokens.h"
+# include "./env_var.h"
+# include <signal.h>
+# include"executor.h"
+# include<fcntl.h>
 
-
-typedef struct	s_flags
+typedef struct s_flags
 {
 	int	newl_flag;
 	int	print_flag;
@@ -45,7 +44,7 @@ typedef struct	s_flags
 	int	rdr_pip_index;
 }				t_flags;
 
-typedef struct	s_expand
+typedef struct s_expand
 {
 	int		k;
 	int		trig;

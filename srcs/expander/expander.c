@@ -84,7 +84,8 @@ char	**get_2d_exp2(int y, t_pars_tokens *pa_tkns, int m)
 	int		j;
 	char	**full;
 
-	full = (char **)malloc(sizeof(char *) * (get_len(pa_tkns[y].cmd_splitted) + 1));
+	j = get_len(pa_tkns[y].cmd_splitted);
+	full = (char **)malloc(sizeof(char *) * (j + 1));
 	m = 0;
 	j = 0;
 	res = NULL;
@@ -96,7 +97,6 @@ char	**get_2d_exp2(int y, t_pars_tokens *pa_tkns, int m)
 		free(tmp);
 		if (*res)
 		{
-			/*If the string is not null it will duplicate the value of res in 2d array named as full*/
 			full[m] = ft_strdup(res);
 			m++;
 		}
@@ -109,23 +109,22 @@ char	**get_2d_exp2(int y, t_pars_tokens *pa_tkns, int m)
 
 void	expander(t_pars_tokens *pa_tkns)
 {
-	int 	y;
+	int		y;
 	char	**full;
 	char	**full_splitted;
 	// char 	**cmd_sp;
 	//! SHORTEN THIS CODE!
-
 	y = 0;
 	while (y < env.count)
 	{
-    	pa_tkns[y].cmd_cpy = ft_2d_str_cpy(pa_tkns[y].cmd);
-    	full_splitted = get_2d_exp2(y, pa_tkns, 0);
+		pa_tkns[y].cmd_cpy = ft_2d_str_cpy(pa_tkns[y].cmd);
+		full_splitted = get_2d_exp2(y, pa_tkns, 0);
 		ft_free_str_array(&pa_tkns[y].cmd_splitted);
-    	pa_tkns[y].cmd_splitted = ft_2d_str_cpy(full_splitted);
-    	free_2d_array(full_splitted);
+		pa_tkns[y].cmd_splitted = ft_2d_str_cpy(full_splitted);
+		free_2d_array(full_splitted);
 		full = get_2d_exp(y, pa_tkns, 0);
 		free_2d_array(pa_tkns[y].cmd);
-	    pa_tkns[y].cmd = ft_2d_str_cpy(full);
+		pa_tkns[y].cmd = ft_2d_str_cpy(full);
 		free_2d_array(full);
 		y++;
 	}

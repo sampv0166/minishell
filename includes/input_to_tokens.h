@@ -42,6 +42,7 @@ bool is_token_syntax_valid (char **tokens);
 ** =============================================================================
 */
 
+int	check_cmds_qtes(char **str);
 int	is_rdr(char *str);
 void set_pa_tokens(t_pars_tokens *pa_tkns, t_parser_info *pa_info);
 void allocate_cmd_memmory(t_parser_info *pa_info, char **tokens);
