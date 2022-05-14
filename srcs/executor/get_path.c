@@ -30,7 +30,7 @@ int init(char ***path_splitted)
 
 	path = get_env_value("PATH");
 	if (path == NULL)
-		return (EXIT_FAILURE);       
+		return (EXIT_FAILURE);
 	*path_splitted = ft_split(path, ':');
 	free(path);
 	if (*path_splitted == NULL)
@@ -38,19 +38,19 @@ int init(char ***path_splitted)
 	return (EXIT_SUCCESS);
 }
 
-static char *get_abs_cmd_path(char **abs_cmd_path,char *path_splitted, char *cmd)
-{ 
-     
-    *abs_cmd_path = ft_strjoin2(path_splitted, "/");
-    if (abs_cmd_path == NULL)
-        return (NULL);   
-    *abs_cmd_path = ft_strjoin(*abs_cmd_path, cmd);
-    if (*abs_cmd_path == NULL)
-        return (*abs_cmd_path);  
-    return (*abs_cmd_path);
+static char	*get_abs_cmd_path(char **abs_cmd_path,
+		char *path_splitted, char *cmd)
+{
+	*abs_cmd_path = ft_strjoin2(path_splitted, "/");
+	if (abs_cmd_path == NULL)
+		return (NULL);
+	*abs_cmd_path = ft_strjoin(*abs_cmd_path, cmd);
+	if (*abs_cmd_path == NULL)
+		return (*abs_cmd_path);
+	return (*abs_cmd_path);
 }
 
-void free_path(char **dup, char **abs_path)
+void	free_path(char **dup, char **abs_path)
 {
     free_me(dup);
     free_me(abs_path);

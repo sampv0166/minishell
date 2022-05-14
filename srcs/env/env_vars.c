@@ -2,43 +2,40 @@
 /*
   gets the length of the original env variable
 */
+extern t_env_var	env;
 
-extern t_env_var env;
-
-int get_env_arr_len(char **arr)
+int	get_env_arr_len(char **arr)
 {
-  int len;
+	int	len;
 
-  len = 0;
-  while (arr && arr[len])
-  {
-    len++;
-  }
-  return (len);
+	len = 0;
+	while (arr && arr[len])
+		len++;
+	return (len);
 }
 /*
 This function saves a copy of the env variable .
 */
-char **save_env(char **env_var)
+char	**save_env(char **env_var)
 {
-  char **env_v;
-  int i;
-  int arr_len;
+	char	**env_v;
+	int		i;
+	int		arr_len;
 
-  i = 0;
-  arr_len = 0;
-  env_v = NULL;
-  arr_len  = get_env_arr_len(env_var);  
-  env_v = malloc (sizeof (char *) * (arr_len + 1)); 
-  if(env_v == NULL)
-    return (NULL);
-  while (env_var[i])
-  {
-    env_v[i] = ft_strdup(env_var[i]);
-    i++;
-  }
-  env_v[i] = NULL;
-  return (env_v);
+	i = 0;
+	arr_len = 0;
+	env_v = NULL;
+	arr_len = get_env_arr_len(env_var);
+	env_v = malloc (sizeof (char *) * (arr_len + 1));
+	if (env_v == NULL)
+		return (NULL);
+	while (env_var[i])
+	{
+	env_v[i] = ft_strdup(env_var[i]);
+	i++;
+	}
+	env_v[i] = NULL;
+	return (env_v);
 }
 /*
 
@@ -69,42 +66,42 @@ char **save_env(char **env_var)
   !expected output
   /home/abdu/Desktop/minishell
 */
-char *get_env_value (char *var)
+char	*get_env_value(char *var)
 {
-  int  i;
-  char *val;
+	int		i;
+	char	*val;
 
-  i = 0;
-  val = NULL; 
-  while (env.env_var[i] != NULL)
-  {
-    	if (ft_strcmp(var, env.env_var[i]) == -61)
-		  {
-			  val = ft_strchr(env.env_var[i++], '=') + 1;                 
-			  if (ft_strlen(val) == 0)
-				    val = ft_calloc(1, sizeof (char));
-			  else
-				    val = ft_strdup(val);
-			  break ;
-		  }
-      i++;
-  }
-  return (val);
+	i = 0;
+	val = NULL;
+	while (env.env_var[i] != NULL)
+	{
+		if (ft_strcmp(var, env.env_var[i]) == -61)
+		{
+			val = ft_strchr(env.env_var[i++], '=') + 1;
+			if (ft_strlen(val) == 0)
+				val = ft_calloc(1, sizeof (char));
+			else
+				val = ft_strdup(val);
+			break ;
+		}
+		i++;
+	}
+	return (val);
 }
 
 /*
   This function is used to intialize and save env variables
 */
-int init_env_vars(char **envp)
+int	init_env_vars(char **envp)
 {
-    env.envp = envp;
-    env.env_var = save_env(envp);
-    if(env.env_var != NULL)
-    {
-      env.trigger = 0;
-      env.s_pid = 0;
-      return (EXIT_SUCCESS);
-    }
-    env.stat_code = 1;
-    return (EXIT_FAILURE);
+	env.envp = envp;
+	env.env_var = save_env(envp);
+	if (env.env_var != NULL)
+	{
+		env.trigger = 0;
+		env.s_pid = 0;
+		return (EXIT_SUCCESS);
+	}
+	env.stat_code = 1;
+	return (EXIT_FAILURE);
 }

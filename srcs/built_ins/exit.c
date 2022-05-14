@@ -54,7 +54,7 @@ unsigned char	ft_exit(char **str, int pipe)
 	while (str[i] != NULL)
 	{
 		if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
-			break;
+			break ;
 		delimit_qtes(str[i]);
 		if (i > 1 || is_sign(str[i][0]) || ft_isdigit(str[i][0]))
 		{
@@ -72,18 +72,21 @@ unsigned char	ft_exit(char **str, int pipe)
 		}
 		i++;
 	}
-	if (i == 1)
-		env.trigger = 1;
 	env.stat_code = c;
 	if (env.trigger && pipe == 0)
 		env.trigger = 1;
 	else if (pipe != 0)
 		env.trigger = 0;
-	// {
-	// 	ft_putnbr_fd(env.stat_code, 2);
-	// 	ft_putchar_fd('\n', 2);
-	// 	exit(env.stat_code);
-	// 	// printf("check\n");
-	// }
+	if (i == 1)
+	{
+		if (pipe)
+		{
+			ft_putendl_fd("trace", 2);
+			c = 0;
+			env.trigger = 0;
+		}
+		else
+			env.trigger = 1;
+	}
 	return (c);
 }

@@ -79,27 +79,27 @@ void execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
     i = 0;
     while (i < env.count)
     {
-        path = NULL;
-        if(handle_in_redirections(pa_tkns , &i))
-            continue;
-        dup2(env.fd_in, 0);
-        close(env.fd_in);
-        close_fds(pa_tkns, i, 0);
-        env.stat_code =  execute_cmd(pa_tkns, i, &path);
-        close_fds(pa_tkns, i, 1);
-        pid[i] = fork();
-        env.s_pid = pid[i];
-        if (pid[i] < 0)
-            exit(0);
-        if (pid[i] == 0)
-        {
-            exec_child(pa_tkns, pid, path, i);
-            // this was the mistake , i was not exiting from the forked child if the command is not inbuilt
-            exit (0);
-        }
-        free_me(&path);
-        i++;
-    }    
+		path = NULL;
+		if(handle_in_redirections(pa_tkns , &i))
+			continue;
+		dup2(env.fd_in, 0);
+		close(env.fd_in);
+		close_fds(pa_tkns, i, 0);
+		env.stat_code = execute_cmd(pa_tkns, i, &path);
+		close_fds(pa_tkns, i, 1);
+		pid[i] = fork();
+		env.s_pid = pid[i];
+		if (pid[i] < 0)
+			exit(0);
+		if (pid[i] == 0)
+		{
+			exec_child(pa_tkns, pid, path, i);
+			// this was the mistake , i was not exiting from the forked child if the command is not inbuilt
+			exit (0);
+		}
+		free_me(&path);
+		i++;
+    }
 }
 
 int executor(t_pars_tokens *pa_tkns)

@@ -2,7 +2,6 @@
 
 extern t_env_var	env;
 
-
 char	*get_stat_code(char *res, char *tmp, t_expand *flags)
 {
 	char	*cat;
