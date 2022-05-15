@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static char	**trimmer(void)
 {
 	int		i;
@@ -11,12 +9,12 @@ static char	**trimmer(void)
 
 	i = 0;
 	k = 0;
-	length = length_2d(env.env_var);
+	length = length_2d(g_env.env_var);
 	trim = (char **)malloc(sizeof(char *) * (length + 1));
-	while (env.env_var[i] != NULL)
+	while (g_env.env_var[i] != NULL)
 	{
 		k = 0;
-		trim[i] = ft_strdup(env.env_var[i]);
+		trim[i] = ft_strdup(g_env.env_var[i]);
 		while (trim[i][k] != '=' && trim[i][k] != '\0')
 			k++;
 		trim[i][k] = '\0';
@@ -74,10 +72,10 @@ char	**sorting(char **trim)
 void	ordered_string(char **trim)
 {
 	int	i;
-	int	g_env;
+	int	g_env1;
 
 	i = 0;
-	g_env = 0;
+	g_env1 = 0;
 	while (trim[i] != NULL)
 		i++;
 	i -= 2;
@@ -88,9 +86,9 @@ void	ordered_string(char **trim)
 	i = 0;
 	while (trim[i] != NULL)
 	{
-		g_env = get_env(trim[i]);
+		g_env1 = get_env(trim[i]);
 		free(trim[i]);
-		trim[i] = ft_strdup(env.env_var[g_env]);
+		trim[i] = ft_strdup(g_env.env_var[g_env1]);
 		i++;
 	}
 }

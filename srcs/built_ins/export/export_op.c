@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static void	export_split_env(char *str)
 {
 	int		i;
@@ -30,7 +28,7 @@ static void	export_split_env(char *str)
 	export_new_env(var, tmp);
 }
 
-static void	export_append(char *str, char *var, int g_env)
+static void	export_append(char *str, char *var, int g_env1)
 {
 	char	*tmp;
 	int		i;
@@ -49,10 +47,10 @@ static void	export_append(char *str, char *var, int g_env)
 		i++;
 	}
 	tmp[len] = '\0';
-	var = ft_strdup(env.env_var[g_env]);
+	var = ft_strdup(g_env.env_var[g_env1]);
 	var = ft_strjoin(var, tmp);
-	free(env.env_var[g_env]);
-	env.env_var[g_env] = ft_strdup(var);
+	free(g_env.env_var[g_env1]);
+	g_env.env_var[g_env1] = ft_strdup(var);
 	free(var);
 	free(tmp);
 }
@@ -60,22 +58,22 @@ static void	export_append(char *str, char *var, int g_env)
 static int	plus_export(char *str)
 {
 	char	*var;
-	int		g_env;
+	int		g_env1;
 	int		i;
 
 	i = 0;
-	g_env = 0;
+	g_env1 = 0;
 	var = ft_strdup(str);
 	while (var[i] != '+')
 		i++;
 	var[i] = '\0';
-	g_env = get_env(var);
+	g_env1 = get_env(var);
 	free(var);
 	var = NULL;
-	if (env.env_var[g_env] == NULL)
+	if (g_env.env_var[g_env1] == NULL)
 		export_split_env(str);
 	else
-		export_append(str, var, g_env);
+		export_append(str, var, g_env1);
 	return (0);
 }
 
@@ -96,37 +94,37 @@ static int	append_expo(char *var)
 	}
 	else
 	{
-		// printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+		printf("%s: not a valid identifier\n", ft_strchr(var, '='));
 		free(var);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	exp_op(char *var, char *value, int g_env)
+int	exp_op(char *var, char *value, int g_env1)
 {
 	int	i;
 
 	i = 0;
-	if (ft_strchr(var, '=') && !ft_isdigit(var[0]) && !ft_isqt(var[0]) && var[0] != '$')
+	if (ft_strchr(var, '=') && !ft_isdigit(var[0])
+		&& !ft_isqt(var[0]) && var[0] != '$')
 	{
 		if (ft_strchr(var, '+'))
 			return (append_expo(var));
 		value = fetch_var(var, &i);
 		if (op_not(var[i - 1]) || (!var[i + 1]))
 			return (export_error(value, var));
-		g_env = get_env(value);
-		if (env.env_var[g_env] == NULL)
-			env.env_var = new_env(var);
+		g_env1 = get_env(value);
+		if (g_env.env_var[g_env1] == NULL)
+			g_env.env_var = new_env(var);
 		else
-			replace_env(g_env, var);
+			replace_env(g_env1, var);
 		free(value);
 	}
 	else
 	{
-		// printf("%s: not a valid identifier\n", var);
 		free(var);
-		return (EXIT_FAILURE);
+		return (printf("Error: No value given to env variable\n"));
 	}
 	free(var);
 	return (EXIT_SUCCESS);

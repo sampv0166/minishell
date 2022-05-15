@@ -1,8 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
-
 void	ft_init_exp(t_expand *flags)
 {
 	flags->i = 0;

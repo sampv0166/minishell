@@ -1,81 +1,50 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
-
 //	move to a newline rl_on_new_line();
 
 //	clear readline buffer rl_replace_line("", 0);
 
 //	display prompt again	rl_redisplay();
 
-static void	handle_signal(int sig)
+static void	control_c(void)
 {
-	if (sig == SIGINT)
-	{
-		env.stat_code = 130;
-		printf("\n");	
-       	//move to a newline 
-		rl_on_new_line();
-		//clear readline buffer
-		rl_replace_line("", 0);
-		//display prompt again
-		//rl_forced_update_display();
-		//printf("\b\b");
-		rl_redisplay();
-	}
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_env.stat_code = 1;
 }
 
-// static void	handle_signal1(int sig)
-// {
-// 	if (sig == SIGQUIT)
-// 	{
-// 		env.stat_code = 131;
-// 		// printf("\n");
-//        	//move to a newline 
-// 		rl_on_new_line();
-// 		//clear readline buffer
-// 		// rl_replace_line("", 0);
-// 		//display prompt again
-// 		// rl_forced_update_display();
-// 		rl_redisplay();
-// 	}
-// }
+static void	print_nothing(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "  \b\b", 4);
+}
 
 void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 {
-	int			trig;
-
-	trig = 0;
 	(void)context;
+	(void)siginfo;
 	if (signum == SIGINT)
 	{
-		if (env.s_pid)
+		if (g_env.s_pid)
 		{
 			printf("\b\b\n");
-			env.stat_code = 130;
+			g_env.stat_code = 130;
 		}
 		else
-		{
-			write(1, "\n", 1);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			env.stat_code = 1;
-		}
+			control_c();
 	}
 	else if (signum == SIGQUIT)
 	{
-		if (env.s_pid)
+		if (g_env.s_pid)
 		{
 			ft_putendl_fd("\b\bQuit", STDOUT_FILENO);
-			env.stat_code = 131;
+			g_env.stat_code = 1;
 		}
 		else
-		{
-			rl_on_new_line();
-			rl_redisplay();
-			write(1, "  \b\b", 4);
-		}
+			print_nothing();
 	}
 }
 

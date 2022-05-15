@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static char	*getting_var(char *str, int len)
 {
 	char	*env_s;
@@ -21,7 +19,7 @@ static char	*getting_var(char *str, int len)
 	return (env_s);
 }
 
-static char	*getting_ret(int g_env, int i, int j)
+static char	*getting_ret(int g_env1, int i, int j)
 {
 	char	*ret;
 
@@ -29,9 +27,9 @@ static char	*getting_ret(int g_env, int i, int j)
 	ret = ft_calloc(sizeof(char), j + 1);
 	i = i - j;
 	j = 0;
-	while (env.env_var[g_env][i])
+	while (g_env.env_var[g_env1][i])
 	{
-		ret[j] = env.env_var[g_env][i];
+		ret[j] = g_env.env_var[g_env1][i];
 		i++;
 		j++;
 	}
@@ -39,7 +37,7 @@ static char	*getting_ret(int g_env, int i, int j)
 	return (ret);
 }
 
-static char	*getting_value(int g_env)
+static char	*getting_value(int g_env1)
 {
 	int		i;
 	int		j;
@@ -49,20 +47,20 @@ static char	*getting_value(int g_env)
 	ret = NULL;
 	j = 0;
 	/*Iterating towards = sign*/
-	while (env.env_var[g_env][i] != '=' && env.env_var[g_env][i] != '\0')
+	while (g_env.env_var[g_env1][i] != '=' && g_env.env_var[g_env1][i] != '\0')
 		i++;
-	if (env.env_var[g_env][i] == '=')
+	if (g_env.env_var[g_env1][i] == '=')
 	{
 		++i;
 		j = 0;
 		/*Iterating towards \0 and counting all the characters with variable j*/
-		while (env.env_var[g_env][i])
+		while (g_env.env_var[g_env1][i])
 		{
 			i++;
 			j++;
 		}
 		/*Allocation and putting values of the env variable*/
-		ret = getting_ret(g_env, i, j);
+		ret = getting_ret(g_env1, i, j);
 		return (ret);
 	}
 	return (NULL);
@@ -80,7 +78,7 @@ char	*get_env_dollar(char *str)
 	{
 		/*Fetch for exit codes*/
 		free(ret);
-		ret = ft_itoa(env.stat_code);
+		ret = ft_itoa(g_env.stat_code);
 		return (ret);
 	}
 	else if (ft_isenv(str[j]))
@@ -89,7 +87,7 @@ char	*get_env_dollar(char *str)
 		/*This while loop to count how much memory we need for the environment variable which we're looking to fetch*/
 		ret = getting_var(str, j);
 		/*Getting the index of the env variable*/
-		if (env.env_var[get_env(ret)] != NULL)
+		if (g_env.env_var[get_env(ret)] != NULL)
 		{
 			j = get_env(ret);
 			free(ret);
@@ -103,7 +101,7 @@ char	*get_env_dollar(char *str)
 
 int	env_var(void)
 {
-	ft_putstr_2d(env.env_var);
+	ft_putstr_2d(g_env.env_var);
 	// print_2d_array(env.env_var);
 	return (0);
 }

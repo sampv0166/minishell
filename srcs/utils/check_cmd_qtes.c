@@ -1,23 +1,17 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "../../includes/mini_shell.h"
 
-int	ft_isqt(char c)
+static void	init_qtes(int *qte, int *i)
 {
-	if (c == 34 || c == 39)
-		return (c);
-	return (0);
+	*qte = 0;
+	(*i)++;
 }
 
 int	parse_cmd(char *str)
 {
 	int	i;
-	int	trig;
 	int	qte;
 
 	i = 0;
-	trig = 0;
 	qte = 0;
 	while (str[i])
 	{
@@ -28,10 +22,7 @@ int	parse_cmd(char *str)
 			while (str[i] && str[i] != qte)
 				i++;
 			if (str[i] && str[i] == qte)
-			{
-				qte = 0;
-				i++;
-			}
+				init_qtes(&qte, &i);
 			else
 				return (1);
 		}
@@ -52,19 +43,8 @@ int	check_cmds_qtes(char **str)
 	{
 		ret = parse_cmd(str[i]);
 		if (ret)
-			break;
+			break ;
 		i++;
 	}
 	return (ret);
-}
-
-int main(void)
-{
-	char	**str;
-
-	str = (char **)malloc(sizeof(char *) * 5);
-	str[0] = strdup("file\"\'");
-	str[1] = NULL;
-	printf("%d\n", check_cmds_qtes(str));
-	return (0);
 }

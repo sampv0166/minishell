@@ -1,38 +1,41 @@
 #include "../includes/mini_shell.h"
 
-t_env_var env;
-
-static int get_input()
+static void	exit_program(char *input)
 {
-	char *input;
+	free(input);
+	free_env();
+	ft_putendl_fd("exiting", 2);
+	exit(g_env.stat_code);
+}
+
+static int	get_input(void)
+{
+	char	*input;
+
+	input = NULL;
 	while (1)
 	{
-		env.s_pid = 0;
-		env.here_doc = 0;
-		input = readline("[=========]");
+		g_env.s_pid = 0;
+		g_env.here_doc = 0;
+		input = readline("\033[1m\x1B[31mMS SHELL======> \033[0m\x1B[37m");
 		if (input == NULL)
 		{
 			free_env();
-			ft_putstr_fd("exiting", 2);
+			ft_putendl_fd("exiting", 2);
 			return (0);
 		}
 		if (ft_strlen(input) > 0)
 			add_history(input);
 		else
-			continue;
+			continue ;
 		input_to_tokens(input);
-		if (env.trigger)
-		{
-			free(input);
-			free_env();
-			exit(env.stat_code);
-		}
-	}
-	
+		if (g_env.trigger)
+			exit_program(input);
+	}	
 	return (0);
 }
 
-int main(int ac, char **argv, char **envp)
+int	main(int ac, char **argv, char **envp)
 {
 	(void)ac;
 	(void)argv;

@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 int	pwd(char **str)
 {
 	int		i;

@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 void	check_qtes(char *tmp, int j, int *i, t_flags *flags)
 {
 	if (tmp[j] == 34 || tmp[j] == 39)
@@ -44,13 +42,13 @@ int	operations(char *tmp, t_flags *flags, int *i)
 
 int	is_rdr_flag(char *str)
 {
-	if (!ft_strcmp(str, "<") && env.pa_tkns->is_in)
+	if (!ft_strcmp(str, "<") && g_env.pa_tkns->is_in)
 		return (1);
-	else if (!ft_strcmp(str, ">") && env.pa_tkns->is_out)
+	else if (!ft_strcmp(str, ">") && g_env.pa_tkns->is_out)
 		return (1);
-	else if (!ft_strcmp(str, ">>") && env.pa_tkns->is_out_appnd)
+	else if (!ft_strcmp(str, ">>") && g_env.pa_tkns->is_out_appnd)
 		return (1);
-	else if (!ft_strcmp(str, "<<") && env.pa_tkns->here_doc)
+	else if (!ft_strcmp(str, "<<") && g_env.pa_tkns->here_doc)
 		return (1);
 	return (0);
 }
@@ -85,7 +83,7 @@ int	check_rdr_pipes(char *str, t_flags *flags)
 		}
 		else if (ft_strchr(str, '|'))
 		{
-			if (!ft_strcmp(str, "|") && env.pa_tkns->pipe)
+			if (!ft_strcmp(str, "|") && g_env.pa_tkns->pipe)
 			{
 				flags->print_flag = 1;
 				return (1);

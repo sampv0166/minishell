@@ -19,7 +19,12 @@ SRCS = 	srcs/main.c \
 		srcs/executor/exec_cmd.c \
 		srcs/executor/exec_cmd_utils.c \
 		srcs/executor/shl_vals.c \
+		srcs/input_to_tokens/skip_and_increment_len_sngl_qts.c \
+		srcs/input_to_tokens/skip_and_increment_len_dbl_qts.c \
+		srcs/input_to_tokens/tokens_split.c \
 		srcs/input_to_tokens/input_to_tokens.c \
+		srcs/input_to_tokens/get_arr_len.c \
+		srcs/input_to_tokens/init_split_info.c \
 		srcs/parcer/parcer.c \
 		srcs/parcer/parcer_utils2.c\
 		srcs/parcer/parcer_utils.c \
@@ -29,6 +34,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_2d_str_cpy.c \
 		srcs/utils/ft_isenv.c \
 		srcs/utils/ft_isqte.c \
+		srcs/utils/check_cmd_qtes.c \
 		srcs/utils/ft_delimit_qtes.c \
 		srcs/utils/length_2d.c \
 		srcs/utils/ft_strcmp.c \
@@ -38,6 +44,7 @@ SRCS = 	srcs/main.c \
 		srcs/utils/ft_putstr_2d.c \
 		srcs/built_ins/echo/echo_utils.c \
 		srcs/built_ins/echo/echo.c \
+		srcs/built_ins/echo/echo_2d_str.c \
 		srcs/built_ins/cd/cd_pwd_up.c \
 		srcs/built_ins/cd/cd_tild.c \
 		srcs/built_ins/cd/cd.c \
@@ -51,14 +58,18 @@ SRCS = 	srcs/main.c \
 		srcs/built_ins/pwd.c \
 		srcs/built_ins/env.c \
 		srcs/built_ins/unset.c \
-		srcs/built_ins/exit.c \
+		srcs/built_ins/exit/exit.c \
+		srcs/built_ins/exit/exit_utils.c \
 		srcs/utils/free_functions.c \
+		srcs/utils/free_functions2.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils2.c \
 		srcs/input_to_tokens/split_to_tokens_utils.c \
 		srcs/input_to_tokens/split_to_tokens_utils_2.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
+		srcs/input_to_tokens/syntax_check_utils2.c \
 		srcs/expander/expander.c \
+		srcs/expander/expander_main.c \
 		srcs/expander/expander_utils.c \
 		srcs/expander/expander_utils2.c \
 		srcs/input_to_tokens/split_by_redir.c \
@@ -70,7 +81,7 @@ CC = gcc -ggdb -g
 
 #CFLAGS = -lreadline
 # R_FLAG = -lreadline 
-CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+CFLAGS = -Wall -Wextra -Werror -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 ${NAME}:${OBJS}
 		@echo "${WHITE}Have patience. This will take some moment!"

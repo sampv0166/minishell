@@ -14,10 +14,9 @@
 
 static void	print_atoi(char *str)
 {
-	(void)str;
-	// ft_putstr_fd("exit: ", 2);
-	// ft_putstr_fd(str, 2);
-	// ft_putendl_fd(": numeric argument requred", 2);
+	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putendl_fd(": numeric argument requred", 2);
 }
 
 static int	check_limit(int i, int sign, char *str)

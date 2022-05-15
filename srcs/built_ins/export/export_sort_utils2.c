@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static char	**fetch_env_var(char **str)
 {
 	char	**var;
