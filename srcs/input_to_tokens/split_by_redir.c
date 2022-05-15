@@ -1,14 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
-void	split_by_redirection2(char **arr, char **tokens, t_split *split_info)
-{
-	split_info->len = ft_strlen (arr[split_info->i]);
-	tokens[split_info->k] = ft_strdup(arr[split_info->i]);
-	split_info->k++;
-}
-
 void	split_by_redirection(char **arr, char **tokens, t_split *split_info)
 {
 	if (!token_contains_quote(arr[split_info->i]))
@@ -84,8 +75,10 @@ void	create_string_between_quotes(char *str, t_split *split_info)
 
 /*
     ! why this function ?  
-    we cant use our normal split function to create tokens because , if we have a space
-    in a string inside quotes, it will be splitted. for this reason we had to modify 
+    we cant use our normal split function to create 
+	tokens because , if we have a space
+    in a string inside quotes, it will be splitted. 
+	for this reason we had to modify 
     split function.
     !expected input : char *str    
     echo "hello world">file|wc -l

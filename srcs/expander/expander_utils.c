@@ -1,13 +1,11 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 char	*get_stat_code(char *res, char *tmp, t_expand *flags)
 {
 	char	*cat;
 
 	flags->k += 2;
-	cat = ft_itoa(env.stat_code);
+	cat = ft_itoa(g_env.stat_code);
 	res = ft_strjoin(res, cat);
 	free(cat);
 	res = str_cpy(res, tmp, flags);
@@ -31,7 +29,7 @@ char	*expansion_for_str(char *str, t_expand *flags)
 	else
 		flags->k += ft_strlen(cat);
 	j = get_env(&cat[1]);
-	if (env.env_var[j] != NULL)
+	if (g_env.env_var[j] != NULL)
 	{
 		dol = get_env_dollar(cat);
 		if (!flags->trig)

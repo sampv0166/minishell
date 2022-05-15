@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 /*
 cd brings the directory to the tilde
 cd should work with only two arguments, example: cd Desktop without quotes. It should return an error with more than two args.
@@ -31,7 +29,7 @@ char	*get_pwd(void)
 
 	i = 0;
 	i = get_env("PWD");
-	if (env.env_var[i] == NULL)
+	if (g_env.env_var[i] == NULL)
 		pwd = ft_strdup(getcwd(s, 1000));
 	else
 		pwd = get_env_dollar("$PWD");

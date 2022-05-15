@@ -1,18 +1,16 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static void	ft_exit_print(char *str)
 {
-	env.trigger = 1;
-	// ft_putstr_fd("exit: ", 2);
-	// if (str == NULL)
-	// 	ft_putendl_fd("too many arguments", 2);
-	// else
-	// {
-	// 	ft_putstr_fd(str, 2);
-	// 	ft_putendl_fd(": numeric argument requred", 2);
-	// }
+	g_env.trigger = 1;
+	ft_putstr_fd("exit: ", 2);
+	if (str == NULL)
+		ft_putendl_fd("too many arguments", 2);
+	else
+	{
+		ft_putstr_fd(str, 2);
+		ft_putendl_fd(": numeric argument requred", 2);
+	}
 }
 
 static int	is_sign(char c)
@@ -28,11 +26,11 @@ static int	check_args(char *str, int i, unsigned char *c)
 	{
 		*c = 1;
 		ft_exit_print(NULL);
-		env.trigger = 0;
+		g_env.trigger = 0;
 		return (1);
 	}
 	else if (i == 1)
-		env.trigger = 1;
+		g_env.trigger = 1;
 	*c = ft_atoi(str);
 	return (0);
 }

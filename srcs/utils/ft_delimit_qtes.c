@@ -1,27 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-// static void	cpy_str(char *str, int qte)
-// {
-// 	char	*tmp;
-// 	int		j;
-// 	int		k;
-
-// 	j = 0;
-// 	tmp = ft_strdup(str);
-// 	k = 0;
-// 	while (tmp[k])
-// 	{
-// 		if (tmp[k] != qte)
-// 		{
-// 			str[j] = tmp[k];
-// 			j++;
-// 		}
-// 		k++;
-// 	}
-// 	str[j] = '\0';
-// 	free(tmp);
-// }
-
 static void	qt_op(int *trig, char *str, int *qte, int *k)
 {
 	if (!(*trig))

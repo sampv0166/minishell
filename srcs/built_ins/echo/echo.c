@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 /*Work with n -flags complications
 Examples: -n -n -n -n,  n_flag is false
 -nnnnnnnnnnnnnnn, n_flag is true*/

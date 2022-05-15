@@ -9,11 +9,9 @@ static void	init_qtes(int *qte, int *i)
 int	parse_cmd(char *str)
 {
 	int	i;
-	int	trig;
 	int	qte;
 
 	i = 0;
-	trig = 0;
 	qte = 0;
 	while (str[i])
 	{

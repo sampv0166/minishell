@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 char	**join_toks(char **tok1, char **tok2)
 {
 	int		len;
@@ -33,7 +31,6 @@ char	*join_pipes(void)
 {
 	char	*in;
 	char	*buf;
-	char	**toks;
 
 	in = NULL;
 	buf = NULL;
@@ -77,12 +74,12 @@ static void	error_syntax_qtes(int ret, char **tokens)
 	if (ret)
 	{
 		ft_putstr_fd("Error: Quotes are not closed\n", 2);
-		env.stat_code = 258;
+		g_env.stat_code = 258;
 	}
 	else
 	{
 		ft_putstr_fd("Invalid Syntax\n", 2);
-		env.stat_code = 258;
+		g_env.stat_code = 258;
 	}
 	ft_free_str_array(&tokens);
 }
@@ -94,6 +91,7 @@ char	**tokens_split(char *input)
 	int		ret;
 
 	ret = 0;
+	toks = NULL;
 	tokens = split_to_tokens(input);
 	ret = check_cmds_qtes(tokens);
 	if (!tokens || !is_token_syntax_valid(tokens) || ret)

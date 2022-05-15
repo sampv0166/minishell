@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static void	parse_str_splitted(char **str, int *i, char **str2)
 {
 	while (str[(*i)] != NULL)

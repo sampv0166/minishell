@@ -2,7 +2,6 @@
 /*
   gets the length of the original env variable
 */
-extern t_env_var	env;
 
 int	get_env_arr_len(char **arr)
 {
@@ -73,11 +72,11 @@ char	*get_env_value(char *var)
 
 	i = 0;
 	val = NULL;
-	while (env.env_var[i] != NULL)
+	while (g_env.env_var[i] != NULL)
 	{
-		if (ft_strcmp(var, env.env_var[i]) == -61)
+		if (ft_strcmp(var, g_env.env_var[i]) == -61)
 		{
-			val = ft_strchr(env.env_var[i++], '=') + 1;
+			val = ft_strchr(g_env.env_var[i++], '=') + 1;
 			if (ft_strlen(val) == 0)
 				val = ft_calloc(1, sizeof (char));
 			else
@@ -94,14 +93,14 @@ char	*get_env_value(char *var)
 */
 int	init_env_vars(char **envp)
 {
-	env.envp = envp;
-	env.env_var = save_env(envp);
-	if (env.env_var != NULL)
+	g_env.envp = envp;
+	g_env.env_var = save_env(envp);
+	if (g_env.env_var != NULL)
 	{
-		env.trigger = 0;
-		env.s_pid = 0;
+		g_env.trigger = 0;
+		g_env.s_pid = 0;
 		return (EXIT_SUCCESS);
 	}
-	env.stat_code = 1;
+	g_env.stat_code = 1;
 	return (EXIT_FAILURE);
 }

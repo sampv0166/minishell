@@ -1,16 +1,12 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 void	find_input_fd(t_pars_tokens *pa_tkns, int i)
 {
 	int	len;
 	int	j;
-	int	fd;
 
 	len = get_2d_arr_len(pa_tkns[i].cmd_splitted);
 	j = len;
-	fd = 0;
 	while (pa_tkns[i].cmd_splitted && pa_tkns[i].cmd_splitted[j] && j >= 0)
 	{
 		if (pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<')
@@ -19,8 +15,8 @@ void	find_input_fd(t_pars_tokens *pa_tkns, int i)
 				break ;
 			else
 			{
-				env.fd_in = pa_tkns[i].here_doc_fd;
-				env.open_heredoc_fdin = pa_tkns[i].here_doc_fd;
+				g_env.fd_in = pa_tkns[i].here_doc_fd;
+				g_env.open_heredoc_fdin = pa_tkns[i].here_doc_fd;
 				break ;
 			}
 		}
@@ -103,13 +99,13 @@ int	open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 	}
 	if (pa_tokens[tkn_idx].is_out)
 	{
-		env.open_fd_out = fd_out;
-		env.fd_out = fd_out;
+		g_env.open_fd_out = fd_out;
+		g_env.fd_out = fd_out;
 	}
 	if (pa_tokens[tkn_idx].is_in)
 	{
-		env.open_fd_in = fd_in;
-		env.fd_in = fd_in;
+		g_env.open_fd_in = fd_in;
+		g_env.fd_in = fd_in;
 	}
 	return (0);
 }
@@ -121,7 +117,7 @@ int	handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
 	if (!check_for_input_files(pa_tkns, i))
 	{
 		find_input_fd(pa_tkns, i);
-		env.fd_in = dup(env.fd_in);
+		g_env.fd_in = dup(g_env.fd_in);
 	}
 	return (0);
 }

@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 int	get_2d_arr_len(char **arr)
 {
 	int	i;

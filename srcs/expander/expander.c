@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 void	place_values(char *res, char *tmp, t_expand *flags)
 {
 	res[flags->i] = tmp[flags->k];
@@ -11,9 +9,9 @@ void	place_values(char *res, char *tmp, t_expand *flags)
 
 static int	check_exp(t_expand *flags, char *tmp)
 {
-	if (((flags->qte != 39 || env.here_doc) && (tmp[flags->k] == '$'
+	if (((flags->qte != 39 || g_env.here_doc) && (tmp[flags->k] == '$'
 				&& tmp[flags->k + 1] == '?'))
-		|| ((flags->qte != 39 || env.here_doc)
+		|| ((flags->qte != 39 || g_env.here_doc)
 			&& (tmp[flags->k] == '$' && ft_isenv(tmp[flags->k + 1]))))
 		return (1);
 	return (0);

@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static void	elimination(char *str)
 {
 	char	*s;
@@ -10,20 +8,20 @@ static void	elimination(char *str)
 
 	i = 0;
 	index = 0;
-	s = ft_strdup(env.env_var[0]);
+	s = ft_strdup(g_env.env_var[0]);
 	i = get_env(str);
 	index = i;
-	if (env.env_var[index] != NULL)
+	if (g_env.env_var[index] != NULL)
 	{
 		i = index;
-		while (env.env_var[i + 1] != NULL)
+		while (g_env.env_var[i + 1] != NULL)
 		{
-			free(env.env_var[i]);
-			env.env_var[i] = ft_strdup(env.env_var[i + 1]);
+			free(g_env.env_var[i]);
+			g_env.env_var[i] = ft_strdup(g_env.env_var[i + 1]);
 			i++;
 		}
-		free(env.env_var[i]);
-		env.env_var[i] = NULL;
+		free(g_env.env_var[i]);
+		g_env.env_var[i] = NULL;
 	}
 	free(s);
 }
@@ -60,7 +58,7 @@ static int	parse_unset(char *str)
 		tmp = get_unset_env(str);
 		if (tmp == NULL)
 		{
-			// ft_putstr_fd("Not a valid identifier\n", 2);
+			ft_putstr_fd("Not a valid identifier\n", 2);
 			return (1);
 		}
 		j = 0;
@@ -82,12 +80,12 @@ int	unset(char **str)
 	i = 1;
 	while (str[i] != NULL)
 	{
-		env.stat_code = parse_unset(str[i]);
+		g_env.stat_code = parse_unset(str[i]);
 		if (is_rdr(str[i]) || !ft_strcmp(str[i], "|"))
 			break ;
-		if (!env.stat_code)
+		if (!g_env.stat_code)
 			elimination(str[i]);
 		i++;
 	}
-	return (env.stat_code);
+	return (g_env.stat_code);
 }

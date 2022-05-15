@@ -61,6 +61,7 @@ SRCS = 	srcs/main.c \
 		srcs/built_ins/exit/exit.c \
 		srcs/built_ins/exit/exit_utils.c \
 		srcs/utils/free_functions.c \
+		srcs/utils/free_functions2.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils2.c \
 		srcs/input_to_tokens/split_to_tokens_utils.c \
@@ -80,7 +81,7 @@ CC = gcc -ggdb -g
 
 #CFLAGS = -lreadline
 # R_FLAG = -lreadline 
-CFLAGS = -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
+CFLAGS = -Wall -Wextra -Werror -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
 ${NAME}:${OBJS}
 		@echo "${WHITE}Have patience. This will take some moment!"

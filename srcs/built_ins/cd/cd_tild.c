@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 /*This function is to change the directory to the home directory of the system*/
 void	ch_home(void)
 {

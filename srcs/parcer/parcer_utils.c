@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 int	get_pipe_len(char **tokens)
 {
 	int	i;
@@ -43,7 +41,7 @@ void	init_parser_info(t_parser_info *pa_info, char **tokens)
 	pa_info->str = NULL;
 	pa_info->j = 0;
 	pa_info->pipes_count = get_pipe_len(tokens) + 1;
-	env.count = pa_info->pipes_count;
+	g_env.count = pa_info->pipes_count;
 }
 
 void	allocate_cmd_memmory(t_parser_info *pa_info, char **tokens)

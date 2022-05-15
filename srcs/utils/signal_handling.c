@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 //	move to a newline rl_on_new_line();
 
 //	clear readline buffer rl_replace_line("", 0);
@@ -14,7 +12,7 @@ static void	control_c(void)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	env.stat_code = 1;
+	g_env.stat_code = 1;
 }
 
 static void	print_nothing(void)
@@ -26,26 +24,24 @@ static void	print_nothing(void)
 
 void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 {
-	int			trig;
-
-	trig = 0;
 	(void)context;
+	(void)siginfo;
 	if (signum == SIGINT)
 	{
-		if (env.s_pid)
+		if (g_env.s_pid)
 		{
 			printf("\b\b\n");
-			env.stat_code = 130;
+			g_env.stat_code = 130;
 		}
 		else
 			control_c();
 	}
 	else if (signum == SIGQUIT)
 	{
-		if (env.s_pid)
+		if (g_env.s_pid)
 		{
 			ft_putendl_fd("\b\bQuit", STDOUT_FILENO);
-			env.stat_code = 1;
+			g_env.stat_code = 1;
 		}
 		else
 			print_nothing();

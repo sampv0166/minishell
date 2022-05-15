@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 void	deal_with_pipes(t_pars_tokens *pa_tkns,
 		t_parser_info *pa_info, char **tokens)
 {
@@ -28,7 +26,7 @@ void	parcer2(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 
 	set_pipe_type(pa_tkns, pa_info);
 	pa_info->i = 0;
-	while (pa_info->i < env.count)
+	while (pa_info->i < g_env.count)
 	{	
 		f = find_input_file_names(pa_tkns, pa_info->i);
 		ft_free_str_array(&pa_tkns[pa_info->i].cmd);
@@ -59,8 +57,8 @@ t_pars_tokens	*parser(char **tokens)
 {
 	t_pars_tokens	*pa_tkns;
 	t_parser_info	pa_info;
-	int				i;
-	pid_t			pid;
+	// int				i;
+	// pid_t			pid;
 
 	init_parser_info(&pa_info, tokens);
 	pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info.pipes_count));

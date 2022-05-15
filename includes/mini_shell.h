@@ -204,6 +204,19 @@ void			set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info);
 void			set_redirection_type(t_pars_tokens *pa_tkns,
 					t_parser_info *pa_info, char **tokens);
 void			handle_signals(void);
+void			split_by_redirection2(char **arr, char **tokens, t_split \
+				*split_info);
+
+void			get_len_out_redirection(char **arr, int *i, int *j, \
+				int *size);
+
+void			ft_free_str_array(char ***arr);
+
+void			free_me(char **ptr);
+
+void			free_2d_array(char **arr);
+
+int				handle_in_redirections(t_pars_tokens *pa_tkns, int *i);
 /*
  ** =============================================================================
  ** EXPANDER

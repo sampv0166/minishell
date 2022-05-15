@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 /*
 TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 * echo -n -n -nnnn -nnnnm
@@ -58,8 +56,8 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 		return (pwd(pa_tokens[i].cmd));
 	else if (ft_strcmp(pa_tokens[i].cmd[0], "exit") == 0)
 	{
-		env.stat_code = ft_exit(pa_tokens[i].cmd, pa_tokens[i].pipe);
-		return (env.stat_code);
+		g_env.stat_code = ft_exit(pa_tokens[i].cmd, pa_tokens[i].pipe);
+		return (g_env.stat_code);
 	}
 	return (EXIT_FAILURE);
 }
@@ -73,9 +71,9 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
 	// 	i = 0;
 	// handle builtint redirections here . 
 	//exit(0);
-	env.stat_code = execute_inbuilt(pa_toks, i);
+	g_env.stat_code = execute_inbuilt(pa_toks, i);
 	//execute_inbuilt_reset_fds(pa_toks, saved_fds);
-	return (env.stat_code);
+	return (g_env.stat_code);
 }
 
 int	is_inbuilt(char *cmd)

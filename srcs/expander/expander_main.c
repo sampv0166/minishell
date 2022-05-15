@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 static void	exp_init(int *j, int *m)
 {
 	*j = 0;
@@ -73,7 +71,7 @@ void	expander(t_pars_tokens *pa_tkns)
 	char	**full_splitted;
 
 	y = 0;
-	while (y < env.count)
+	while (y < g_env.count)
 	{
 		pa_tkns[y].cmd_cpy = ft_2d_str_cpy(pa_tkns[y].cmd);
 		full_splitted = get_2d_exp2(y, pa_tkns, 0);

@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 void	init_pa_tkns(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
 	int	i;
@@ -65,7 +63,7 @@ static void	trigger_pa_tkns(t_pars_tokens *pa_tkns,
 void	set_pipe_type(t_pars_tokens *pa_tkns, t_parser_info *pa_info)
 {
 	pa_info->j = 0;
-	while (pa_info->j < env.count)
+	while (pa_info->j < g_env.count)
 	{
 		if ((pa_tkns[pa_info->j].cmd_full && pa_tkns[pa_info->j].cmd_full[0]
 				== '|') && (pa_tkns[pa_info->j].cmd_full[

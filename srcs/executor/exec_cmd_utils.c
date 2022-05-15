@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 int	is_redir(t_pars_tokens *pa_tok, int i)
 {
 	if (pa_tok[i].is_in == 1 || pa_tok[i].is_out == 1
@@ -49,9 +47,6 @@ int	set_fds(char **cmd_split, int *i, int *fd)
 
 int	ft_eco_check(char *str)
 {
-	int	i;
-
-	i = 0;
 	if (ft_strlen(str) == 4 || ft_strlen(str) == 6)
 	{
 		if (str[0] == 'e' || str[0] == 'E')
@@ -70,9 +65,9 @@ int	handle_pipes(t_pars_tokens *pa_tokens, int i)
 	pipe(fd);
 	pa_tokens[i].fd_in = fd[0];
 	pa_tokens[i].fd_out = fd[1];
-	env.fd_in = fd[0];
-	env.fd_out = fd[1];
-	env.fd_pipe_in_open = fd[0];
-	env.fd_pipe_out_open = fd[1];
+	g_env.fd_in = fd[0];
+	g_env.fd_out = fd[1];
+	g_env.fd_pipe_in_open = fd[0];
+	g_env.fd_pipe_out_open = fd[1];
 	return (0);
 }

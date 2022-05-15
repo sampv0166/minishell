@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 int	get_files_arr_len(t_pars_tokens *pa_tkns, int i)
 {
 	int	len ;
@@ -19,8 +17,8 @@ void	find_cmd_name(t_pars_tokens *pa_tkns, t_parser_info *pa_info, int i)
 	while (pa_tkns[i].cmd_splitted[pa_info->j])
 	{
 		if (pa_tkns[i].cmd_splitted[pa_info->j]
-			&& pa_tkns[i].cmd_splitted[pa_info->j][0] == '<'
-			|| pa_tkns[i].cmd_splitted[pa_info->j][0] == '>')
+			&& (pa_tkns[i].cmd_splitted[pa_info->j][0] == '<'
+			|| pa_tkns[i].cmd_splitted[pa_info->j][0] == '>'))
 		{
 			pa_info->j++;
 			if (pa_tkns[i].cmd_splitted[pa_info->j])
@@ -47,8 +45,8 @@ void	find_file_names(t_pars_tokens *pa_tkns,
 	while (pa_tkns[i].cmd_splitted[pa_info->j])
 	{
 		if (pa_tkns[i].cmd_splitted[pa_info->j]
-			&& pa_tkns[i].cmd_splitted[pa_info->j][0] == '<'
-			|| pa_tkns[i].cmd_splitted[pa_info->j][0] == '>')
+			&& (pa_tkns[i].cmd_splitted[pa_info->j][0] == '<'
+			|| pa_tkns[i].cmd_splitted[pa_info->j][0] == '>'))
 		{
 			pa_info->j++;
 			if (pa_tkns[i].cmd_splitted[pa_info->j])

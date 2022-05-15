@@ -52,6 +52,8 @@ typedef struct s_env_var
 	int				here_doc;
 }				t_env_var;
 
+t_env_var		g_env;
+
 /*
 ** =============================================================================
 ** ENV VAR FUNCTIONS

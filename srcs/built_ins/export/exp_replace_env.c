@@ -1,9 +1,7 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
-void	replace_env(int g_env, char *var)
+void	replace_env(int g_env1, char *var)
 {
-	free(env.env_var[g_env]);
-	env.env_var[g_env] = ft_strdup(var);
+	free(g_env.env_var[g_env1]);
+	g_env.env_var[g_env1] = ft_strdup(var);
 }

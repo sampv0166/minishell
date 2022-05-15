@@ -1,7 +1,5 @@
 #include "../../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 char	**new_env(char *str)
 {
 	char	**new;
@@ -10,18 +8,18 @@ char	**new_env(char *str)
 
 	length = 0;
 	i = 0;
-	while (env.env_var[length] != NULL)
+	while (g_env.env_var[length] != NULL)
 		length++;
 	new = (char **)malloc(sizeof(char *) * (length + 2));
-	while (env.env_var[i] != NULL)
+	while (g_env.env_var[i] != NULL)
 	{
-		new[i] = ft_strdup(env.env_var[i]);
+		new[i] = ft_strdup(g_env.env_var[i]);
 		i++;
 	}
 	new[i] = ft_strdup(str);
 	i++;
 	new[i] = NULL;
-	free_2d_array(env.env_var);
+	free_2d_array(g_env.env_var);
 	return (new);
 }
 
@@ -29,7 +27,7 @@ void	export_new_env(char *var, char *tmp)
 {
 	var = ft_strjoin(var, tmp);
 	free(tmp);
-	env.env_var = new_env(var);
+	g_env.env_var = new_env(var);
 	free(var);
 }
 
@@ -70,7 +68,7 @@ char	*fetch_var(char *var, int *i)
 int	export_error(char *value, char *var)
 {
 	free(value);
-	// printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+	printf("%s: not a valid identifier\n", ft_strchr(var, '='));
 	free(var);
 	return (EXIT_FAILURE);
 }

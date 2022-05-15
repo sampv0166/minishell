@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	env;
-
 char	*ft_strjoin2(char *saved_line, char *buffer)
 {
 	char	*new_string;
