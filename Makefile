@@ -24,6 +24,7 @@ SRCS = 	srcs/main.c \
 		srcs/input_to_tokens/tokens_split.c \
 		srcs/input_to_tokens/input_to_tokens.c \
 		srcs/input_to_tokens/get_arr_len.c \
+		srcs/input_to_tokens/init_split_info.c \
 		srcs/parcer/parcer.c \
 		srcs/parcer/parcer_utils2.c\
 		srcs/parcer/parcer_utils.c \
