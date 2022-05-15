@@ -2,6 +2,13 @@
 
 extern t_env_var	env;
 
+void	split_by_redirection2(char **arr, char **tokens, t_split *split_info)
+{
+	split_info->len = ft_strlen (arr[split_info->i]);
+	tokens[split_info->k] = ft_strdup(arr[split_info->i]);
+	split_info->k++;
+}
+
 void	split_by_redirection(char **arr, char **tokens, t_split *split_info)
 {
 	if (!token_contains_quote(arr[split_info->i]))
@@ -26,11 +33,7 @@ void	split_by_redirection(char **arr, char **tokens, t_split *split_info)
 		}
 	}
 	else
-	{
-		split_info->len = ft_strlen (arr[split_info->i]);
-		tokens[split_info->k] = ft_strdup(arr[split_info->i]);
-		split_info->k++;
-	}
+		split_by_redirection2(arr, tokens, split_info);
 }
 
 /*

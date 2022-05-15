@@ -19,7 +19,11 @@ SRCS = 	srcs/main.c \
 		srcs/executor/exec_cmd.c \
 		srcs/executor/exec_cmd_utils.c \
 		srcs/executor/shl_vals.c \
+		srcs/input_to_tokens/skip_and_increment_len_sngl_qts.c \
+		srcs/input_to_tokens/skip_and_increment_len_dbl_qts.c \
+		srcs/input_to_tokens/tokens_split.c \
 		srcs/input_to_tokens/input_to_tokens.c \
+		srcs/input_to_tokens/get_arr_len.c \
 		srcs/parcer/parcer.c \
 		srcs/parcer/parcer_utils2.c\
 		srcs/parcer/parcer_utils.c \
@@ -61,7 +65,9 @@ SRCS = 	srcs/main.c \
 		srcs/input_to_tokens/split_to_tokens_utils.c \
 		srcs/input_to_tokens/split_to_tokens_utils_2.c \
 		srcs/input_to_tokens/syntax_check_utils.c \
+		srcs/input_to_tokens/syntax_check_utils2.c \
 		srcs/expander/expander.c \
+		srcs/expander/expander_main.c \
 		srcs/expander/expander_utils.c \
 		srcs/expander/expander_utils2.c \
 		srcs/input_to_tokens/split_by_redir.c \

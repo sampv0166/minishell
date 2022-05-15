@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
+extern t_env_var	env;
 
 /*
 TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION

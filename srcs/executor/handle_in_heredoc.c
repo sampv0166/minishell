@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var env;
+extern t_env_var	env;
 
 void	find_input_fd(t_pars_tokens *pa_tkns, int i)
 {

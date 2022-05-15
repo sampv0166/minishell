@@ -24,42 +24,51 @@ void	init_split_info(t_split *split_info)
     * if its not space , check if its double quotes or single quotes and call dbl_qts function
     * if its neither single or double qts, skip the spaces and increment length
 */
-int	get_arr_len(char *str)
-{
-	int	len;
-	int	i;
 
-	i = 0;
-	len = 0;
-	while (str[i])
-	{
-		if (str[i] == ' ')
-		{
-			i++;
-			len++;
-		}
-		else if (str[i] != ' ' && str[i])
-		{
-			if (str[i] == '\"')
-			{
-				if (!skip_and_increment_len_dbl_qts (str, &i, &len))
-					break ;
-			}
-			else if (str[i] == '\'')
-			{
-				if (!skip_and_increment_len_sngl_qts (str, &i, &len))
-					break ;
-			}
-			else
-			{
-				i++;
-				if (str[i] == 0)
-					len++;
-			}
-		}
-	}
-	return (len);
-}
+// static void	get_arr_len2(int *i, char *str, int *len, int trig)
+// {
+// 	if (trig == 2)
+// 	{
+// 		(*i)++;
+// 		if (str[*i] == 0)
+// 			(*len)++;
+// 	}
+// 	else if (trig == 1)
+// 	{
+// 		(*i)++;
+// 		(*len)++;
+// 	}
+// }
+
+// int	get_arr_len(char *str)
+// {
+// 	int	len;
+// 	int	i;
+
+// 	i = 0;
+// 	len = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == ' ')
+// 			get_arr_len2(&i, str, &len, 1);
+// 		else if (str[i] != ' ' && str[i])
+// 		{
+// 			if (str[i] == '\"')
+// 			{
+// 				if (!skip_and_increment_len_dbl_qts (str, &i, &len))
+// 					break ;
+// 			}
+// 			else if (str[i] == '\'')
+// 			{
+// 				if (!skip_and_increment_len_sngl_qts (str, &i, &len))
+// 					break ;
+// 			}
+// 			else
+// 				get_arr_len2(&i, str, &len, 2);
+// 		}
+// 	}
+// 	return (len);
+// }
 
 void	inrement_i_len(t_split *split_info)
 {
@@ -83,7 +92,7 @@ void	inrement_i_len(t_split *split_info)
     returns 0 if there is no closing qutoe
     returns 1 if there is a closing quote
 */
-int	create_string_in_between_dbl_quotes(char *str,t_split *split_info)
+int	create_string_in_between_dbl_quotes(char *str, t_split *split_info)
 {
 	inrement_i_len(split_info);
 	if (str[split_info->i] && ft_strchr_2(str + split_info->i, '\"'))
@@ -92,7 +101,9 @@ int	create_string_in_between_dbl_quotes(char *str,t_split *split_info)
 			inrement_i_len(split_info);
 		if (str[split_info->i] == '\"')
 			inrement_i_len(split_info);
-		while (str[split_info->i] && (str[split_info->i] != ' ') && (str[split_info->i] != '<') && (str[split_info->i] != '>') && (str[split_info->i] != '|'))
+		while (str[split_info->i] && (str[split_info->i] != ' ') && (str[
+					split_info->i] != '<') && (str[split_info->i] != '>')
+			&& (str[split_info->i] != '|'))
 		{
 			if (str[split_info->i] == '\'')
 			{
@@ -121,7 +132,8 @@ int	create_string_in_between_dbl_quotes(char *str,t_split *split_info)
 	{
 		while (str[split_info->i] && str[split_info->i] != '\"')
 			inrement_i_len(split_info);
-		split_info->arr[split_info->array_index++] = ft_substr(str, split_info->i - split_info->len, split_info->len);
+		split_info->arr[split_info->array_index++] = ft_substr(str,
+				split_info->i - split_info->len, split_info->len);
 		split_info->len = 0;
 		split_info->brk_flg = 0;
 		return (0);
