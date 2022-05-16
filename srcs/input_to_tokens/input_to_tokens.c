@@ -1,7 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-extern t_env_var	g_env;
-
 int	input_to_tokens(char *input)
 {
 	t_pars_tokens	*pa_tkns;

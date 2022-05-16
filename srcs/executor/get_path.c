@@ -59,9 +59,11 @@ char	*get_abs_cmd(char *cmd)
 	char	*abs_cmd_path;
 	char	**path_split;
 	char	*dup;
+	char	**tmp;
 	int		i;
 
 	i = 0;
+	tmp = NULL;
 	if (!cmd)
 		return (cmd);
 	if (access(cmd, X_OK) == 0)
@@ -69,7 +71,9 @@ char	*get_abs_cmd(char *cmd)
 	init(&path_split);
 	while (path_split[i])
 	{
-		abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], cmd);
+		tmp = ft_split(cmd, ' ');
+		abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], tmp[0]);
+		free_2d_array(tmp);
 		dup = ft_strdup(abs_cmd_path);
 		if (abs_cmd_path == NULL)
 			return (NULL);

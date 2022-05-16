@@ -17,13 +17,13 @@ int	access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 		}
 		else
 		{
-			ft_putstr_fd(":-:command not found\n", 2);
+			printf("%d: :-:command not found\n", g_env.stat_code);
 			return (EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		ft_putstr_fd(":-:command not found\n", 2);
+		printf("%d: :-:command not found\n", g_env.stat_code);
 		return (EXIT_FAILURE);
 	}
 	return (0);

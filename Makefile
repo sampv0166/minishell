@@ -83,7 +83,7 @@ CC = gcc -ggdb -g
 # R_FLAG = -lreadline 
 CFLAGS = -Wall -Wextra -Werror -lreadline -L /usr/local/Cellar/readline/8.1/lib -I /usr/local/Cellar/readline/8.1/include
 
-${NAME}:${OBJS}
+${NAME}:
 		@echo "${WHITE}Have patience. This will take some moment!"
 			${MAKE} all -C libft/
 			cp ./libft/libft.a ./

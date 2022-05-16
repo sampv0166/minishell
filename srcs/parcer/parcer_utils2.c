@@ -28,6 +28,7 @@ int	read_line(char *buf, char **join, int end1, char *heredoc)
 	while (true)
 	{
 		buf = readline("\033[1m\x1B[31m==> \033[0m\x1B[37m");
+		// handle_signals();
 		if (buf == NULL)
 			return (EXIT_SUCCESS);
 		if (ft_strcmp(buf, heredoc) == 0)
@@ -73,7 +74,11 @@ int	read_here_doc(char **cmd_split, t_parser_info *pa_info,
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));
 	if (!read_line(buf, &join, end[1], heredoc))
-		return (EXIT_FAILURE);
+	{
+		printf("m\n");
+		free_me(&join);
+		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));
+	}
 	if (!g_env.here_doc && join)
 		heredoc_exp(&join);
 	write(end[1], join, ft_strlen(join));
