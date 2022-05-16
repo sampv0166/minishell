@@ -81,7 +81,7 @@ int	executor(t_pars_tokens *pa_tkns)
 	char	*path;
 
 	path = NULL;
-	pid = malloc(sizeof(pid_t) * g_env.count);
+	pid = ft_calloc(sizeof(pid_t), g_env.count);
 	init_and_dup_fd();
 	execute_commands(pa_tkns, path, pid);
 	wait_for_child_and_restore_fds_(pid);

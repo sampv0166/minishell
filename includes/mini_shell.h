@@ -33,6 +33,8 @@
 # include"executor.h"
 # include <fcntl.h>
 
+extern	t_env_var		g_env;
+
 typedef struct s_flags
 {
 	int	newl_flag;

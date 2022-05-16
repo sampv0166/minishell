@@ -1,5 +1,7 @@
 #include "../includes/mini_shell.h"
 
+t_env_var		g_env;
+
 static void	exit_program(char *input)
 {
 	free(input);
