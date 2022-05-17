@@ -101,6 +101,5 @@ int	init_env_vars(char **envp)
 		g_env.s_pid = 0;
 		return (EXIT_SUCCESS);
 	}
-	g_env.stat_code = 1;
 	return (EXIT_FAILURE);
 }

@@ -73,7 +73,7 @@ int	read_here_doc(char **cmd_split, t_parser_info *pa_info,
 	if (heredoc == NULL)
 		return (exit_close_fds(end[0], end[1], EXIT_FAILURE));
 	if (!read_line(buf, &join, end[1], heredoc))
-		printf("WARNING : heredoc delemeted by EOF\n");
+		ft_putendl_fd("WARNING : heredoc delemited by EOF", 2);
 	if (!g_env.here_doc && join)
 		heredoc_exp(&join);
 	write(end[1], join, ft_strlen(join));

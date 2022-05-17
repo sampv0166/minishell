@@ -16,16 +16,10 @@ int	access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 			}
 		}
 		else
-		{
-			printf("%d: :-:command not found\n", g_env.stat_code);
-			return (EXIT_FAILURE);
-		}
+			return (error_print("YES", ":-:command not found", NULL));
 	}
 	else
-	{
-		printf("%d: :-:command not found\n", g_env.stat_code);
-		return (EXIT_FAILURE);
-	}
+		return (error_print("YES", ":-:command not found", NULL));
 	return (0);
 }
 

@@ -68,7 +68,7 @@ char	*fetch_var(char *var, int *i)
 int	export_error(char *value, char *var)
 {
 	free(value);
-	printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+	error_print(NULL, ": not a valid identifier", ft_strchr(var, '='));
 	free(var);
 	return (EXIT_FAILURE);
 }

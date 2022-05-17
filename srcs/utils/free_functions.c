@@ -30,18 +30,18 @@ int	free_everything(t_pars_tokens *tokens)
 	return (0);
 }
 
-// void	print_2d_array(char **arr)
-// {
-// 	int	i;
+void	print_2d_array(char **arr)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (arr[i])
-// 	{
-// 		ft_putstr_fd(arr[i], 2);
-// 		ft_putstr_fd("\n", 2);
-// 		i++;
-// 	}
-// }
+	i = 0;
+	while (arr[i])
+	{
+		ft_putstr_fd(arr[i], 2);
+		ft_putstr_fd("\n", 2);
+		i++;
+	}
+}
 
 int	ft_perror(int exit_status, char *msg)
 {

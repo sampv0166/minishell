@@ -54,16 +54,24 @@ void	free_path(char **dup, char **abs_path)
 	free_me(abs_path);
 }
 
+char	*get_2d_path(char *abs, char **path_split, int i, char *cmd)
+{
+	char	**tmp;
+
+	tmp = ft_split(cmd, ' ');
+	abs = get_abs_cmd_path(&abs, path_split[i], tmp[0]);
+	free_2d_array(tmp);
+	return (abs);
+}
+
 char	*get_abs_cmd(char *cmd)
 {
 	char	*abs_cmd_path;
 	char	**path_split;
 	char	*dup;
-	char	**tmp;
 	int		i;
 
 	i = 0;
-	tmp = NULL;
 	if (!cmd)
 		return (cmd);
 	if (access(cmd, X_OK) == 0)
@@ -71,9 +79,7 @@ char	*get_abs_cmd(char *cmd)
 	init(&path_split);
 	while (path_split[i])
 	{
-		tmp = ft_split(cmd, ' ');
-		abs_cmd_path = get_abs_cmd_path(&abs_cmd_path, path_split[i], tmp[0]);
-		free_2d_array(tmp);
+		abs_cmd_path = get_2d_path(abs_cmd_path, path_split, i, cmd);
 		dup = ft_strdup(abs_cmd_path);
 		if (abs_cmd_path == NULL)
 			return (NULL);
