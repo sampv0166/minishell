@@ -112,7 +112,7 @@ int	exp_op(char *var, char *value, int g_env1)
 		if (ft_strchr(var, '+'))
 			return (append_expo(var));
 		value = fetch_var(var, &i);
-		if (op_not(var[i - 1]) || (!var[i + 1]))
+		if (op_not(var[i - 1]))
 			return (export_error(value, var));
 		g_env1 = get_env(value);
 		if (g_env.env_var[g_env1] == NULL)

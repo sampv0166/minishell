@@ -37,6 +37,8 @@ TODO : THESE TEST CASES ARE NOT WORKING SAME AS THE SYSTEM ECHO FUNCTION
 
 int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 {
+	if (g_env.fd_out == -1)
+		return (EXIT_FAILURE);
 	if (!ft_strcmp(pa_tokens[i].cmd[0], "echo")
 		|| !ft_strcmp(pa_tokens[i].cmd[0], "echo\"\""))
 	{
