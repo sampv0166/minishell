@@ -7,7 +7,6 @@ static void	exit_program(char *input)
 	free(input);
 	free_env();
 	ft_putendl_fd("exiting", 2);
-	// ft_putnbr_fd(g_env.stat_code, 2);
 	exit(g_env.stat_code);
 }
 
