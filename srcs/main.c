@@ -7,6 +7,7 @@ static void	exit_program(char *input)
 	free(input);
 	free_env();
 	ft_putendl_fd("exiting", 2);
+	// ft_putnbr_fd(g_env.stat_code, 2);
 	exit(g_env.stat_code);
 }
 
@@ -24,7 +25,7 @@ static int	get_input(void)
 		{
 			free_env();
 			ft_putendl_fd("exiting", 2);
-			return (0);
+			return (g_env.stat_code);
 		}
 		if (ft_strlen(input) > 0)
 			add_history(input);
@@ -34,14 +35,14 @@ static int	get_input(void)
 		if (g_env.trigger)
 			exit_program(input);
 	}	
-	return (0);
+	return (g_env.stat_code);
 }
 
 int	main(int ac, char **argv, char **envp)
 {
 	(void)ac;
 	(void)argv;
-	g_env.stat_code = 0;
+	// g_env.stat_code = 0;
 	g_env.s_pid = 0;
 	g_env.here_doc = 0;
 	handle_signals();

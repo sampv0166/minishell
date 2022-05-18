@@ -38,7 +38,7 @@ static int	check_args(char *str, int i, unsigned char *c)
 static void	exit_is_alpha(char **str, int *i, unsigned char *c)
 {
 	ft_exit_print(str[*i]);
-	*c = 2;
+	*c = 255;
 }
 
 unsigned char	ft_exit(char **str, int pipe)

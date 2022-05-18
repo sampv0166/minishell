@@ -106,7 +106,7 @@ int	exp_op(char *var, char *value, int g_env1)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(var, '=') && !ft_isdigit(var[0])
+	if (ft_strchr(var, '=') && !ft_isdigit(var[0]) && var[0] != '='
 		&& !ft_isqt(var[0]) && var[0] != '$')
 	{
 		if (ft_strchr(var, '+'))
