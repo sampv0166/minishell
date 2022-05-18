@@ -106,6 +106,5 @@ int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
 	}
 	if (access_cmnd(abs_cmd_path, pa_tokens, i))
 		return (127);
-	else
-		return (0);
+	return (0);
 }
