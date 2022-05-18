@@ -68,16 +68,8 @@ void	execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
 		if (pid[i] == 0)
 		{
 			exec_child(pa_tkns, pid, path, i);
-			// ft_putendl_fd("str: ", 2);
-			// ft_putnbr_fd(g_env.stat_code, 2);
-			// ft_putchar_fd('\n', 2);
-			// ft_putendl_fd("end: ", 2);
 			exit (g_env.stat_code);
 		}
-		ft_putendl_fd("str: ", 2);
-		ft_putnbr_fd(g_env.stat_code, 2);
-		ft_putchar_fd('\n', 2);
-		ft_putendl_fd("end: ", 2);
 		free_me(&path);
 		i++;
 	}

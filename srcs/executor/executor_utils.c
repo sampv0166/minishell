@@ -20,7 +20,7 @@ void	wait_for_child_and_restore_fds_(pid_t *pid)
 	while (i < g_env.count)
 	{
 		if (pid[i])
-			waitpid(pid[i], &status, 0);
+			wait(&status);
 		i++;
 	}
 	restore_fds();
