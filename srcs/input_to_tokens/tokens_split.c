@@ -74,7 +74,7 @@ static void	error_syntax_qtes(int ret, char **tokens)
 	if (ret)
 	{
 		ft_putstr_fd("Error: Quotes are not closed\n", 2);
-		g_env.stat_code = 258;
+		g_env.stat_code = 1;
 	}
 	else
 	{

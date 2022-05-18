@@ -8,7 +8,7 @@
 
 static void	control_c(void)
 {
-	write(1, "\n", 1);
+	write(2, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -19,18 +19,16 @@ static void	print_nothing(void)
 {
 	rl_on_new_line();
 	rl_redisplay();
-	write(1, "  \b\b", 4);
+	write(2, "  \b\b", 4);
 }
 
-void	signal_handler(int signum, siginfo_t *siginfo, void *context)
+void	signal_handler(int signum)
 {
-	(void)context;
-	(void)siginfo;
 	if (signum == SIGINT)
 	{
 		if (g_env.s_pid)
 		{
-			printf("\b\b\n");
+			ft_putendl_fd("\b\b", 2);
 			g_env.stat_code = 130;
 		}
 		else
@@ -40,7 +38,7 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 	{
 		if (g_env.s_pid)
 		{
-			ft_putendl_fd("\b\bQuit", STDOUT_FILENO);
+			ft_putendl_fd("\b\bQuit", 2);
 			g_env.stat_code = 1;
 		}
 		else
@@ -61,11 +59,12 @@ This function helps to handle signals such as CTRL + C and CONTRL + \
 
 void	handle_signals(void)
 {
-	struct sigaction	sa;
-
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = &signal_handler;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	// struct sigaction	sa;
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, &signal_handler);
+	// sa.sa_flags = SA_SIGINFO;
+	// sa.sa_sigaction = &signal_handler;
+	// sigemptyset(&sa.sa_mask);
+	// sigaction(SIGINT, &sa, NULL);
+	// sigaction(SIGQUIT, &sa, NULL);
 }

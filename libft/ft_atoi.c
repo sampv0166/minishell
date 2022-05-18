@@ -6,7 +6,7 @@
 /*   By: makhtar <makhtar@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 14:48:02 by apila-va          #+#    #+#             */
-/*   Updated: 2022/05/07 13:19:51 by makhtar          ###   ########.fr       */
+/*   Updated: 2022/05/18 11:08:13 by makhtar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static long int	ft_atoi_atoi(char *str, int sign, int *index)
 			return (nbr);
 	}
 	print_atoi(str);
-	return (2);
+	return (255);
 }
 
 long int	ft_atoi(const char *str)

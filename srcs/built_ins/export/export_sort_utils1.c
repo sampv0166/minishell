@@ -76,13 +76,13 @@ void	ordered_string(char **trim)
 
 	i = 0;
 	g_env1 = 0;
-	while (trim[i] != NULL)
-		i++;
-	i -= 2;
-	free(trim[i]);
-	trim[i] = ft_strdup(trim[i + 1]);
-	free(trim[i + 1]);
-	trim[i + 1] = NULL;
+	// while (trim[i] != NULL)
+	// 	i++;
+	// i -= 1;
+	// free(trim[i]);
+	// trim[i] = ft_strdup(trim[i + 1]);
+	// free(trim[i + 1]);
+	// trim[i + 1] = NULL;
 	i = 0;
 	while (trim[i] != NULL)
 	{
@@ -101,6 +101,7 @@ void	exp_one_arg(void)
 	trim = trimmer();
 	sorting(trim);
 	ordered_string(trim);
+	ft_putstr_2d(trim);
 	res = declare_s(trim);
 	ft_putstr_2d(res);
 	free_2d_array(trim);

@@ -68,7 +68,7 @@ void	execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
 		if (pid[i] == 0)
 		{
 			exec_child(pa_tkns, pid, path, i);
-			exit (0);
+			exit (g_env.stat_code);
 		}
 		free_me(&path);
 		i++;

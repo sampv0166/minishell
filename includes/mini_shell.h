@@ -60,6 +60,7 @@ typedef struct s_expand
 ** =============================================================================
 */
 
+int				error_print(char *stat_code, char *print, char *str);
 char			**ft_2d_str_cpy(char **str);
 void			ft_putstr_2d(char **str);
 int				length_2d(char **str);

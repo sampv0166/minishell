@@ -16,16 +16,10 @@ int	access_cmnd(char *abs_cmd_path, t_pars_tokens *pa_tokens, int i)
 			}
 		}
 		else
-		{
-			printf("%d: :-:command not found\n", g_env.stat_code);
-			return (EXIT_FAILURE);
-		}
+			return (error_print("YES", ":-:command not found", NULL));
 	}
 	else
-	{
-		printf("%d: :-:command not found\n", g_env.stat_code);
-		return (EXIT_FAILURE);
-	}
+		return (error_print("YES", ":-:command not found", NULL));
 	return (0);
 }
 
@@ -103,6 +97,8 @@ int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
 		if (is_inbuilt(pa_tokens[i].cmd[0]))
 			return (handle_inbuilt_redir(pa_tokens, i));
 	}
+	else
+		return (0);
 	if (pa_tokens[i].cmd && (g_env.env_var[get_env("PATH")] != NULL))
 	{
 		abs_cmd_path = get_abs_cmd(pa_tokens[i].cmd[0]);

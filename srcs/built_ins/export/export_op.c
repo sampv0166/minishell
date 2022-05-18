@@ -94,7 +94,7 @@ static int	append_expo(char *var)
 	}
 	else
 	{
-		printf("%s: not a valid identifier\n", ft_strchr(var, '='));
+		error_print(NULL, ": not a valid identifier", ft_strchr(var, '='));
 		free(var);
 		return (EXIT_FAILURE);
 	}
@@ -106,7 +106,7 @@ int	exp_op(char *var, char *value, int g_env1)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(var, '=') && !ft_isdigit(var[0])
+	if (ft_strchr(var, '=') && !ft_isdigit(var[0]) && var[0] != '='
 		&& !ft_isqt(var[0]) && var[0] != '$')
 	{
 		if (ft_strchr(var, '+'))
@@ -124,7 +124,7 @@ int	exp_op(char *var, char *value, int g_env1)
 	else
 	{
 		free(var);
-		return (printf("Error: No value given to env variable\n"));
+		return (error_print(NULL, "Error: No value given!", NULL));
 	}
 	free(var);
 	return (EXIT_SUCCESS);
