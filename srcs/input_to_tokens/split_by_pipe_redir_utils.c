@@ -2,7 +2,7 @@
 
 int	read_buf(char **buf, char **in)
 {
-	*buf = readline("");
+	*buf = readline("| ");
 	if (*buf == NULL)
 	{
 		free_me(in);

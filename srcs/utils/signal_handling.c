@@ -44,6 +44,7 @@ void	signal_handler(int signum)
 		else
 			print_nothing();
 	}
+	g_env.s_pid = 0;
 }
 
 /*

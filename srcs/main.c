@@ -19,8 +19,7 @@ static int	get_input(void)
 	{
 		g_env.s_pid = 0;
 		g_env.here_doc = 0;
-		g_env.open_fd_out = 0;
-		input = readline("\033[1m\x1B[31mMS SHELL======> \033[0m\x1B[37m\001\002");
+		input = readline("\001\033[1m\x1B[31m\002MS SHELL======> \001\033[0m\x1B[37m\002");
 		if (input == NULL)
 		{
 			free_env();
@@ -34,8 +33,6 @@ static int	get_input(void)
 		input_to_tokens(input);
 		if (g_env.trigger)
 			exit_program(input);
-		// ft_putnbr_fd(g_env.stat_code, 2);
-		// ft_putchar_fd('\n', 2);
 	}	
 	return (g_env.stat_code);
 }
@@ -44,9 +41,6 @@ int	main(int ac, char **argv, char **envp)
 {
 	(void)ac;
 	(void)argv;
-	// g_env.stat_code = 0;
-	g_env.s_pid = 0;
-	g_env.here_doc = 0;
 	handle_signals();
 	if (init_env_vars(envp))
 		free_env();

@@ -8,7 +8,8 @@ void	deal_with_pipes(t_pars_tokens *pa_tkns,
 	pa_info->arr1[pa_info->len] = ((char *)0);
 	pa_info->len++;
 	pa_info->i++;
-	pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
+	(void)pa_tkns;
+	// pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
 }
 
 void	create_cmds(t_parser_info *pa_info, char **tokens)
@@ -57,8 +58,6 @@ t_pars_tokens	*parser(char **tokens)
 {
 	t_pars_tokens	*pa_tkns;
 	t_parser_info	pa_info;
-	// int				i;
-	// pid_t			pid;
 
 	init_parser_info(&pa_info, tokens);
 	pa_tkns = malloc (sizeof (t_pars_tokens) * (pa_info.pipes_count));
