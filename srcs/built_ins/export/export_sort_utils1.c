@@ -101,7 +101,6 @@ void	exp_one_arg(void)
 	trim = trimmer();
 	sorting(trim);
 	ordered_string(trim);
-	ft_putstr_2d(trim);
 	res = declare_s(trim);
 	ft_putstr_2d(res);
 	free_2d_array(trim);

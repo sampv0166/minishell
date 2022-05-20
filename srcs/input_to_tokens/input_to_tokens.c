@@ -53,7 +53,6 @@ int	input_to_tokens(char *input)
 	if (!tokens)
 		return (EXIT_FAILURE);
 	// PARCER
-	
 	pa_tkns = parser(tokens);
 	ft_free_str_array(&tokens);
 	// EXPANDER

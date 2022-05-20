@@ -8,7 +8,6 @@ int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 	{
 		g_env.stat_code = 127;
 		ft_putstr_fd(":-:command not found\n", 2);
-		exit(127);
 	}
 	return (g_env.stat_code);
 }
@@ -35,12 +34,9 @@ void	exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int i)
 		if (pa_tkns[k].pipe != 0)
 			close(g_env.fd_pipe_in_open);
 		call_execve(pa_tkns, path, k);
-		if (k == g_env.count - 1)
-		{
-			free_everything(pa_tkns);
-			free_env();
-			free(pid);
-		}
+		free_everything(pa_tkns);
+		free_env();
+		free(pid);
 	}
 	else
 		end_process(pa_tkns, pid);
@@ -55,7 +51,9 @@ void	execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
 	{
 		path = NULL;
 		if (handle_in_redirections(pa_tkns, &i))
+		{
 			continue ;
+		}
 		dup2(g_env.fd_in, 0);
 		close(g_env.fd_in);
 		close_fds(pa_tkns, i, 0);

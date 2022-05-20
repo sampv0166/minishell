@@ -1,6 +1,5 @@
 #include "../../includes/mini_shell.h"
 
-
 char	*set_path(char ***path_split, char **abs_path, char **dup)
 {
 	ft_free_split(*path_split);
@@ -39,6 +38,7 @@ void	increment_s_vals(void)
 	char	*str;
 
 	str = NULL;
+	g_env.s_pid = 0;
 	tmp = ft_strdup("$");
 	tmp = ft_strjoin(tmp, "SHLVL");
 	i = get_env("SHLVL");

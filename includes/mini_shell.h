@@ -173,6 +173,7 @@ void			restore_fds(void);
 void			close_fds(t_pars_tokens *pa_tkns, int i, int f);
 void			wait_for_child_and_restore_fds_(pid_t *pid);
 
+char			*get_2d_path(char *abs, char **path_split, int i, char *cmd);
 char			*get_abs_cmd(char *cmd);
 int				init(char ***path_splitted);
 char			*ft_strjoin2(char *saved_line, char *buffer);

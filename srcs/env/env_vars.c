@@ -93,7 +93,6 @@ char	*get_env_value(char *var)
 */
 int	init_env_vars(char **envp)
 {
-	g_env.envp = envp;
 	g_env.env_var = save_env(envp);
 	if (g_env.env_var != NULL)
 	{

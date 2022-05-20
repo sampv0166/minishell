@@ -15,6 +15,7 @@ SRCS = 	srcs/main.c \
 		srcs/executor/executor_utils.c \
 		srcs/executor/handle_in_heredoc.c \
 		srcs/executor/handle_in_heredoc_utils.c \
+		srcs/executor/get_2d_path.c \
 		srcs/executor/get_path.c \
 		srcs/executor/exec_cmd.c \
 		srcs/executor/exec_cmd_utils.c \
