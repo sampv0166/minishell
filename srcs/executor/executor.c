@@ -1,76 +1,89 @@
 #include "../../includes/mini_shell.h"
 
-int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
+void	close_pipes_in_child(int i, int **p)
 {
-	if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
-		increment_s_vals();
-	if (execve(abs_path, pa_tokens[i].cmd, g_env.env_var) == -1)
+	int	j;
+
+	j = 0;
+	while (j < g_env.count)
 	{
-		g_env.stat_code = 127;
-		ft_putstr_fd(":-:command not found\n", 2);
+		if (i != j)
+			close(p[j][0]);
+		if (i + 1 != j)
+			close(p[j][1]);	
+		j++;
 	}
-	return (g_env.stat_code);
 }
 
-static void	end_process(t_pars_tokens *pa_tkns, pid_t *pid)
+void	duplicate_fds(t_pars_tokens *pa_tkns, int i, int **p)
 {
-	close(g_env.tmp_in);
-	close(g_env.tmp_out);
-	if (g_env.fd_pipe_in_open != 0)
-		close(g_env.fd_pipe_in_open);
-	free_everything(pa_tkns);
-	free(pid);
+	if (pa_tkns[i].pipe && !pa_tkns[i].is_in && !pa_tkns[i].here_doc)
+	{
+		if (pa_tkns[i].pipe == 2)
+			;
+		else
+			dup2(p[i][0], STDIN_FILENO);
+	}
+	else if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+		dup2(g_env.fd_in, STDIN_FILENO);
+	if (pa_tkns[i].pipe && !pa_tkns[i].is_out && !pa_tkns[i].is_out_appnd)
+	{
+		if (pa_tkns[i].pipe == 1)
+			;
+		else
+			dup2(p[i + 1][1], STDOUT_FILENO);
+	}
+	else if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
+		dup2(g_env.fd_out, STDOUT_FILENO);
 }
 
-void	exec_child(t_pars_tokens *pa_tkns, pid_t *pid, char *path, int i)
+void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 {
 	int	k;
 
 	k = i;
+	close_pipes_in_child(i, p);
 	if (!is_inbuilt(pa_tkns[k].cmd[0]) && path)
 	{
-		close(g_env.tmp_in);
-		close(g_env.tmp_out);
-		if (pa_tkns[k].pipe != 0)
-			close(g_env.fd_pipe_in_open);
+		duplicate_fds(pa_tkns, i, p);
 		call_execve(pa_tkns, path, k);
-		free_everything(pa_tkns);
-		free_env();
-		free(pid);
 	}
+	else if (is_inbuilt(pa_tkns[k].cmd[0]))
+		;
 	else
-		end_process(pa_tkns, pid);
+		g_env.stat_code = 127;
 }
 
-void	execute_commands(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
+void	execute_commands(t_pars_tokens *pa_tkns, \
+		char *path, pid_t *pid, int **p)
 {
 	int	i;
 
 	i = 0;
 	while (i < g_env.count)
 	{
-		path = NULL;
+		re_init_fds_nd_path(&path);
 		if (handle_in_redirections(pa_tkns, &i))
-		{
 			continue ;
-		}
-		dup2(g_env.fd_in, 0);
-		close(g_env.fd_in);
-		close_fds(pa_tkns, i, 0);
-		g_env.stat_code = execute_cmd(pa_tkns, i, &path);
-		close_fds(pa_tkns, i, 1);
+		g_env.stat_code = execute_cmd(pa_tkns, i, &path, p);
 		pid[i] = fork();
 		g_env.s_pid = pid[i];
 		if (pid[i] < 0)
 			exit(0);
 		if (pid[i] == 0)
 		{
-			exec_child(pa_tkns, pid, path, i);
+			exec_child(pa_tkns, path, i, p);
 			exit (g_env.stat_code);
 		}
+		if (pa_tkns[i].is_in)
+			close (g_env.open_fd_in);
+		if (pa_tkns[i].is_out)
+			close (g_env.open_fd_out);		
 		free_me(&path);
 		i++;
 	}
+	close_pipes_in_parent(p);
+	free_pipes(p);
 }
 
 int	executor(t_pars_tokens *pa_tkns)
@@ -80,9 +93,8 @@ int	executor(t_pars_tokens *pa_tkns)
 
 	path = NULL;
 	pid = ft_calloc(sizeof(pid_t), g_env.count);
-	init_and_dup_fd();
-	execute_commands(pa_tkns, path, pid);
-	wait_for_child_and_restore_fds_(pid);
+	create_pipes(pa_tkns, path, pid);
+	wait_for_child(pid);
 	free(pid);
 	return (0);
 }

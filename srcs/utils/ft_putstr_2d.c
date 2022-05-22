@@ -7,7 +7,7 @@ void	ft_putstr_2d(char **str)
 	i = 0;
 	while (str[i] != NULL)
 	{
-		ft_putendl_fd(str[i], 1);
+		ft_putendl_fd(str[i], g_env.fd_out);
 		i++;
 	}
 }

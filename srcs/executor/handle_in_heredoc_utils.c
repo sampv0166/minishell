@@ -14,8 +14,6 @@ int	handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
 			return (1);
 		}
 	}
-	else
-		g_env.fd_in = dup(g_env.fd_in);
 	*i = k;
 	return (0);
 }

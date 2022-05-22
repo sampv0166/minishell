@@ -65,13 +65,13 @@ bool	is_special_charater_correct(char *str)
 
 int	check_pipe_conditions(char **tokens, int i)
 {
-	if (tokens[i] && tokens[i][0] == '|'
-		&& tokens[i + 1] && tokens[i + 1][0] == '|')
-		return (false);
-	if (tokens[i] && tokens[i][0] == '>'
-		&& tokens[i + 1] && tokens[i + 1][0] == '|')
-		return (false);
+	if (tokens[i] && tokens[i][0] == '|' && tokens[i + 1] \
+		&& tokens[i + 1][0] == '|')
+		return (1);
+	if (tokens[i] && tokens[i][0] == '>' && tokens[i + 1] \
+		&& tokens[i + 1][0] == '|')
+		return (1);
 	if (tokens[i] && tokens[i][0] == '|' && i == 0)
-		return (false);
+		return (1);
 	return (0);
 }

@@ -64,10 +64,12 @@ void	ft_init(t_flags *flags)
 	flags->rdr_pip_index = 0;
 }
 
+/*Checking for double or single quotes, First reason
+ is to not print them, Second if there is a double
+quote or No quote and there is a $ in a str it should 
+fetch the value of the env variable*/
 int	check_rdr_pipes(char *str, t_flags *flags)
 {
-	/*Checking for double or single quotes, First reason is to not print them, Second if there is a double
-	quote or No quote and there is a $ in a str it should fetch the value of the env variable*/
 	if (str[0] == 39 || str[0] == 34)
 		flags->qte = str[0];
 	else if (last_char(str) == 39

@@ -2,12 +2,17 @@
 
 /*
 cd brings the directory to the tilde
-cd should work with only two arguments, example: cd Desktop without quotes. It should return an error with more than two args.
+cd should work with only two arguments, example: 
+cd Desktop without quotes. It should return an error 
+with more than two args.
 cd / brings the directory to /
 cd ~ brings the directory to the tilde
-if changing directory is successful. PWD takes the value of the current path of the directory and OLDPWD takes the old path of the current directory.
+if changing directory is successful. PWD takes 
+the value of the current path of the directory 
+and OLDPWD takes the old path of the current directory.
 RETURN 0 for the success and 1 for an ERROR.
-cd should also work with env variables as an argument. For example cd $OLDPWD
+cd should also work with env variables as an argument.
+ For example cd $OLDPWD
 */
 
 /*If the command is passed from user is // or /. This function changes
@@ -35,6 +40,10 @@ char	*get_pwd(void)
 		pwd = get_env_dollar("$PWD");
 	return (pwd);
 }
+/*Delimiting quotes*/
+/*Getting current PWD if the PWD doesn't exist in 
+env then get the current one using getcwd*/
+/*Error Message*/
 
 int	cd(char **str)
 {
@@ -42,9 +51,7 @@ int	cd(char **str)
 	char	*pwd;
 
 	i = 0;
-	/*Delimiting quotes*/
 	delimit_qtes(str[1]);
-	/*Getting current PWD if the PWD doesn't exist in env then get the current one using getcwd*/
 	i = 1;
 	pwd = get_pwd();
 	if (str[i] == NULL)
@@ -57,7 +64,6 @@ int	cd(char **str)
 		return (chge_c_dir(pwd));
 	else
 	{
-		/*Error Message*/
 		free(pwd);
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(str[i], 2);

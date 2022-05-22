@@ -18,7 +18,7 @@ int	pwd(char **str)
 	s = get_env_dollar("$PWD");
 	if (s == NULL)
 		s = ft_strdup(getcwd(dir, 1000));
-	ft_putendl_fd(s, 1);
+	ft_putendl_fd(s, g_env.fd_out);
 	free(s);
 	return (0);
 }

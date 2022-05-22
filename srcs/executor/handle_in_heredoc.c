@@ -97,7 +97,7 @@ int	open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 			return (EXIT_FAILURE);
 		i++;
 	}
-	if (pa_tokens[tkn_idx].is_out)
+	if (pa_tokens[tkn_idx].is_out || pa_tokens[tkn_idx].is_out_appnd)
 	{
 		g_env.open_fd_out = fd_out;
 		g_env.fd_out = fd_out;
@@ -117,7 +117,6 @@ int	handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
 	if (!check_for_input_files(pa_tkns, i))
 	{
 		find_input_fd(pa_tkns, i);
-		g_env.fd_in = dup(g_env.fd_in);
 	}
 	return (0);
 }

@@ -51,21 +51,8 @@ void	signal_handler(int signum)
 ! why this funnction ? 
 This function helps to handle signals such as CTRL + C and CONTRL + \
 */
-
-// void	handle_signals(void)
-// {
-// 	signal(SIGQUIT,handle_signal);
-// 	signal(SIGINT, handle_signal);
-// }
-
 void	handle_signals(void)
 {
-	// struct sigaction	sa;
 	signal(SIGINT, &signal_handler);
 	signal(SIGQUIT, &signal_handler);
-	// sa.sa_flags = SA_SIGINFO;
-	// sa.sa_sigaction = &signal_handler;
-	// sigemptyset(&sa.sa_mask);
-	// sigaction(SIGINT, &sa, NULL);
-	// sigaction(SIGQUIT, &sa, NULL);
 }

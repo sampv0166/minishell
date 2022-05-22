@@ -15,6 +15,7 @@ int	get_env_arr_len(char **arr)
 /*
 This function saves a copy of the env variable .
 */
+
 char	**save_env(char **env_var)
 {
 	char	**env_v;
@@ -37,11 +38,10 @@ char	**save_env(char **env_var)
 	return (env_v);
 }
 /*
-
 */
-
 /*
-  This function compares each string in the env variable with the value that we want to get.
+  This function compares each string in the env variable 
+  with the value that we want to get.
   checks if the unmatching charatcer is -61.
   -61 means the it comapred a null character and equal sign.
   find the index of the character '=' with ft_strchr function.
@@ -56,7 +56,8 @@ char	**save_env(char **env_var)
   SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
   XMODIFIERS=@im=ibus
   DESKTOP_SESSION=ubuntu
-  BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/code_code.desktop
+  BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/code_code
+  .desktop
   NO_AT_BRIDGE=1
   GTK_MODULES=gail:atk-bridge
   PWD=/home/abdu/Desktop/minishell
@@ -65,6 +66,7 @@ char	**save_env(char **env_var)
   !expected output
   /home/abdu/Desktop/minishell
 */
+
 char	*get_env_value(char *var)
 {
 	int		i;

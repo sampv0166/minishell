@@ -1,4 +1,4 @@
-#ifndef ENV_VAR_H
+# ifndef ENV_VAR_H
 # define ENV_VAR_H
 
 # include "executor.h"
@@ -51,7 +51,6 @@ typedef struct s_env_var
 	int				s_pid;
 	int				here_doc;
 }				t_env_var;
-
 
 /*
 ** =============================================================================

@@ -64,17 +64,16 @@ int	execute_inbuilt(t_pars_tokens *pa_tokens, int i)
 	return (EXIT_FAILURE);
 }
 
-int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i)
+int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, int **p)
 {
-	//(void)i;
-	// int		exit_status;
-	// int		saved_fds[2];
-	// if(i)
-	// 	i = 0;
-	// handle builtint redirections here . 
-	//exit(0);
+	if (pa_toks[i].pipe && !pa_toks[i].is_out && !pa_toks[i].is_out_appnd)
+	{
+		if (pa_toks[i].pipe == 1)
+			;
+		else
+			g_env.fd_out = p[i + 1][1];	
+	}
 	g_env.stat_code = execute_inbuilt(pa_toks, i);
-	//execute_inbuilt_reset_fds(pa_toks, saved_fds);
 	return (g_env.stat_code);
 }
 

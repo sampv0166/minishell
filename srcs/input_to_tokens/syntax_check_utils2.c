@@ -5,11 +5,11 @@ bool	is_token_syntax_valid(char **tokens)
 	int	i;
 
 	i = 0;
-	if (get_2d_arr_len2(tokens) == 1 && tokens[i] && tokens[i][0] == '|')
+	if (tokens[i] && tokens[i][0] == '|')
 		return (false);
 	while (tokens && tokens[i] != NULL)
 	{
-		if (!token_contains_quote(tokens[i]) && !(is_inbuilt(tokens[i])))
+		if (!token_contains_quote(tokens[i]))
 		{
 			if (tokens[i] && tokens[i + 1] == NULL)
 			{

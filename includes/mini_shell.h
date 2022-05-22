@@ -34,7 +34,6 @@
 # include <fcntl.h>
 
 extern	t_env_var		g_env;
-
 typedef struct s_flags
 {
 	int	newl_flag;
@@ -80,13 +79,12 @@ void			delimit_qtes(char *str);
 ** BuiltIn Functions
 ** =============================================================================
 */
-
 void			free_all(char **str);
- /*
+/*
  ** =============================================================================
  ** ECHO
  ** =============================================================================
- */
+*/
 void			check_qtes(char *tmp, int j, int *i, t_flags *flags);
 int				parse_str_echo(char **str, char **str_splitted);
 int				operations(char *tmp, t_flags *flags, int *i);
@@ -95,7 +93,7 @@ void			ft_init(t_flags *flags);
 int				check_old_pwd(char **var);
 int				check_rdr_pipes(char *str, t_flags *flags);
 void			echo(char **str, char **str_splitted);
- /*
+/*
  ** =============================================================================
  ** EXPORT
  ** =============================================================================
@@ -110,7 +108,7 @@ int				export_error(char *value, char *var);
 void			replace_env(int g_env1, char *var);
 int				exp_op(char *var, char *value, int g_env1);
 int				export(char **str);
- /*
+/*
  ** =============================================================================
  ** CD
  ** =============================================================================
@@ -120,26 +118,26 @@ void			chge_old_pwd(char *old_pwd);
 int				chge_tilde(char *pwd);
 int				chge_c_dir(char *pwd);
 int				cd(char **str);
- /*
+/*
  ** =============================================================================
  ** PWD
  ** =============================================================================
  */
 int				pwd(char **str);
- /*
+/*
  ** =============================================================================
  ** ENV
  ** =============================================================================
  */
 char			*get_env_dollar(char *str);
 int				env_var(void);
- /*
+/*
  ** =============================================================================
  ** UNSET
  ** =============================================================================
  */
 int				unset(char **str);
- /*
+/*
  ** =============================================================================
  ** EXIT
  ** =============================================================================
@@ -152,7 +150,7 @@ unsigned char	set_exit_triggers(unsigned char *c, int pipe,
 unsigned char	ft_exit(char **str, int pipe);
 int				is_inbuilt(char *cmd);
 int				ft_perror(int exit_status, char *msg);
-int				handle_inbuilt_redir(t_pars_tokens *pa_toks, int i);
+int				handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, int **p);
 bool			token_contains_quote(char *str);
 char			**new_env(char *str);
 void			print_2d_array(char **arr);
@@ -171,7 +169,7 @@ void			init_and_dup_fd(void);
 void			init_redir_helper_fds(void);
 void			restore_fds(void);
 void			close_fds(t_pars_tokens *pa_tkns, int i, int f);
-void			wait_for_child_and_restore_fds_(pid_t *pid);
+void			wait_for_child(pid_t *pid);
 
 char			*get_2d_path(char *abs, char **path_split, int i, char *cmd);
 char			*get_abs_cmd(char *cmd);
@@ -179,7 +177,8 @@ int				init(char ***path_splitted);
 char			*ft_strjoin2(char *saved_line, char *buffer);
 void			placing_vals_SHLVL(char *str);
 void			increment_s_vals(void);
-int				execute_cmd(t_pars_tokens *pa_tokens, int i, char **path);
+int				execute_cmd(t_pars_tokens *pa_tokens, int i, \
+				char **path, int **p);
 int				handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i);
 int				handle_pipes(t_pars_tokens *pa_tokens, int i);
 int				handle_output_redirections(char **cmd_split,
@@ -221,6 +220,14 @@ void			free_me(char **ptr);
 void			free_2d_array(char **arr);
 
 int				handle_in_redirections(t_pars_tokens *pa_tkns, int *i);
+void			close_pipes_in_parent(int **p);
+void			re_init_fds_nd_path(char **path);
+void			free_pipes(int **p);
+int				call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i);
+void			execute_commands(t_pars_tokens *pa_tkns, \
+				char *path, pid_t *pid, int **p);
+void			create_pipes(t_pars_tokens *pa_tkns, \
+				char *path, pid_t *pid);			
 /*
  ** =============================================================================
  ** EXPANDER

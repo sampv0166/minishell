@@ -9,7 +9,6 @@ void	deal_with_pipes(t_pars_tokens *pa_tkns,
 	pa_info->len++;
 	pa_info->i++;
 	(void)pa_tkns;
-	// pa_tkns[pa_info->j].fd_out = STDOUT_FILENO;
 }
 
 void	create_cmds(t_parser_info *pa_info, char **tokens)

@@ -68,6 +68,13 @@ char	**sorting(char **trim)
 	trim = t_sort(trim);
 	return (trim);
 }
+// while (trim[i] != NULL)
+// 	i++;
+// i -= 1;
+// free(trim[i]);
+// trim[i] = ft_strdup(trim[i + 1]);
+// free(trim[i + 1]);
+// trim[i + 1] = NULL;
 
 void	ordered_string(char **trim)
 {
@@ -76,13 +83,6 @@ void	ordered_string(char **trim)
 
 	i = 0;
 	g_env1 = 0;
-	// while (trim[i] != NULL)
-	// 	i++;
-	// i -= 1;
-	// free(trim[i]);
-	// trim[i] = ft_strdup(trim[i + 1]);
-	// free(trim[i + 1]);
-	// trim[i + 1] = NULL;
 	i = 0;
 	while (trim[i] != NULL)
 	{

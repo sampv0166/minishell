@@ -19,7 +19,7 @@ static int	get_input(void)
 	{
 		g_env.s_pid = 0;
 		g_env.here_doc = 0;
-		input = readline("\001\033[1m\x1B[31m\002MS SHELL======> \001\033[0m\x1B[37m\002");
+		input = readline("");
 		if (input == NULL)
 		{
 			free_env();

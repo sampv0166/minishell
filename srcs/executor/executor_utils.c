@@ -1,16 +1,18 @@
 #include "../../includes/mini_shell.h"
 
-void	restore_fds(void)
+int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
-	if (g_env.open_heredoc_fdin != 0)
-		close (g_env.open_heredoc_fdin);
-	dup2(g_env.tmp_in, 0);
-	dup2(g_env.tmp_out, 1);
-	close(g_env.tmp_in);
-	close(g_env.tmp_out);
+	if (!ft_strcmp(pa_tokens[i].cmd[0], "./minishell"))
+		increment_s_vals();
+	if (execve(abs_path, pa_tokens[i].cmd, g_env.env_var) == -1)
+	{
+		g_env.stat_code = 127;
+		ft_putstr_fd(":-:command not found\n", 2);
+	}
+	return (g_env.stat_code);
 }
 
-void	wait_for_child_and_restore_fds_(pid_t *pid)
+void	wait_for_child(pid_t *pid)
 {
 	int	i;
 	int	status;
@@ -27,17 +29,6 @@ void	wait_for_child_and_restore_fds_(pid_t *pid)
 		}
 		i++;
 	}
-	restore_fds();
-}
-
-void	init_and_dup_fd(void)
-{
-	g_env.tmp_in = dup(0);
-	g_env.tmp_out = dup(1);
-	g_env.fd_in = g_env.tmp_in ;
-	g_env.fd_out = g_env.tmp_out;
-	g_env.fd_pipe_in_open = 0;
-	g_env.fd_pipe_out_open = 0;
 }
 
 void	init_redir_helper_fds(void)
@@ -68,4 +59,20 @@ void	close_fds(t_pars_tokens *pa_tkns, int i, int f)
 	}
 	if (pa_tkns[i].pipe == 2)
 		close(g_env.fd_pipe_out_open);
+}
+
+void	create_pipes(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
+{
+	int	i;
+	int	**p;
+
+	i = 0;
+	p = malloc (sizeof (int *) * g_env.count);
+	while (i < g_env.count)
+	{
+		p[i] = malloc (sizeof (int) * 2);
+		pipe(p[i]);
+		i++;
+	}	
+	execute_commands(pa_tkns, path, pid, p);
 }

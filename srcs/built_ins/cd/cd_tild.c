@@ -91,7 +91,8 @@ int	chge_tilde(char *pwd)
 	return (0);
 }
 
-/*If the chdir is successful, then it updates the values of pwd and old_pwd in env*/
+/*If the chdir is successful, then it updates 
+the values of pwd and old_pwd in env*/
 int	chge_c_dir(char *pwd)
 {
 	char	*new;

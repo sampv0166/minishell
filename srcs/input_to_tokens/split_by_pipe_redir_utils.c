@@ -2,7 +2,7 @@
 
 int	read_buf(char **buf, char **in)
 {
-	*buf = readline("| ");
+	*buf = readline("");
 	if (*buf == NULL)
 	{
 		free_me(in);
@@ -79,6 +79,7 @@ void	get_len_pipe(char **arr, int *i, int *j, int *size)
     ! expected output : int len
     7
 */
+
 int	get_len(char **arr)
 {
 	int	size;

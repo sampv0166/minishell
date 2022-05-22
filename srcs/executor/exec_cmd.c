@@ -52,8 +52,6 @@ int	handle_output_redirections(char **cmd_split,
 	if (!(pa_tokens[tkn_idx].is_in && pa_tokens[tkn_idx].here_doc))
 		set_fds(cmd_split, &i, &fd);
 	pa_tokens[tkn_idx].fd_out = fd;
-	if (pa_tokens[tkn_idx].pipe)
-		close(g_env.fd_out);
 	g_env.fd_out = fd;
 	if (pa_tokens[tkn_idx].is_out)
 		g_env.open_fd_out = fd;
@@ -62,10 +60,6 @@ int	handle_output_redirections(char **cmd_split,
 
 int	handle_redirections(t_pars_tokens *pa_tokens, int i)
 {
-	if (pa_tokens[i].pipe)
-	{
-		handle_pipes(pa_tokens, i);
-	}
 	if (pa_tokens[i].is_out || pa_tokens[i].is_out_appnd)
 	{
 		if (pa_tokens[i].is_in == 0 && pa_tokens[i].here_doc == 0)
@@ -73,14 +67,10 @@ int	handle_redirections(t_pars_tokens *pa_tokens, int i)
 					pa_tokens, i) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 	}
-	else if (pa_tokens[i].pipe == 1)
-	{
-		g_env.fd_out = dup(g_env.tmp_out);
-	}
 	return (EXIT_SUCCESS);
 }
 
-int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
+int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path, int **p)
 {
 	char	*abs_cmd_path;
 
@@ -90,12 +80,10 @@ int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path)
 		if (handle_redirections(pa_tokens, i))
 			return (EXIT_FAILURE);
 	}
-	dup2(g_env.fd_out, 1);
-	close(g_env.fd_out);
 	if (pa_tokens[i].cmd[0])
 	{
 		if (is_inbuilt(pa_tokens[i].cmd[0]))
-			return (handle_inbuilt_redir(pa_tokens, i));
+			return (handle_inbuilt_redir(pa_tokens, i, p));
 	}
 	else
 		return (0);

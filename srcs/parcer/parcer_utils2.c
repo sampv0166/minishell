@@ -27,7 +27,7 @@ int	read_line(char *buf, char **join, int end1, char *heredoc)
 	(void)end1;
 	while (true)
 	{
-		buf = readline("\033[1m\x1B[31m==> \033[0m\x1B[37m");
+		buf = readline("");
 		if (buf == NULL)
 			return (0);
 		if (ft_strcmp(buf, heredoc) == 0)

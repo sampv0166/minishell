@@ -1,5 +1,38 @@
 #include "../../includes/mini_shell.h"
 
+void	free_pipes(int **p)
+{
+	int	l;
+
+	l = 0;
+	while (l < g_env.count)
+	{
+		free(p[l]);
+		l++;
+	}
+	free(p);
+}
+
+void	close_pipes_in_parent(int **p)
+{	
+	int	j;
+
+	j = 0;
+	while (j < g_env.count)
+	{
+		close(p[j][0]);
+		close(p[j][1]);
+		j++;
+	}
+}
+
+void	re_init_fds_nd_path(char **path)
+{
+	*path = NULL;
+	g_env.fd_in = 0;
+	g_env.fd_out = 1;
+}
+
 int	get_2d_arr_len(char **arr)
 {
 	int	i;

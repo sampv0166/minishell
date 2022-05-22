@@ -26,10 +26,10 @@ void	split_by_redirection(char **arr, char **tokens, t_split *split_info)
 	else
 		split_by_redirection2(arr, tokens, split_info);
 }
-
 /*
     ! why this function ?  
-    This function is used to further split the input if it contains pipes or redirections.
+    This function is used to further split the input if 
+	it contains pipes or redirections.
     !expected input : char *str    
     echo "hello world" >file|wc -l
     ! expected output : char **str
