@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:47 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 17:18:19 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 18:38:43 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ void	close_out_in_files_fd(t_pars_tokens *pa_tkns, int i)
 	if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
 	{
 		close (g_env.open_fd_out);
-	}	
-	if (g_env.open_heredoc_fdin != 0)
-		close(g_env.open_heredoc_fdin);
-
+	}
 }
 
 int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)

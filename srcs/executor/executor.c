@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:54 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 17:20:25 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 18:43:25 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,11 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 			close(p[i][0]);
 			close(p[i][1]);
 		}
+
 		if (pa_tkns[i].pipe != 1 && pa_tkns[i].pipe)
 			close(p[i + 1][1]);
-		g_env.stat_code = 127;
+		if (ft_strlen(pa_tkns[i].cmd[0]) > 0)
+			g_env.stat_code = 127;
 	}
 }
 
@@ -104,6 +106,8 @@ void	execute_commands(t_pars_tokens *pa_tkns, char *path, \
 		{
 			exec_child(pa_tkns, path, i, p);
 			close_out_in_files_fd(pa_tkns, i);
+			if (g_env.open_heredoc_fdin != 0)
+				close(g_env.open_heredoc_fdin);
 			exit (g_env.stat_code);
 		}
 		close_out_in_files_fd(pa_tkns, i);

@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:30:06 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 16:54:54 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 17:26:59 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	find_input_fd(t_pars_tokens *pa_tkns, int i)
 	j = len;
 	while (j >= 0 && pa_tkns[i].cmd_splitted && pa_tkns[i].cmd_splitted[j])
 	{
-		ft_putnbr_fd(j, 2);
 		if (pa_tkns[i].cmd_splitted[j] && pa_tkns[i].cmd_splitted[j][0] == '<')
 		{
 			if (ft_strlen(pa_tkns[i].cmd_splitted[j]) == 1)
