@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:30:22 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 16:00:39 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 16:50:45 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,23 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, int **p)
 
 int	is_inbuilt(char *cmd)
 {
-	if (!ft_strcmp(cmd, "echo")
-		|| !ft_strcmp(cmd, "echo\"\""))
-		return (1);
-	if (ft_strcmp(cmd, "export") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "env") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "unset") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "exit") == 0)
-		return (1);
+	if (cmd)
+	{
+		if (!ft_strcmp(cmd, "echo") \
+			|| !ft_strcmp(cmd, "echo\"\""))
+			return (1);
+		if (ft_strcmp(cmd, "export") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "env") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "cd") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "unset") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "pwd") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "exit") == 0)
+			return (1);
+	}
 	return (0);
 }

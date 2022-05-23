@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:30:14 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:30:15 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 16:19:16 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ char	**save_env(char **env_var)
 		return (NULL);
 	while (env_var[i])
 	{
-	env_v[i] = ft_strdup(env_var[i]);
-	i++;
+		env_v[i] = ft_strdup(env_var[i]);
+		i++;
 	}
 	env_v[i] = NULL;
 	return (env_v);

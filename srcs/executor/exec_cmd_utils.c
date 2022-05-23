@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:42 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:29:43 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 16:57:18 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,5 @@ int	ft_eco_check(char *str)
 					if (str[3] == 'o' || str[3] == 'O')
 						return (1);
 	}
-	return (0);
-}
-
-int	handle_pipes(t_pars_tokens *pa_tokens, int i)
-{
-	int	fd[2];
-
-	pipe(fd);
-	pa_tokens[i].fd_in = fd[0];
-	pa_tokens[i].fd_out = fd[1];
-	g_env.fd_in = fd[0];
-	g_env.fd_out = fd[1];
-	g_env.fd_pipe_in_open = fd[0];
-	g_env.fd_pipe_out_open = fd[1];
 	return (0);
 }
