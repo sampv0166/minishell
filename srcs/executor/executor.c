@@ -42,10 +42,19 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 	int	k;
 
 	k = i;
-	close_pipes_in_child(i, p);
+	if (pa_tkns[i].pipe)
+		close_pipes_in_child(i, p);
 	if (!is_inbuilt(pa_tkns[k].cmd[0]) && path)
 	{
-		duplicate_fds(pa_tkns, i, p);
+		if (pa_tkns[i].pipe)
+			duplicate_fds(pa_tkns, i, p);
+		else
+		{
+			if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+				dup2(g_env.fd_in, STDIN_FILENO);
+			if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
+				dup2(g_env.fd_out, STDOUT_FILENO);		
+		}	
 		call_execve(pa_tkns, path, k);
 	}
 	else if (is_inbuilt(pa_tkns[k].cmd[0]))
@@ -82,8 +91,13 @@ void	execute_commands(t_pars_tokens *pa_tkns, \
 		free_me(&path);
 		i++;
 	}
-	close_pipes_in_parent(p);
-	free_pipes(p);
+	if (pa_tkns[0].pipe)
+	{
+		close_pipes_in_parent(p);
+		free_pipes(p);
+	}
+	else
+		free(p);
 }
 
 int	executor(t_pars_tokens *pa_tkns)

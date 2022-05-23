@@ -68,7 +68,7 @@ void	create_pipes(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
 
 	i = 0;
 	p = malloc (sizeof (int *) * g_env.count);
-	while (i < g_env.count)
+	while (i < g_env.count && pa_tkns[i].pipe)
 	{
 		p[i] = malloc (sizeof (int) * 2);
 		pipe(p[i]);
