@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:31:00 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 14:21:40 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/mini_shell.h"
 
 static void	ft_exit_print(char *str)
@@ -31,7 +43,7 @@ static int	check_args(char *str, int i, unsigned char *c)
 	}
 	else if (i == 1)
 		g_env.trigger = 1;
-	*c = ft_atoi(str);
+	*c = ft_exit_atoi(str);
 	return (0);
 }
 
@@ -54,11 +66,8 @@ unsigned char	ft_exit(char **str, int pipe)
 		delimit_qtes(str[i]);
 		if (i > 1 || is_sign(str[i][0]) || ft_isdigit(str[i][0]))
 		{
-			if (check_args(str[i], i, &c))
-			{
-				c = 1;
+			if (check_args(str[i], i, &c) || g_env.n_trig)
 				break ;
-			}
 		}
 		else if (ft_isalpha(str[i][0]) || ft_isqt(str[i][0]))
 		{

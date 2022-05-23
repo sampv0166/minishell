@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini_shell.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:31:33 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 14:19:13 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINI_SHELL_H
 # define MINI_SHELL_H
 # define STDERR			2
@@ -33,7 +45,7 @@
 # include"executor.h"
 # include <fcntl.h>
 
-extern	t_env_var		g_env;
+extern t_env_var		g_env;
 typedef struct s_flags
 {
 	int	newl_flag;
@@ -145,6 +157,7 @@ int				unset(char **str);
 
 int				read_buf(char **buf, char **in);
 void			ft_exit_init(int *i, unsigned char *c);
+long int		ft_exit_atoi(const char *str);
 unsigned char	set_exit_triggers(unsigned char *c, int pipe,
 					int *i, char **str);
 unsigned char	ft_exit(char **str, int pipe);

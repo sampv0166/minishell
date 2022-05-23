@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:26:57 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 13:26:58 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/mini_shell.h"
 
 int	free_env(void)
@@ -46,6 +58,7 @@ void	print_2d_array(char **arr)
 int	ft_perror(int exit_status, char *msg)
 {
 	perror(msg);
+	g_env.stat_code = exit_status;
 	return (exit_status);
 }
 
