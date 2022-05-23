@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_by_redir.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:29:01 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 13:29:02 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/mini_shell.h"
 
 void	split_by_redirection(char **arr, char **tokens, t_split *split_info)

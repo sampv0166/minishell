@@ -1,4 +1,16 @@
-# ifndef ENV_VAR_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_var.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:31:41 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 13:52:52 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef ENV_VAR_H
 # define ENV_VAR_H
 
 # include "executor.h"
@@ -50,6 +62,7 @@ typedef struct s_env_var
 	int				fd_pipe_in_open;
 	int				s_pid;
 	int				here_doc;
+	int				n_trig;
 }				t_env_var;
 
 /*

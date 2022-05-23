@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:27:57 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 16:06:39 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/mini_shell.h"
 
 t_env_var		g_env;
@@ -19,7 +31,8 @@ static int	get_input(void)
 	{
 		g_env.s_pid = 0;
 		g_env.here_doc = 0;
-		input = readline("");
+		input = readline(
+				"");
 		if (input == NULL)
 		{
 			free_env();

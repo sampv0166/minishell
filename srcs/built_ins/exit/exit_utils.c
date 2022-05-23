@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 13:30:57 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 15:14:24 by makhtar & a      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/mini_shell.h"
 
 void	ft_exit_init(int *i, unsigned char *c)
@@ -5,6 +17,7 @@ void	ft_exit_init(int *i, unsigned char *c)
 	*i = 1;
 	*c = g_env.stat_code;
 	g_env.trigger = 0;
+	g_env.n_trig = 0;
 }
 
 unsigned char	set_exit_triggers(unsigned char *c,

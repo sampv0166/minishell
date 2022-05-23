@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/05/23 13:31:45 by makhtar & a       #+#    #+#              #
+#    Updated: 2022/05/23 14:21:10 by makhtar & a      ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 RED = \033[0;31m
 BLACK = \033[0;30m
 WHITE = \033[1;37m
@@ -62,6 +74,7 @@ SRCS = 	srcs/main.c \
 		srcs/built_ins/unset.c \
 		srcs/built_ins/exit/exit.c \
 		srcs/built_ins/exit/exit_utils.c \
+		srcs/built_ins/exit/exit_atoi.c \
 		srcs/utils/free_functions.c \
 		srcs/utils/free_functions2.c \
 		srcs/input_to_tokens/split_by_pipe_redir_utils.c \

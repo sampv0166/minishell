@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   exit_atoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/30 14:48:02 by apila-va          #+#    #+#             */
-/*   Updated: 2022/05/23 14:14:47 by makhtar & a      ###   ########.fr       */
+/*   Created: 2022/05/23 14:29:19 by makhtar & a       #+#    #+#             */
+/*   Updated: 2022/05/23 14:29:20 by makhtar & a      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../../includes/mini_shell.h"
 
-static void	print_atoi(char *str)
+static void	print_atoi_exit(char *str)
 {
 	ft_putstr_fd("exit: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": numeric argument requred", 2);
 }
 
-static int	check_limit(int i, int sign, char *str)
+static int	check_limit_exit(int i, int sign, char *str)
 {
 	if (i == 19 && sign > 0)
 	{
@@ -34,7 +34,7 @@ static int	check_limit(int i, int sign, char *str)
 	return (0);
 }
 
-static long int	ft_atoi_atoi(char *str, int sign, int *index)
+static long int	ft_exit_atoi_atoi(char *str, int sign, int *index)
 {
 	int			i;
 	long int	nbr;
@@ -55,14 +55,15 @@ static long int	ft_atoi_atoi(char *str, int sign, int *index)
 			if (i < 19)
 				return (nbr);
 		}
-		if (check_limit(i, sign, str))
+		if (check_limit_exit(i, sign, str))
 			return (nbr);
 	}
-	print_atoi(str);
+	print_atoi_exit(str);
+	g_env.n_trig = 1;
 	return (255);
 }
 
-long int	ft_atoi(const char *str)
+long int	ft_exit_atoi(const char *str)
 {
 	int		i;
 	long	nbr;
@@ -80,6 +81,6 @@ long int	ft_atoi(const char *str)
 			sign = -1;
 		i++;
 	}
-	nbr = ft_atoi_atoi(s, sign, &i);
+	nbr = ft_exit_atoi_atoi(s, sign, &i);
 	return (nbr);
 }
