@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:44 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:29:45 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 15:56:00 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	handle_redirections(t_pars_tokens *pa_tokens, int i)
 // 	if (handle_redirections(pa_tokens, i))
 // 		return (EXIT_FAILURE);
 // }
+
 int	execute_inbuilts(t_pars_tokens *pa_tokens, int i, char **path, int **p)
 {
 	char	*abs_cmd_path;

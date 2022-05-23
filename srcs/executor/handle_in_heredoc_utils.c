@@ -3,21 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   handle_in_heredoc_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:30:03 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:30:04 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 15:59:04 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini_shell.h"
+
+void	duplicate_file_fds(t_pars_tokens *pa_tkns, int i)
+{
+	if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
+		dup2(g_env.fd_in, STDIN_FILENO);
+	if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
+		dup2(g_env.fd_out, STDOUT_FILENO);
+}
 
 int	handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
 {
 	int	k;
 
 	k = *i;
-	if (pa_tkns[k].is_in || pa_tkns[k].here_doc || pa_tkns[k].is_out || pa_tkns[k].is_out_appnd)
+	if (pa_tkns[k].is_in || pa_tkns[k].here_doc || pa_tkns[k].is_out || \
+		pa_tkns[k].is_out_appnd)
 	{
 		if (handle_in_and_here_doc(pa_tkns, k))
 		{

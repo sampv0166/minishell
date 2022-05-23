@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:47 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 16:02:48 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 15:57:24 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini_shell.h"
+
+void	close_pipe_and_heredoc_fd(t_pars_tokens *pa_tkns, int **p)
+{
+	if (g_env.open_heredoc_fdin != 0)
+		close(g_env.open_heredoc_fdin);
+	if (pa_tkns[0].pipe)
+	{
+		close_pipes_in_parent(p);
+		free_pipes(p);
+	}
+	else
+		free(p);
+}
+
+void	close_out_in_files_fd(t_pars_tokens *pa_tkns, int i)
+{
+	if (pa_tkns[i].is_in)
+		close (g_env.open_fd_in);
+	if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
+		close (g_env.open_fd_out);
+}
 
 int	call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i)
 {
@@ -47,36 +68,6 @@ void	wait_for_child(pid_t *pid)
 		}
 		i++;
 	}
-}
-
-void	init_redir_helper_fds(void)
-{
-	g_env.open_fd_in = 0;
-	g_env.open_fd_out = 0;
-	g_env.open_heredoc_fdin = 0;
-}
-
-void	close_fds(t_pars_tokens *pa_tkns, int i, int f)
-{
-	if (f == 0)
-	{
-		if (pa_tkns[i].pipe == 3)
-			close(g_env.fd_pipe_in_open);
-		if (pa_tkns[i].pipe == 1)
-			close(g_env.fd_pipe_in_open);
-		return ;
-	}
-	if (pa_tkns[i].is_in)
-		close (g_env.open_fd_in);
-	if (pa_tkns[i].is_out)
-		close (g_env.open_fd_out);
-	if (pa_tkns[i].pipe == 1)
-	{
-		close(g_env.fd_pipe_in_open);
-		close(g_env.fd_pipe_out_open);
-	}
-	if (pa_tkns[i].pipe == 2)
-		close(g_env.fd_pipe_out_open);
 }
 
 void	create_pipes(t_pars_tokens *pa_tkns, char *path, pid_t *pid)

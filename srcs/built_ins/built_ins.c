@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:30:22 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:30:23 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 16:00:39 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	handle_inbuilt_redir(t_pars_tokens *pa_toks, int i, int **p)
 	if (pa_toks[i].pipe == 3)
 		close (p[i + 1][1]);
 	if (pa_toks[i].pipe == 2)
-		close (p[i + 1][1]);			
+		close (p[i + 1][1]);
 	return (g_env.stat_code);
 }
 

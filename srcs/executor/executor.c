@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:54 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:29:55 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 15:58:43 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,11 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 		if (pa_tkns[i].pipe)
 			duplicate_fds(pa_tkns, i, p);
 		else
-		{
-			if (pa_tkns[i].is_in || pa_tkns[i].here_doc)
-				dup2(g_env.fd_in, STDIN_FILENO);
-			if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
-				dup2(g_env.fd_out, STDOUT_FILENO);		
-		}	
+			duplicate_file_fds(pa_tkns, i);
 		call_execve(pa_tkns, path, k);
 	}
 	else if (is_inbuilt(pa_tkns[k].cmd[0]))
-	{
 		;
-	}
 	else
 	{
 		close(p[i][0]);
@@ -88,8 +81,8 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 	}
 }
 
-void	execute_commands(t_pars_tokens *pa_tkns, \
-		char *path, pid_t *pid, int **p)
+void	execute_commands(t_pars_tokens *pa_tkns, char *path, \
+		pid_t *pid, int **p)
 {
 	int	i;
 
@@ -109,22 +102,11 @@ void	execute_commands(t_pars_tokens *pa_tkns, \
 			exec_child(pa_tkns, path, i, p);
 			exit (g_env.stat_code);
 		}
-		if (pa_tkns[i].is_in)
-			close (g_env.open_fd_in);
-		if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
-			close (g_env.open_fd_out);		
+		close_out_in_files_fd(pa_tkns, i);
 		free_me(&path);
 		i++;
 	}
-	if (g_env.open_heredoc_fdin != 0)
-		close(g_env.open_heredoc_fdin);
-	if (pa_tkns[0].pipe)
-	{
-		close_pipes_in_parent(p);
-		free_pipes(p);
-	}
-	else
-		free(p);
+	close_pipe_and_heredoc_fd(pa_tkns, p);
 }
 
 int	executor(t_pars_tokens *pa_tkns)

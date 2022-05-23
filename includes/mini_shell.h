@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_shell.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:31:33 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 14:19:13 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 15:59:21 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,11 @@ int				call_execve(t_pars_tokens *pa_tokens, char *abs_path, int i);
 void			execute_commands(t_pars_tokens *pa_tkns, \
 				char *path, pid_t *pid, int **p);
 void			create_pipes(t_pars_tokens *pa_tkns, \
-				char *path, pid_t *pid);			
+				char *path, pid_t *pid);		
+void			close_out_in_files_fd(t_pars_tokens *pa_tkns, int i);
+void			close_pipe_and_heredoc_fd(t_pars_tokens *pa_tkns, int **p);
+void			duplicate_file_fds(t_pars_tokens *pa_tkns, int i);
+
 /*
  ** =============================================================================
  ** EXPANDER
