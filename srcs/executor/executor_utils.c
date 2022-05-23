@@ -6,7 +6,7 @@
 /*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:47 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:29:48 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/23 16:02:48 by makhtar & a      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,19 @@ void	wait_for_child(pid_t *pid)
 
 	i = 0;
 	status = 2;
+	(void)pid;
 	while (i < g_env.count)
 	{
-		if (pid[i])
+		if (i == g_env.count - 1)
 		{
 			wait(&status);
 			if (WIFEXITED(status))
 				g_env.stat_code = WEXITSTATUS(status);
+		}
+		else
+		{
+			wait(&status);
+			WIFEXITED(status);
 		}
 		i++;
 	}
