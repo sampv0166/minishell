@@ -33,19 +33,13 @@ int	check_for_input_files(t_pars_tokens *pa_tkns, int i)
 	while (pa_tkns[i].cmd_splitted && pa_tkns[i].cmd_splitted[j])
 	{
 		increment_j(pa_tkns, i, &j);
-		if (pa_tkns[i].cmd_splitted[j] && (pa_tkns[i].cmd_splitted[j][0] == '<'
+		if (pa_tkns[i].cmd_splitted[j] && (pa_tkns[i].cmd_splitted[j][0] == '<' \
 			|| pa_tkns[i].cmd_splitted[j][0] == '>'))
 			continue ;
 		else if (pa_tkns[i].cmd_splitted[j])
 		{
-			if (access(pa_tkns[i].cmd_splitted[j], F_OK) == 0)
-				return (1);
-			else
-			{
-				j++;
-				continue ;
-				exit(0);
-			}
+			j++;
+			continue ;
 		}
 		else
 			break ;
@@ -55,7 +49,7 @@ int	check_for_input_files(t_pars_tokens *pa_tkns, int i)
 
 int	open_fds(char **cmd_split, int i, int *fd_out, int *fd_in)
 {
-	if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>'
+	if (cmd_split && cmd_split[i] && (cmd_split[i][0] == '>' \
 		&& ft_strlen(cmd_split[i]) == 1 && cmd_split[i + 1]))
 	{
 		close_redir_fd(fd_out);
@@ -63,7 +57,7 @@ int	open_fds(char **cmd_split, int i, int *fd_out, int *fd_in)
 		if (*fd_out == -1)
 			return (ft_perror(EXIT_FAILURE, "error opening file"));
 	}
-	if (cmd_split[i] && (cmd_split[i][0] == '>' && cmd_split[i][1] == '>'
+	if (cmd_split[i] && (cmd_split[i][0] == '>' && cmd_split[i][1] == '>' \
 		&& ft_strlen(cmd_split[i]) == 2 && cmd_split[i + 1]))
 	{
 		close_redir_fd(fd_out);
@@ -71,7 +65,7 @@ int	open_fds(char **cmd_split, int i, int *fd_out, int *fd_in)
 		if (*fd_out == -1)
 			return (ft_perror(EXIT_FAILURE, "error opening file"));
 	}
-	if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1
+	if (cmd_split[i][0] == '<' && ft_strlen(cmd_split[i]) == 1 \
 		&& cmd_split[i + 1])
 	{
 		close_redir_fd(fd_in);
@@ -109,14 +103,12 @@ int	open_files_fd(char **cmd_split, t_pars_tokens *pa_tokens, int tkn_idx)
 	}
 	return (0);
 }
+//check_for_input_files(pa_tkns, i);
 
 int	handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i)
 {
 	if (open_files_fd(pa_tkns[i].cmd_splitted, pa_tkns, i) == EXIT_FAILURE)
 		return (1);
-	if (!check_for_input_files(pa_tkns, i))
-	{
-		find_input_fd(pa_tkns, i);
-	}
+	find_input_fd(pa_tkns, i);
 	return (0);
 }

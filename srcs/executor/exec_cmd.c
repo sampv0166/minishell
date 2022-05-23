@@ -69,17 +69,16 @@ int	handle_redirections(t_pars_tokens *pa_tokens, int i)
 	}
 	return (EXIT_SUCCESS);
 }
-
-int	execute_cmd(t_pars_tokens *pa_tokens, int i, char **path, int **p)
+// if (is_redir(pa_tokens, i))
+// {
+// 	if (handle_redirections(pa_tokens, i))
+// 		return (EXIT_FAILURE);
+// }
+int	execute_inbuilts(t_pars_tokens *pa_tokens, int i, char **path, int **p)
 {
 	char	*abs_cmd_path;
 
 	abs_cmd_path = NULL;
-	if (is_redir(pa_tokens, i))
-	{
-		if (handle_redirections(pa_tokens, i))
-			return (EXIT_FAILURE);
-	}
 	if (pa_tokens[i].cmd[0])
 	{
 		if (is_inbuilt(pa_tokens[i].cmd[0]))

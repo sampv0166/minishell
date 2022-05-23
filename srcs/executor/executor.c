@@ -1,6 +1,6 @@
 #include "../../includes/mini_shell.h"
 
-void	close_pipes_in_child(int i, int **p)
+void	close_pipes_in_child(int i, int **p, t_pars_tokens *pa_tkns)
 {
 	int	j;
 
@@ -10,7 +10,12 @@ void	close_pipes_in_child(int i, int **p)
 		if (i != j)
 			close(p[j][0]);
 		if (i + 1 != j)
-			close(p[j][1]);	
+			close(p[j][1]);
+		if (pa_tkns[j].pipe == 2)
+		{
+			close(p[j][0]);
+			close(p[j][1]);
+		}		
 		j++;
 	}
 }
@@ -43,7 +48,7 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 
 	k = i;
 	if (pa_tkns[i].pipe)
-		close_pipes_in_child(i, p);
+		close_pipes_in_child(i, p, pa_tkns);
 	if (!is_inbuilt(pa_tkns[k].cmd[0]) && path)
 	{
 		if (pa_tkns[i].pipe)
@@ -58,9 +63,17 @@ void	exec_child(t_pars_tokens *pa_tkns, char *path, int i, int **p)
 		call_execve(pa_tkns, path, k);
 	}
 	else if (is_inbuilt(pa_tkns[k].cmd[0]))
+	{
 		;
+	}
 	else
+	{
+		close(p[i][0]);
+		close(p[i][1]);
+		if (pa_tkns[i].pipe != 1 && pa_tkns[i].pipe)
+			close(p[i + 1][1]);
 		g_env.stat_code = 127;
+	}
 }
 
 void	execute_commands(t_pars_tokens *pa_tkns, \
@@ -74,7 +87,7 @@ void	execute_commands(t_pars_tokens *pa_tkns, \
 		re_init_fds_nd_path(&path);
 		if (handle_in_redirections(pa_tkns, &i))
 			continue ;
-		g_env.stat_code = execute_cmd(pa_tkns, i, &path, p);
+		g_env.stat_code = execute_inbuilts(pa_tkns, i, &path, p);
 		pid[i] = fork();
 		g_env.s_pid = pid[i];
 		if (pid[i] < 0)
@@ -86,11 +99,13 @@ void	execute_commands(t_pars_tokens *pa_tkns, \
 		}
 		if (pa_tkns[i].is_in)
 			close (g_env.open_fd_in);
-		if (pa_tkns[i].is_out)
+		if (pa_tkns[i].is_out || pa_tkns[i].is_out_appnd)
 			close (g_env.open_fd_out);		
 		free_me(&path);
 		i++;
 	}
+	if (g_env.open_heredoc_fdin != 0)
+		close(g_env.open_heredoc_fdin);
 	if (pa_tkns[0].pipe)
 	{
 		close_pipes_in_parent(p);

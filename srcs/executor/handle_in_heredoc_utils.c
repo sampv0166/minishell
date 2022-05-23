@@ -5,7 +5,7 @@ int	handle_in_redirections(t_pars_tokens *pa_tkns, int *i)
 	int	k;
 
 	k = *i;
-	if (pa_tkns[k].is_in || pa_tkns[k].here_doc)
+	if (pa_tkns[k].is_in || pa_tkns[k].here_doc || pa_tkns[k].is_out || pa_tkns[k].is_out_appnd)
 	{
 		if (handle_in_and_here_doc(pa_tkns, k))
 		{

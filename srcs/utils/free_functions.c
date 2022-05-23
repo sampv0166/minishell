@@ -27,6 +27,7 @@ int	free_everything(t_pars_tokens *tokens)
 		free_me(&tokens[i].cmd_full);
 	}
 	free(tokens);
+	tokens = NULL;
 	return (0);
 }
 
@@ -46,6 +47,7 @@ void	print_2d_array(char **arr)
 int	ft_perror(int exit_status, char *msg)
 {
 	perror(msg);
+	g_env.stat_code = exit_status;
 	return (exit_status);
 }
 

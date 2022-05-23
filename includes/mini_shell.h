@@ -177,7 +177,7 @@ int				init(char ***path_splitted);
 char			*ft_strjoin2(char *saved_line, char *buffer);
 void			placing_vals_SHLVL(char *str);
 void			increment_s_vals(void);
-int				execute_cmd(t_pars_tokens *pa_tokens, int i, \
+int				execute_inbuilts(t_pars_tokens *pa_tokens, int i, \
 				char **path, int **p);
 int				handle_in_and_here_doc(t_pars_tokens *pa_tkns, int i);
 int				handle_pipes(t_pars_tokens *pa_tokens, int i);
