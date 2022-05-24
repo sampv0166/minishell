@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: makhtar & apila-va <makhtar@student.42a    +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:01 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 13:29:02 by makhtar & a      ###   ########.fr       */
+/*   Updated: 2022/05/24 06:07:16 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	create_string_between_quotes(char *str, t_split *split_info)
 char	**split_by_quotes(char *str, t_split *split_info)
 {
 	init_split_info(split_info);
-	split_info->arr = (char **)ft_calloc(sizeof (char *),
+	split_info->arr = (char **)ft_calloc(sizeof (char *), \
 			(get_arr_len(str) + 1));
 	if (!split_info->arr)
 		return (NULL);
@@ -133,9 +133,14 @@ char	**split_to_tokens(char *input)
 	split_by_quotes(input, &si);
 	if (!si.arr)
 		return (NULL);
+	print_2d_array(si.arr);
+	ft_putstr_fd("-----------------\n", 2);	
 	split_by_pipe_redir(si.arr, &si2);
 	if (!si2.arr)
 		return (NULL);
+	print_2d_array(si2.arr);
+	ft_putstr_fd("-----------------", 2);		
 	ft_free_str_array(&si.arr);
+	exit(0);
 	return (si2.arr);
 }

@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:29:47 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 18:38:43 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 20:34:54 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	create_pipes(t_pars_tokens *pa_tkns, char *path, pid_t *pid)
 		p[i] = malloc (sizeof (int) * 2);
 		pipe(p[i]);
 		i++;
-	}	
+	}
 	execute_commands(pa_tkns, path, pid, p);
 }

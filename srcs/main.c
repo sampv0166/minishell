@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:27:57 by makhtar & a       #+#    #+#             */
-/*   Updated: 2022/05/23 17:33:27 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/05/23 19:19:05 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,3 +59,12 @@ int	main(int ac, char **argv, char **envp)
 		free_env();
 	return (get_input());
 }
+
+
+/*
+if (pipe(end) == -1)
+		return (ft_perror(EXIT_FAILURE, "pipe error"));
+		
+		
+
+*/
